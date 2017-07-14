@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Mood Journal</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="action_logout">LOG OUT</string>
+    <string name="title_activity_mood_question">MoodQuestionActivity</string>
+
+    <array name="phq_questions">
+        <item>Little interest or pleasure in doing things</item>
+        <item>Feeling down, depressed, or hopeless</item>
+        <item>Trouble falling or staying asleep, or sleeping too much</item>
+        <item>Feeling tired or having little energy</item>
+        <item>Poor appetite or overeating</item>
+        <item>Feeling bad about yourself - or that you are a failure or have let yourself or your
+            family down
+        </item>
+        <item>Trouble concentrating on things, such as reading the newspaper or watching
+            television
+        </item>
+        <item>Moving or speaking so slowly that other people could have noticed? Or the opposite -
+            being so fidgety or restless that you have been moving around a lot more than usual
+        </item>
+    </array>
+    <string name="title_activity_plan">PlanActivity</string>
+    <string name="intro_title_1">About this study</string>
+    <string name="intro_desc_1">This is a study into making an effective IF THEN plan to help people record their mood everyday.
+            Research has shown that planning is more effective if you first identify a particular situation (IF),
+            and decide on a goal for what you will do in that situation (THEN).</string>
+    <string name="intro_title_2">Method</string>
+    <string name="intro_desc_2">You will be given an IF THEN plan: \"IF it is in the evening, THEN I will record my mood.\"
+            After a week, the app will ask you to specify the IF condition to be more specific that suits your availability.
+            For example by specifying the time, location, and your activity.</string>
+    <string name="intro_title_3">Reminder</string>
+    <string name="intro_desc_3">After a week, the app will start sending you a daily reminder to record your mood when the specified condition is detected.
+            Upon completion, you can access your daily mood report on your phone and get an insight on how your mood changes over time.</string>
+    <string name="intro_title_4">Permission Request</string>
+    <string name="intro_desc_4">We need you to grant a permission for location request in order to get an appropriate context of your specified condition.
+        Do not worry, we will not drain your battery!</string>
+    <string name="service_not_available">Service not available</string>
+    <string name="invalid_lat_long_used">Latitue and longitude are invalid</string>
+    <string name="no_address_found">No address found</string>
+    <string name="address_found">Address found</string>
+</resources>
