@@ -8,7 +8,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -18,7 +17,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,7 +26,6 @@ import android.widget.Toast;
 
 import com.adhiwie.moodjournal.service.FetchAddressIntentService;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -64,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private TextView answerNowView;
     private TextView changePlanView;
     private boolean isLocation = false;
-    private long notifiedAt;
+    private long dailyReminderTime;
     private String planText;
     private long group;
 
@@ -130,10 +127,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 dailyReminderView.setText(dailyReminderView.getText() + " today, " + today);
 
                 isLocation = dataSnapshot.child("users").child(mUser.getUid()).child("location").getValue() != null;
-                notifiedAt = (Long) dataSnapshot.child("users").child(mUser.getUid()).child("notified_at").getValue();
+                dailyReminderTime = (Long) dataSnapshot.child("users").child(mUser.getUid()).child("daily_reminder_time").getValue();
 
                 if (group != 0) {
-                    startDailyReminder();
+                    //startDailyReminder();
                     changePlanView.setVisibility(View.VISIBLE);
                 } else {
                     changePlanView.setVisibility(View.GONE);
@@ -159,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         getLastLocation();
         createLocationRequest();
         setLocationCallback();
-        setDailyReminder();
+        resetDailyReminderStatus();
 
         //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -346,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         dbRef.child("users").child(mUser.getUid()).child("location").setValue(val);
     }
 
-    private void setDailyReminder() {
+    private void resetDailyReminderStatus() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
@@ -362,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void startDailyReminder() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(notifiedAt);
+        calendar.setTimeInMillis(dailyReminderTime);
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY));
         calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE));
 

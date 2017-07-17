@@ -7,13 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -33,7 +30,7 @@ public class PlanActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
-    private long notifiedAt;
+    private long dailyReminderTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +48,7 @@ public class PlanActivity extends AppCompatActivity {
 
                 Map<String, Object> userDataValue = new HashMap<>();
                 userDataValue.put("plan", plan.getText().toString());
-                userDataValue.put("notified_at", notifiedAt);
+                userDataValue.put("daily_reminder_time", dailyReminderTime);
                 DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
                 dbRef.child("users").child(mUser.getUid()).updateChildren(userDataValue);
 
@@ -61,10 +58,12 @@ public class PlanActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //getSupportFragmentManager().beginTransaction().(R.id.fragment, new PlanSettingsFragment()).commit();
     }
 
-    public void getNotifiedAt(long notifiedAt) {
-        this.notifiedAt = notifiedAt;
+    public void getDailyReminderTime(long dailyReminderTime) {
+        this.dailyReminderTime = dailyReminderTime;
     }
 
     @Override
@@ -73,10 +72,11 @@ public class PlanActivity extends AppCompatActivity {
     }
 
     public void onSetTimeClicked(View v){
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getFragmentManager(),"TimePicker");
+        //DialogFragment newFragment = new TimePickerFragment();
+        //newFragment.show(getFragmentManager(),"TimePicker");
     }
 
+    /*
     public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
 
         private long notifiedAt;
@@ -119,8 +119,8 @@ public class PlanActivity extends AppCompatActivity {
             plan.setText(str);
 
             PlanActivity planActivity = (PlanActivity) getActivity();
-            planActivity.getNotifiedAt(notifiedAt);
+            planActivity.getDailyReminderTime(notifiedAt);
         }
     }
-
+    */
 }

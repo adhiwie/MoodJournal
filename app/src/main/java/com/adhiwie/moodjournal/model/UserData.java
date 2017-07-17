@@ -6,25 +6,28 @@ import java.util.Map;
 
 public class UserData {
 
-    public String emailAddress;
-    public int groupId;
-    public int dailyReminder;
+    private String emailAddress;
+    private int groupId;
+    private int dailyReminderStatus;
+    private long dailyReminderTime;
 
     public UserData() {
 
     }
 
-    public UserData(String emailAddress, int groupId, int dailyReminder) {
+    public UserData(String emailAddress, int groupId, int dailyReminderStatus, long dailyReminderTime) {
         this.emailAddress = emailAddress;
         this.groupId = groupId;
-        this.dailyReminder = dailyReminder;
+        this.dailyReminderStatus = dailyReminderStatus;
+        this.dailyReminderTime = dailyReminderTime;
     }
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("email_address", emailAddress);
         result.put("group_id", groupId);
-        result.put("daily_reminder_status", dailyReminder);
+        result.put("daily_reminder_status", dailyReminderStatus);
+        result.put("daily_reminder_time", dailyReminderTime);
 
         return result;
     }
@@ -37,7 +40,9 @@ public class UserData {
         return groupId;
     }
 
-    public int getDailyReminder() {
-        return  dailyReminder;
+    public int getDailyReminderStatus() {
+        return dailyReminderStatus;
     }
+
+    public long getDailyReminderTime() { return dailyReminderTime;}
 }

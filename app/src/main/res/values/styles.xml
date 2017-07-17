@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
+        <item name="preferenceTheme">@style/Preference.Theme</item>
     </style>
 
     <style name="AppTheme.Widget.TextView" parent="android:TextAppearance.Widget.TextView">
@@ -19,6 +20,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Preference.Theme" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="android:textColorPrimary">@color/light</item>
+        <item name="android:textColorSecondary">@color/stroke</item>
+    </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat" />
