@@ -4,11 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adhiwie.moodjournal.model.UserData;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -61,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             this.finish();
         }
+
+        checkGoogleApi();
     }
 
     @Override
@@ -102,6 +109,39 @@ public class LoginActivity extends AppCompatActivity {
         if (firstStart) {
             Intent intent = new Intent(this, AppIntroActivity.class);
             startActivityForResult(intent, REQUEST_CODE_INTRO);
+        }
+
+
+    }
+
+    private void checkGoogleApi() {
+        GoogleApiAvailability googleApi = GoogleApiAvailability.getInstance();
+        int result = googleApi.isGooglePlayServicesAvailable(this);
+        if (result != ConnectionResult.SUCCESS) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("This app requires google play services").setTitle("Do you want to update?");
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    final String appPackageName = "com.google.android.gms";
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+appPackageName)));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id="+appPackageName)));
+                    }
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+
+            builder.create().show();
         }
     }
 

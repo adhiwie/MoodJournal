@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.adhiwie.moodjournal.service.FetchAddressIntentService;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -158,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         getLastLocation();
         createLocationRequest();
         setLocationCallback();
+        setDailyReminder();
 
         //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -344,6 +346,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         dbRef.child("users").child(mUser.getUid()).child("location").setValue(val);
     }
 
+    private void setDailyReminder() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+
+        AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), DailyReminderReceiver.class);
+        intent.putExtra("uid", mUser.getUid());
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000, alarmIntent);
+
+        //Log.i(TAG, "daily reminder service");
+    }
+
     private void startDailyReminder() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(notifiedAt);
@@ -357,8 +373,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000, alarmIntent);
 
 
-        java.text.DateFormat dateFormat = DateFormat.getDateTimeInstance();
-        Log.i(TAG, dateFormat.format(calendar.getTimeInMillis()));
+        //java.text.DateFormat dateFormat = DateFormat.getDateTimeInstance();
+        //Log.i(TAG, dateFormat.format(calendar.getTimeInMillis()));
     }
 
     public static class AlarmReceiver extends BroadcastReceiver {
@@ -392,5 +408,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             mNotificationManager.notify(123, mBuilder.build());
         }
 
+    }
+
+    public static class DailyReminderReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+            dbRef.child("users").child(intent.getStringExtra("uid")).child("daily_reminder_status").setValue(0);
+            //Log.i(TAG, "daily reminder received");
+        }
     }
 }

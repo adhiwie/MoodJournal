@@ -186,7 +186,21 @@ public class MoodQuestionActivity extends AppCompatActivity {
                     Calendar cal = Calendar.getInstance();
                     long timestamp = cal.getTimeInMillis();
 
-                    com.adhiwie.moodjournal.model.Location location = new com.adhiwie.moodjournal.model.Location(mLastLocation.getLongitude(), mLastLocation.getLatitude(), address);
+                    double longitude;
+                    double latitude;
+                    String locAddress;
+
+                    if (mLastLocation == null) {
+                        longitude = 0;
+                        latitude = 0;
+                        locAddress = "";
+                    } else {
+                        longitude = mLastLocation.getLongitude();
+                        latitude = mLastLocation.getLatitude();
+                        locAddress = address;
+                    }
+
+                    com.adhiwie.moodjournal.model.Location location = new com.adhiwie.moodjournal.model.Location(longitude, latitude, locAddress);
 
                     MoodModel moodModel = new MoodModel(mUser.getUid(), happinessScore, stressScore, arousalScore, timestamp, location);
                     moodValue = moodModel.toMap();
