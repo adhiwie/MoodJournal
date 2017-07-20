@@ -31,6 +31,8 @@ dependencies {
     compile "com.google.firebase:firebase-auth:${google_play_services_library}"
     compile "com.google.android.gms:play-services-location:${google_play_services_library}"
     compile "com.android.support:support-vector-drawable:${google_support_library}"
+    compile "com.android.support:preference-v7:${google_support_library}"
+    compile "com.android.support:preference-v14:${google_support_library}"
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
