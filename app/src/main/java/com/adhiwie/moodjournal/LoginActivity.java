@@ -287,7 +287,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void writeUserDataToFirebase(FirebaseUser user){
-        UserData userData = new UserData(user.getEmail(), 0, 0, 0);
+        UserData userData = new UserData("IF it is in the evening, THEN I will complete the mood questionnaires", 0, 0, 0, "", "", 0.0, 0.0);
         Map<String, Object> userDataValue = userData.toMap();
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();

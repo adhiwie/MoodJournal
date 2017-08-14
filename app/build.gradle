@@ -30,6 +30,7 @@ dependencies {
     compile "com.google.firebase:firebase-database:${google_play_services_library}"
     compile "com.google.firebase:firebase-auth:${google_play_services_library}"
     compile "com.google.android.gms:play-services-location:${google_play_services_library}"
+    compile "com.google.android.gms:play-services-maps:${google_play_services_library}"
     compile "com.android.support:support-vector-drawable:${google_support_library}"
     compile "com.android.support:preference-v7:${google_support_library}"
     compile "com.android.support:preference-v14:${google_support_library}"
@@ -38,5 +39,7 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     compile 'link.fls:swipestack:0.3.0'
     compile 'com.heinrichreimersoftware:material-intro:1.6.2'
+    compile 'com.google.android.gms:play-services-maps:11.0.2'
+    compile 'com.android.support:appcompat-v7:25.3.1'
 }
 apply plugin: 'com.google.gms.google-services'

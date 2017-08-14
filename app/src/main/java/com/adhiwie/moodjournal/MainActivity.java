@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adhiwie.moodjournal.model.UserData;
 import com.adhiwie.moodjournal.service.FetchAddressIntentService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -61,9 +63,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private TextView answerNowView;
     private TextView changePlanView;
     private boolean isLocation = false;
-    private long dailyReminderTime;
     private String planText;
     private long group;
+    private long dailyReminderStatus;
 
     private GoogleApiClient mApiClient;
     private FusedLocationProviderClient mFusedLocationClient;
@@ -72,6 +74,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private boolean mRequestingLocationUpdates = false;
     private Location mLastLocation;
     public AddressResultReceiver mResultReceiver;
+
+    /* For plan details */
+    private String time;
+    private String address;
+    private double latitude;
+    private double longitude;
+    private long timeInMilis;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -101,18 +110,30 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         answerNowView = (TextView) findViewById(R.id.answer_now);
         changePlanView = (TextView) findViewById(R.id.change_button);
 
+        final ProgressDialog pd = new ProgressDialog(this);
+        pd.setTitle("Loading...");
+        pd.setMessage("Please wait, we are refreshing the data.");
+        pd.setCancelable(false);
+        pd.show();
+
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                planText = (String) dataSnapshot.child("users").child(mUser.getUid()).child("plan").getValue();
-                group = (long) dataSnapshot.child("users").child(mUser.getUid()).child("group_id").getValue();
+                UserData user  = dataSnapshot.child("users").child(mUser.getUid()).getValue(UserData.class);
+                planText = user.getPlan();
+                group = user.getGroup_id();
+                timeInMilis = user.getDaily_reminder_time();
+                time = user.getDaily_reminder_time_string();
+                address = user.getDaily_reminder_address();
+                latitude = user.getDaily_reminder_latitude();
+                longitude = user.getDaily_reminder_longitude();
+                dailyReminderStatus = user.getDaily_reminder_status();
 
                 TextView tv = (TextView) findViewById(R.id.plan);
                 tv.setText(planText);
 
-                long dailyReminder = (Long) dataSnapshot.child("users").child(mUser.getUid()).child("daily_reminder_status").getValue();
-                if (dailyReminder > 0) {
+                if (dailyReminderStatus > 0) {
                     dailyReminderView.setText("You have answered the questionnaires");
                     answerNowView.setVisibility(View.GONE);
                 } else {
@@ -126,15 +147,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 String today = dateFormat.format(now);
                 dailyReminderView.setText(dailyReminderView.getText() + " today, " + today);
 
-                isLocation = dataSnapshot.child("users").child(mUser.getUid()).child("location").getValue() != null;
-                dailyReminderTime = (Long) dataSnapshot.child("users").child(mUser.getUid()).child("daily_reminder_time").getValue();
-
                 if (group != 0) {
                     //startDailyReminder();
                     changePlanView.setVisibility(View.VISIBLE);
                 } else {
                     changePlanView.setVisibility(View.GONE);
                 }
+                pd.dismiss();
             }
 
             @Override
@@ -195,20 +214,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    private void signOut() {
-        mAuth.signOut();
-    }
-
-    public void answerNow(View view) {
-        Intent intent = new Intent(MainActivity.this, MoodQuestionActivity.class);
-        startActivity(intent);
-    }
-
-    public void changePlan(View view) {
-        Intent intent = new Intent(MainActivity.this, PlanActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -234,6 +239,28 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 mRequestingLocationUpdates);
         super.onSaveInstanceState(outState);
     }
+
+    private void signOut() {
+        mAuth.signOut();
+    }
+
+    public void answerNow(View view) {
+        Intent intent = new Intent(MainActivity.this, MoodQuestionActivity.class);
+        startActivity(intent);
+    }
+
+    public void changePlan(View view) {
+        Intent intent = new Intent(MainActivity.this, PlanActivity.class);
+        intent.putExtra("className", "MainActivity");
+        intent.putExtra("plan", planText);
+        intent.putExtra("time", time);
+        intent.putExtra("address", address);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
+        startActivity(intent);
+    }
+
+
 
     protected void getLastLocation() {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -306,8 +333,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
-    public class AddressResultReceiver extends ResultReceiver {
-        public AddressResultReceiver(Handler handler) {
+    private class AddressResultReceiver extends ResultReceiver {
+        AddressResultReceiver(Handler handler) {
             super(handler);
         }
 
@@ -336,8 +363,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void writeLocationAddressToFirebase(String address) {
         Map<String, Object> val = new HashMap<>();
-        val.put("lat", mLastLocation.getLatitude());
-        val.put("lon", mLastLocation.getLongitude());
+        val.put("latitude", mLastLocation.getLatitude());
+        val.put("longitude", mLastLocation.getLongitude());
         val.put("address", address);
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.child("users").child(mUser.getUid()).child("location").setValue(val);
@@ -359,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void startDailyReminder() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(dailyReminderTime);
+        calendar.setTimeInMillis(timeInMilis);
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY));
         calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE));
 

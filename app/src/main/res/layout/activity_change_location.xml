@@ -1,0 +1,38 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_color"
+    tools:context="com.adhiwie.moodjournal.ChangeLocationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:id="@+id/address"
+            android:text="Getting the address..."/>
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="0.1"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:id="@+id/map"/>
+    </LinearLayout>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/light"
+        app:srcCompat="@drawable/ic_check_color_24dp"/>
+
+</FrameLayout>
