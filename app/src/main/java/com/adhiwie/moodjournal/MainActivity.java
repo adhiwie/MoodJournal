@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -17,7 +18,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private boolean isLocation = false;
     private String planText;
     private long group;
+    private long groupIsSet;
     private long dailyReminderStatus;
 
     private GoogleApiClient mApiClient;
@@ -123,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 UserData user  = dataSnapshot.child("users").child(mUser.getUid()).getValue(UserData.class);
                 planText = user.getPlan();
                 group = user.getGroup_id();
+                groupIsSet = user.getGroup_is_set();
                 timeInMilis = user.getDaily_reminder_time();
                 time = user.getDaily_reminder_time_string();
                 address = user.getDaily_reminder_address();
@@ -134,26 +139,47 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 tv.setText(planText);
 
                 if (dailyReminderStatus > 0) {
-                    dailyReminderView.setText("You have answered the questionnaires");
+                    dailyReminderView.setText("Awesome! You have completed the mood questionnaires for today. Have a good day :)");
                     answerNowView.setVisibility(View.GONE);
                 } else {
-                    dailyReminderView.setText("You have not answered the questionnaires");
+                    dailyReminderView.setText("You have not completed the questionnaires for today");
                     answerNowView.setVisibility(View.VISIBLE);
                 }
 
-                Calendar date = Calendar.getInstance();
-                java.text.DateFormat dateFormat = DateFormat.getDateInstance();
-                long now = date.getTimeInMillis();
-                String today = dateFormat.format(now);
-                dailyReminderView.setText(dailyReminderView.getText() + " today, " + today);
 
-                if (group != 0) {
-                    //startDailyReminder();
+                if (group != 0 ) {
+                    if (dailyReminderStatus == 0) startDailyReminder();
                     changePlanView.setVisibility(View.VISIBLE);
                 } else {
                     changePlanView.setVisibility(View.GONE);
                 }
                 pd.dismiss();
+
+                if (groupIsSet == 0 && group !=0) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                    builder.setMessage("You need to specify the condition for your reminder. Tap the button below to set it.");
+                    builder.setPositiveButton("Set reminder", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+                            dbRef.child("users").child(mUser.getUid()).child("group_is_set").setValue(1);
+                            Intent intent = new Intent(MainActivity.this, PlanActivity.class);
+                            intent.putExtra("className", "MainActivity");
+                            intent.putExtra("plan", planText);
+                            intent.putExtra("time", time);
+                            intent.putExtra("timeInMilis", timeInMilis);
+                            intent.putExtra("address", address);
+                            intent.putExtra("latitude", latitude);
+                            intent.putExtra("longitude", longitude);
+                            intent.putExtra("group", group);
+                            startActivity(intent);
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.setCancelable(false);
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
+                }
             }
 
             @Override
@@ -257,6 +283,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         intent.putExtra("address", address);
         intent.putExtra("latitude", latitude);
         intent.putExtra("longitude", longitude);
+        intent.putExtra("group", group);
+        intent.putExtra("timeInMilis", timeInMilis);
         startActivity(intent);
     }
 
@@ -372,8 +400,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void resetDailyReminderStatus() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
 
         AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), DailyReminderReceiver.class);
@@ -393,6 +421,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
         intent.putExtra("plan", planText);
+        intent.putExtra("group", group);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
+        intent.putExtra("currentLatitude", mLastLocation.getLatitude());
+        intent.putExtra("currentLongitude", mLastLocation.getLongitude());
+
+        Log.d(TAG, "Current location: "+String.valueOf(mLastLocation.getLatitude())+","+String.valueOf(mLastLocation.getLongitude()));
+        Log.d(TAG, "Designated location: "+String.valueOf(latitude)+","+String.valueOf(longitude));
+
         PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000, alarmIntent);
 
@@ -407,6 +444,26 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         public void onReceive(Context context, Intent intent) {
             String plan = intent.getStringExtra("plan");
             String action = plan.substring(plan.indexOf("will") + 5, plan.length());
+
+            long group = intent.getLongExtra("group", 0);
+
+            double latitude = intent.getDoubleExtra("latitude", 0);
+            double longitude = intent.getDoubleExtra("longitude", 0);
+            Location designatedLocation = new Location("");
+            designatedLocation.setLatitude(latitude);
+            designatedLocation.setLongitude(longitude);
+
+            double currentLatitude = intent.getDoubleExtra("currentLatitude", 0);
+            double currentLongitude = intent.getDoubleExtra("currentLongitude", 0);
+            Location currentLocation = new Location("");
+            currentLocation.setLatitude(currentLatitude);
+            currentLocation.setLongitude(currentLongitude);
+
+            boolean isLocation = false;
+
+            if (currentLocation.distanceTo(designatedLocation) < 50) {
+                isLocation = true;
+            }
 
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(context)
@@ -429,7 +486,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             mBuilder.setContentIntent(resultPendingIntent);
             NotificationManager mNotificationManager =
                     (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(123, mBuilder.build());
+
+            if (group == 1) {
+                mNotificationManager.notify(123, mBuilder.build());
+            } else if (group == 2 && isLocation) {
+                mNotificationManager.notify(123, mBuilder.build());
+            }
+
         }
 
     }

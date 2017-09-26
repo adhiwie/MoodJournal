@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class PlanActivity extends AppCompatActivity {
 
+    private static final String TAG = "PlanActivity" ;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private long dailyReminderTime;
@@ -37,10 +39,13 @@ public class PlanActivity extends AppCompatActivity {
     private TextView timeTextView;
     private TextView planTextView;
     private static String time;
+    private long timeInMilis;
     private static String address;
     private String plan;
     private double latitude;
     private double longitude;
+    private long group;
+    private LinearLayout locationLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +59,10 @@ public class PlanActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SharedPreferences sharedPref = getSharedPreferences("TIME_PREF", 0);
-                sharedPref.edit().clear().apply();
+                if (sharedPref.contains("timeInMilis")) {
+                    dailyReminderTime = sharedPref.getLong("timeInMilis", 0);
+                }
+
 
                 TextView plan = (TextView) findViewById(R.id.plan);
 
@@ -67,6 +75,9 @@ public class PlanActivity extends AppCompatActivity {
                 userDataValue.put("daily_reminder_longitude", longitude);
                 DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
                 dbRef.child("users").child(mUser.getUid()).updateChildren(userDataValue);
+
+                //Log.d(TAG, String.valueOf(dailyReminderTime));
+                sharedPref.edit().clear().apply();
 
                 Toast.makeText(getApplicationContext(), "Your plan has been changed.", Toast.LENGTH_SHORT).show();
 
@@ -81,43 +92,74 @@ public class PlanActivity extends AppCompatActivity {
     private void initStuff() {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+        locationLayout = (LinearLayout) findViewById(R.id.locationLayout);
         locationTextView = (TextView) findViewById(R.id.location);
         timeTextView = (TextView) findViewById(R.id.time);
         planTextView = (TextView) findViewById(R.id.plan);
-        if (getIntent().getStringExtra("className").equals("MainActivity")) {
-            time = getIntent().getStringExtra("time");
-            address = getIntent().getStringExtra("address");
-            plan = getIntent().getStringExtra("plan");
-            latitude = getIntent().getDoubleExtra("latitude", 0);
-            longitude = getIntent().getDoubleExtra("longitude", 0);
+        address = "";
+        latitude = 0;
+        longitude = 0;
 
-            planTextView.setText(getIntent().getStringExtra("plan"));
+        if (getIntent().getStringExtra("className") != null) {
+            if (getIntent().getStringExtra("className").equals("MainActivity")) {
+                time = getIntent().getStringExtra("time");
+                timeInMilis = getIntent().getLongExtra("timeInMilis", 0);
+                address = getIntent().getStringExtra("address");
+                plan = getIntent().getStringExtra("plan");
+                latitude = getIntent().getDoubleExtra("latitude", 0);
+                longitude = getIntent().getDoubleExtra("longitude", 0);
+                group = getIntent().getLongExtra("group", 0);
 
-            if (!address.equals("")) locationTextView.setText(address);
-            if (!time.equals("")) timeTextView.setText(time);
+                planTextView.setText(getIntent().getStringExtra("plan"));
 
-        } else if (getIntent().getStringExtra("className").equals("ChangeLocationActivity")) {
-            SharedPreferences sharedPref = getSharedPreferences("TIME_PREF", 0);
-            if (!sharedPref.getString("time", "").equals("")) {
-                timeTextView.setText(sharedPref.getString("time", ""));
+                if (!address.equals("")) locationTextView.setText(address);
+                if (!time.equals("")) {
+                    timeTextView.setText(time);
+                    SharedPreferences sharedPref = getSharedPreferences("TIME_PREF", 0);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("time", time);
+                    editor.putLong("timeInMilis", timeInMilis);
+                    editor.apply();
+                }
+
+                if (group == 1) {
+                    locationLayout.setVisibility(View.GONE);
+                } else {
+                    locationLayout.setVisibility(View.VISIBLE);
+                }
+
+            } else if (getIntent().getStringExtra("className").equals("ChangeLocationActivity")) {
+                SharedPreferences sharedPref = getSharedPreferences("TIME_PREF", 0);
+                if (!sharedPref.getString("time", "").equals("")) {
+                    timeTextView.setText(sharedPref.getString("time", ""));
+                }
+
+                address = getIntent().getStringExtra("address");
+                locationTextView.setText(address);
+                latitude = getIntent().getDoubleExtra("latitude", 0);
+                longitude = getIntent().getDoubleExtra("longitude", 0);
+
+                String planStr = "IF the time is ";
+                String planStr2 = ", THEN I will complete the mood questionnaires";
+                String str;
+
+                if (!sharedPref.getString("time", "").equals("")) {
+                    timeTextView.setText(sharedPref.getString("time", ""));
+                    str = planStr + timeTextView.getText().toString() + " and I am at "+ address + planStr2;
+                } else {
+                    str = " IF I am at "+ address + planStr2;
+                }
+
+                Log.i("PlanActivity", str);
+
+                planTextView.setText(str);
             }
-
-            address = getIntent().getStringExtra("address");
-            locationTextView.setText(address);
-            latitude = getIntent().getDoubleExtra("latitude", 0);
-            longitude = getIntent().getDoubleExtra("longitude", 0);
-
-            String planStr = "IF the time is ";
-            String planStr2 = ", THEN I will complete the mood questionnaires";
-
-            String str = planStr + timeTextView.getText().toString() + " and I am at "+ address + planStr2;
-            Log.i("PlanActivity", str);
-
-            planTextView.setText(str);
         }
+
+
     }
 
-    public void getDailyReminderTime(long dailyReminderTime) {
+    public void setDailyReminderTime(long dailyReminderTime) {
         this.dailyReminderTime = dailyReminderTime;
     }
 
@@ -187,10 +229,11 @@ public class PlanActivity extends AppCompatActivity {
             SharedPreferences sharedPref = getSharedPreferences("TIME_PREF", 0);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("time", time);
+            editor.putLong("timeInMilis", notifiedAt);
             editor.apply();
 
             PlanActivity planActivity = (PlanActivity) getActivity();
-            planActivity.getDailyReminderTime(notifiedAt);
+            planActivity.setDailyReminderTime(notifiedAt);
         }
     }
 }

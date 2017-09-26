@@ -32,9 +32,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Map;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -165,6 +170,13 @@ public class LoginActivity extends AppCompatActivity {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
+        // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
@@ -250,9 +262,6 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             writeUserDataToFirebase(user);
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -286,12 +295,31 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void writeUserDataToFirebase(FirebaseUser user){
-        UserData userData = new UserData("IF it is in the evening, THEN I will complete the mood questionnaires", 0, 0, 0, "", "", 0.0, 0.0);
-        Map<String, Object> userDataValue = userData.toMap();
+    private void writeUserDataToFirebase(final FirebaseUser mUser){
 
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-        dbRef.child("users").child(user.getUid()).updateChildren(userDataValue);
+        final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child("users").child(mUser.getUid()).getValue() == null) {
+                    UserData userData = new UserData("IF it is in the evening, THEN I will complete the mood questionnaires", 0, 0, 0, 0, "", "", 0.0, 0.0);
+                    Map<String, Object> userDataValue = userData.toMap();
+                    dbRef.child("users").child(mUser.getUid()).updateChildren(userDataValue);
+                } else {
+                    Log.d(TAG, "User is available");
+                }
+
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override

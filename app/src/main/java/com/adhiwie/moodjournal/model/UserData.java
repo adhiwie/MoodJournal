@@ -8,6 +8,7 @@ public class UserData {
 
     private String plan;
     private int group_id;
+    private int group_is_set;
     private int daily_reminder_status;
     private long daily_reminder_time;
     private String daily_reminder_time_string;
@@ -21,6 +22,7 @@ public class UserData {
 
     public UserData(String plan,
                     int group_id,
+                    int group_is_set,
                     int daily_reminder_status,
                     long daily_reminder_time,
                     String daily_reminder_time_string,
@@ -29,6 +31,7 @@ public class UserData {
                     double daily_reminder_longitude) {
         this.plan = plan;
         this.group_id = group_id;
+        this.group_is_set = group_is_set;
         this.daily_reminder_status = daily_reminder_status;
         this.daily_reminder_time = daily_reminder_time;
         this.daily_reminder_time_string = daily_reminder_time_string;
@@ -41,6 +44,7 @@ public class UserData {
         HashMap<String, Object> result = new HashMap<>();
         result.put("plan", plan);
         result.put("group_id", group_id);
+        result.put("group_is_set", group_is_set);
         result.put("daily_reminder_status", daily_reminder_status);
         result.put("daily_reminder_time", daily_reminder_time);
         result.put("daily_reminder_time_string", daily_reminder_time_string);
@@ -57,6 +61,10 @@ public class UserData {
 
     public int getGroup_id() {
         return group_id;
+    }
+
+    public int getGroup_is_set() {
+        return group_is_set;
     }
 
     public int getDaily_reminder_status() {
