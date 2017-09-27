@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -26,8 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class PlanActivity extends AppCompatActivity {
 
@@ -54,7 +52,7 @@ public class PlanActivity extends AppCompatActivity {
 
         initStuff();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        Button fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +84,6 @@ public class PlanActivity extends AppCompatActivity {
             }
         });
 
-        //getSupportFragmentManager().beginTransaction().(R.id.fragment, new PlanSettingsFragment()).commit();
     }
 
     private void initStuff() {
@@ -140,7 +137,7 @@ public class PlanActivity extends AppCompatActivity {
                 longitude = getIntent().getDoubleExtra("longitude", 0);
 
                 String planStr = "IF the time is ";
-                String planStr2 = ", THEN I will complete the mood questionnaires";
+                String planStr2 = ", THEN I will record my mood.";
                 String str;
 
                 if (!sharedPref.getString("time", "").equals("")) {
@@ -161,11 +158,6 @@ public class PlanActivity extends AppCompatActivity {
 
     public void setDailyReminderTime(long dailyReminderTime) {
         this.dailyReminderTime = dailyReminderTime;
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     public void onSetTimeClicked(View v) {
@@ -216,7 +208,7 @@ public class PlanActivity extends AppCompatActivity {
             notifiedAt = cal.getTimeInMillis();
 
             String planStr = "IF the time is ";
-            String planStr2 = ", THEN I will complete the mood questionnaires";
+            String planStr2 = ", THEN I will record my mood.";
             String str;
 
             if (!address.equals("")) {

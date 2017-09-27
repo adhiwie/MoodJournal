@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
+        <item name="android:dialogTheme">@style/Theme.Dialog</item>
+        <item name="android:alertDialogTheme">@style/Theme.Dialog</item>
     </style>
 
     <style name="AppTheme.Widget.TextView" parent="android:TextAppearance.Widget.TextView">
@@ -28,6 +30,12 @@
 
     <style name="AppTheme.Intro" parent="Theme.Intro">
         <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
+    </style>
+
+    <style name="Theme.Dialog" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 
     <style name="OnboardTitle">
@@ -67,14 +75,12 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/textBody</item>
     </style>
 
     <style name="CardBody">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/textBody</item>
     </style>
 
     <style name="CardAction" parent="android:Widget.TextView">

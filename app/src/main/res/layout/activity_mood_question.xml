@@ -6,15 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.adhiwie.moodjournal.MoodQuestionActivity"
     android:clipChildren="false"
-    android:background="@drawable/gradient_color">
+    android:background="@drawable/april">
 
     <include
         layout="@layout/content_mood_question"
         android:id="@+id/mood_layout"/>
-
-    <include
-        layout="@layout/content_phq_question"
-        android:id="@+id/phq_layout"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

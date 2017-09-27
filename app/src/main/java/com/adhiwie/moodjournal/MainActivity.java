@@ -15,21 +15,23 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adhiwie.moodjournal.model.UserData;
 import com.adhiwie.moodjournal.service.FetchAddressIntentService;
+import com.adhiwie.moodjournal.service.FetchAddressIntentService.Constants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -47,13 +49,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-import com.adhiwie.moodjournal.service.FetchAddressIntentService.Constants;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -63,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private TextView dailyReminderView;
-    private TextView answerNowView;
-    private TextView changePlanView;
+    private Button answerNowView;
+    private Button changePlanView;
     private boolean isLocation = false;
     private String planText;
     private long group;
@@ -86,33 +84,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private double longitude;
     private long timeInMilis;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-
-    };
-
     @Override
     public void onStart() {
         super.onStart();
-        dailyReminderView = (TextView) findViewById(R.id.daily_reminder);
-        answerNowView = (TextView) findViewById(R.id.answer_now);
-        changePlanView = (TextView) findViewById(R.id.change_button);
+        dailyReminderView = findViewById(R.id.daily_reminder);
+        answerNowView = findViewById(R.id.answer_now);
+        changePlanView = findViewById(R.id.change_plan);
 
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setTitle("Loading...");
@@ -211,9 +188,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void initVariables() {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-
-        mTextMessage = (TextView) findViewById(R.id.message);
-        mTextMessage.setVisibility(View.GONE);
     }
 
     @Override
@@ -228,21 +202,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         switch (item.getItemId()) {
             case R.id.action_logout:
                 signOut();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                Toast.makeText(this, "You have been logged out", Toast.LENGTH_SHORT).show();
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
 
         }
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
@@ -268,6 +233,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void signOut() {
         mAuth.signOut();
+        Intent intent = new Intent(MainActivity.this, StartActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+        Toast.makeText(this, "You have been logged out", Toast.LENGTH_SHORT).show();
     }
 
     public void answerNow(View view) {
@@ -424,6 +394,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         intent.putExtra("group", group);
         intent.putExtra("latitude", latitude);
         intent.putExtra("longitude", longitude);
+        intent.putExtra("timeInString", time);
         intent.putExtra("currentLatitude", mLastLocation.getLatitude());
         intent.putExtra("currentLongitude", mLastLocation.getLongitude());
 
@@ -442,8 +413,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String plan = intent.getStringExtra("plan");
-            String action = plan.substring(plan.indexOf("will") + 5, plan.length());
+            String timeInString = intent.getStringExtra("timeInString");
+            String action = "It is "+timeInString+", time to record your mood.";
 
             long group = intent.getLongExtra("group", 0);
 
@@ -467,7 +438,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(context)
-                            .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                            .setSmallIcon(R.drawable.small_icon)
                             .setContentTitle("Mood Journal")
                             .setContentText(action)
                             .setAutoCancel(true)

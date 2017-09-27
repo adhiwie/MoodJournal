@@ -1,68 +1,21 @@
 {
   "project_info": {
-    "project_number": "230469448995",
-    "firebase_url": "https://pace-f7a04.firebaseio.com",
-    "project_id": "pace-f7a04",
-    "storage_bucket": "pace-f7a04.appspot.com"
+    "project_number": "616357628393",
+    "firebase_url": "https://mood-journal-v2.firebaseio.com",
+    "project_id": "mood-journal-v2",
+    "storage_bucket": "mood-journal-v2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:230469448995:android:7b8a93a100bc41c2",
-        "android_client_info": {
-          "package_name": "com.adhiwie.pace"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "230469448995-kib50767aemu7ek8mh996vtc9ruh403o.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.adhiwie.pace",
-            "certificate_hash": "e42b8f389c1e89d7aad78ae5ee9fcd7fcbdce5e8"
-          }
-        },
-        {
-          "client_id": "230469448995-rhse812uo3ahasb1qc98thmm7c6hcqdd.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCM3JaFd7L-ZiOJ6ZEQSoRkGzKE2bnwze8"
-        },
-        {
-          "current_key": "AIzaSyBiwu_vz2-mZIYfduj9FfYFY16MMz9uRpo"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "230469448995-rhse812uo3ahasb1qc98thmm7c6hcqdd.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:230469448995:android:aeff7ccb14f2909c",
+        "mobilesdk_app_id": "1:616357628393:android:aeff7ccb14f2909c",
         "android_client_info": {
           "package_name": "com.adhiwie.moodjournal"
         }
       },
       "oauth_client": [
         {
-          "client_id": "230469448995-t1329102hv5qoecealc6etdqqdceoq7g.apps.googleusercontent.com",
+          "client_id": "616357628393-1doo9qrsrgq1eg2c35h2ctjl104e8t4q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.adhiwie.moodjournal",
@@ -70,16 +23,13 @@
           }
         },
         {
-          "client_id": "230469448995-rhse812uo3ahasb1qc98thmm7c6hcqdd.apps.googleusercontent.com",
+          "client_id": "616357628393-rvfdvchdqm32p6c9dsuk8f98ulcnbot0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCM3JaFd7L-ZiOJ6ZEQSoRkGzKE2bnwze8"
-        },
-        {
-          "current_key": "AIzaSyBiwu_vz2-mZIYfduj9FfYFY16MMz9uRpo"
+          "current_key": "AIzaSyB2pfrO-P-rRdVk8io0ZRSyux8QN4bS-CU"
         }
       ],
       "services": {
@@ -90,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "230469448995-rhse812uo3ahasb1qc98thmm7c6hcqdd.apps.googleusercontent.com",
+              "client_id": "616357628393-rvfdvchdqm32p6c9dsuk8f98ulcnbot0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

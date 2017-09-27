@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:textAlignment="center"
-        android:textColor="@color/light"
         android:text="How do you feel in the last few hours?"
         style="@style/CardLarge" />
 

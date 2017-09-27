@@ -8,18 +8,33 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
     <string name="action_logout">LOG OUT</string>
-    <string name="title_activity_mood_question">MoodQuestionActivity</string>
+
+    <array name="onboard_titles">
+        <item>Hello there</item>
+        <item>Reminder</item>
+        <item>Phone verification</item>
+    </array>
+
+    <array name="onboard_subtitles">
+        <item>Tell us a bit more about yourself, so we can help you record your mood every day.
+        </item>
+        <item>We\'ll send you a daily reminder, so you won\'t forget to record your mood.</item>
+        <item></item>
+    </array>
+
+    <array name="questions">
+        <item>What should we call you?</item>
+        <item>what time should we remind you?</item>
+        <item>We need to verify your phone, don\'t worry, we will keep your number safe &amp;
+            private.
+        </item>
+    </array>
 
     <array name="phq_questions">
         <item>Little interest or pleasure in doing things</item>
@@ -37,7 +52,6 @@
             being so fidgety or restless that you have been moving around a lot more than usual
         </item>
     </array>
-    <string name="title_activity_plan">PlanActivity</string>
     <string name="intro_title_1">About this study</string>
     <string name="intro_desc_1">This study investigates the impact of using context-aware implementation intention (IF THEN plan) on mood reporting task.
             Research has shown that planning is more effective if you first identify a particular situation (IF),
@@ -54,6 +68,7 @@
     <string name="invalid_lat_long_used">Latitue and longitude are invalid</string>
     <string name="no_address_found">No address found</string>
     <string name="address_found">Address found</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
