@@ -18,22 +18,20 @@
     <array name="onboard_titles">
         <item>Hello there</item>
         <item>Reminder</item>
-        <item>Phone verification</item>
+        <item>Ready</item>
     </array>
 
     <array name="onboard_subtitles">
         <item>Tell us a bit more about yourself, so we can help you record your mood every day.
         </item>
         <item>We\'ll send you a daily reminder, so you won\'t forget to record your mood.</item>
-        <item></item>
+        <item>Everything is ready for you.</item>
     </array>
 
     <array name="questions">
         <item>What should we call you?</item>
         <item>what time should we remind you?</item>
-        <item>We need to verify your phone, don\'t worry, we will keep your number safe &amp;
-            private.
-        </item>
+        <item>Brilliant! We have set a reminder for you. Get ready to start recording your mood every day.</item>
     </array>
 
     <array name="phq_questions">
