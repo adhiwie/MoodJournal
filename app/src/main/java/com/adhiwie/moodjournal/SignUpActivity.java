@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.adhiwie.moodjournal.model.UserData;
+import com.adhiwie.moodjournal.service.KeepAppRunning;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -263,6 +264,8 @@ public class SignUpActivity extends AppCompatActivity {
                     Map<String, Object> userDataValue = userData.toMap();
                     dbRef.child("users").child(mUser.getUid()).updateChildren(userDataValue);
                 }
+
+                startService(new Intent(getApplicationContext(), KeepAppRunning.class));
 
                 Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -25,6 +25,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 import com.adhiwie.moodjournal.model.UserData;
 import com.adhiwie.moodjournal.service.FetchAddressIntentService;
 import com.adhiwie.moodjournal.service.FetchAddressIntentService.Constants;
+import com.adhiwie.moodjournal.service.KeepAppRunning;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -163,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
     }
 
     @Override
@@ -179,6 +181,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         createLocationRequest();
         setLocationCallback();
         resetDailyReminderStatus();
+
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
         //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
