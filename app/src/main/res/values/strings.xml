@@ -31,7 +31,15 @@
     <array name="questions">
         <item>What should we call you?</item>
         <item>what time should we remind you?</item>
-        <item>Brilliant! We have set a reminder for you. Get ready to start recording your mood every day.</item>
+        <item>Brilliant! We have set a reminder for you. Get ready to start recording your mood
+            every day.
+        </item>
+    </array>
+
+    <array name="goal_commitment_scale">
+        <item>I am strongly committed to pursuing this goal.</item>
+        <item>I think this is a good goal to aim for.</item>
+        <item>It wouldn’t take much to make me abandon this goal.</item>
     </array>
 
     <array name="phq_questions">

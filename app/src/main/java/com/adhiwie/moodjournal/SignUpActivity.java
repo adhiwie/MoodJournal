@@ -67,7 +67,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_onboard);
+        setContentView(R.layout.activity_sign_up);
 
         constraintLayout = findViewById(R.id.constraintLayout);
         mAuth = FirebaseAuth.getInstance();
@@ -280,7 +280,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child("users").child(mUser.getUid()).getValue() == null) {
                     String plan = "IF the time is "+timeInString+", THEN I will record my mood.";
-                    UserData userData = new UserData(plan, 0, 0, 0, timeInMillis, timeInString, "", 0.0, 0.0);
+                    UserData userData = new UserData(name, plan, 0, 0, 0, timeInMillis, timeInString, "", 0.0, 0.0);
                     Map<String, Object> userDataValue = userData.toMap();
                     dbRef.child("users").child(mUser.getUid()).updateChildren(userDataValue);
                 }

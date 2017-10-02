@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class UserData {
 
+    private String user_name;
     private String plan;
     private int group_id;
     private int group_is_set;
@@ -20,7 +21,8 @@ public class UserData {
 
     }
 
-    public UserData(String plan,
+    public UserData(String userName,
+                    String plan,
                     int group_id,
                     int group_is_set,
                     int daily_reminder_status,
@@ -29,6 +31,7 @@ public class UserData {
                     String daily_reminder_address,
                     double daily_reminder_latitude,
                     double daily_reminder_longitude) {
+        this.user_name = user_name;
         this.plan = plan;
         this.group_id = group_id;
         this.group_is_set = group_is_set;
@@ -42,6 +45,7 @@ public class UserData {
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
+        result.put("user_name", user_name);
         result.put("plan", plan);
         result.put("group_id", group_id);
         result.put("group_is_set", group_is_set);
@@ -53,6 +57,10 @@ public class UserData {
         result.put("daily_reminder_longitude", daily_reminder_longitude);
 
         return result;
+    }
+
+    public String getUser_name(){
+        return user_name;
     }
 
     public String getPlan() {

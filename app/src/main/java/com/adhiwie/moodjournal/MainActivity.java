@@ -95,11 +95,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         answerNowView = findViewById(R.id.answer_now);
         changePlanView = findViewById(R.id.change_plan);
 
+        /*
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setTitle("Loading...");
         pd.setMessage("Please wait, we are refreshing the data.");
         pd.setCancelable(false);
         pd.show();
+        */
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 } else {
                     changePlanView.setVisibility(View.GONE);
                 }
-                pd.dismiss();
+                //pd.dismiss();
 
                 if (groupIsSet == 0 && group !=0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -266,7 +268,37 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         startActivity(intent);
     }
 
+    public void answerQuestionnaire(View view) {
+        final int ide = 1;
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
+        if (ide == 0) {
+            builder.setTitle("Pre-test Questionnaire");
+        } else {
+            builder.setTitle("Post-test Questionnaire");
+        }
+        builder.setMessage("Please answer the following questionnaire, it's important for our study.");
+        builder.setPositiveButton("Answer questionnaire", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                String urlPreTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSdkXpxR8BZe2UMwwKcq1t18N9d9II0yuJy8GC-8eaUWUjl8hA/viewform?usp=pp_url&entry.503799090=";
+                String urlPreTest2 = "&entry.584420084&entry.788256975";
+
+                String urlPostTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSeBrAkHZMGR2pre63OpyZLCLt5oVg78FyTvxiNf-t0_aTZC9Q/viewform?usp=pp_url&entry.369076977=";
+                String urlPostTest2 = "&entry.1519610942";
+                Intent intent = new Intent(MainActivity.this, QuestionnaireActivity.class);
+                if (ide == 0) {
+                    intent.putExtra("url", urlPreTest1+mUser.getUid()+urlPreTest2);
+                } else {
+                    intent.putExtra("url", urlPostTest1+mUser.getUid()+urlPostTest2);
+                }
+                startActivity(intent);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
 
     protected void getLastLocation() {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -403,11 +435,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         intent.putExtra("latitude", latitude);
         intent.putExtra("longitude", longitude);
         intent.putExtra("timeInString", time);
-        intent.putExtra("currentLatitude", mLastLocation.getLatitude());
-        intent.putExtra("currentLongitude", mLastLocation.getLongitude());
-
-        Log.d(TAG, "Current location: "+String.valueOf(mLastLocation.getLatitude())+","+String.valueOf(mLastLocation.getLongitude()));
-        Log.d(TAG, "Designated location: "+String.valueOf(latitude)+","+String.valueOf(longitude));
+        if (mLastLocation != null) {
+            intent.putExtra("currentLatitude", mLastLocation.getLatitude());
+            intent.putExtra("currentLongitude", mLastLocation.getLongitude());
+        } else {
+            intent.putExtra("currentLatitude",0);
+            intent.putExtra("currentLongitude", 0);
+        }
 
         PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000, alarmIntent);
@@ -426,6 +460,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
             long group = intent.getLongExtra("group", 0);
 
+
             double latitude = intent.getDoubleExtra("latitude", 0);
             double longitude = intent.getDoubleExtra("longitude", 0);
             Location designatedLocation = new Location("");
@@ -440,8 +475,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
             boolean isLocation = false;
 
-            if (currentLocation.distanceTo(designatedLocation) < 50) {
-                isLocation = true;
+            if (currentLatitude == 0 && currentLongitude == 0) {
+                if (currentLocation.distanceTo(designatedLocation) < 50) {
+                    isLocation = true;
+                }
             }
 
             NotificationCompat.Builder mBuilder =

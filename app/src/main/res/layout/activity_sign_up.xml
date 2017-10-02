@@ -44,7 +44,9 @@
                 android:text="Title"
                 app:layout_constraintBottom_toTopOf="@+id/subtitle"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_height="0dp"
+                android:layout_width="0dp" />
 
             <TextView
                 android:id="@+id/subtitle"
@@ -57,7 +59,9 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp" />
+                android:layout_marginEnd="16dp"
+                android:layout_height="0dp"
+                android:layout_width="0dp" />
 
 
         </android.support.constraint.ConstraintLayout>
@@ -66,7 +70,7 @@
 
     <TextView
         android:id="@+id/question"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
@@ -102,8 +106,6 @@
         android:text="Set time"
         android:visibility="gone"
         android:onClick="showTimePicker"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/question" />
 
