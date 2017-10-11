@@ -40,7 +40,7 @@ public class AppIntroActivity extends IntroActivity {
                 .title(R.string.intro_title_1)
                 .description(R.string.intro_desc_1)
                 .image(R.drawable.art_canteen_intro1)
-                .background(R.color.light)
+                .background(R.color.colorPrimary)
                 .backgroundDark(R.color.lightGrey)
                 .layout(R.layout.slide_intro)
                 .build());
@@ -49,7 +49,7 @@ public class AppIntroActivity extends IntroActivity {
                 .title(R.string.intro_title_2)
                 .description(R.string.intro_desc_2)
                 .image(R.drawable.art_canteen_intro1)
-                .background(R.color.light)
+                .background(R.color.colorPrimary)
                 .backgroundDark(R.color.lightGrey)
                 .layout(R.layout.slide_intro)
                 .build());
@@ -58,19 +58,9 @@ public class AppIntroActivity extends IntroActivity {
                 .title(R.string.intro_title_3)
                 .description(R.string.intro_desc_3)
                 .image(R.drawable.art_canteen_intro1)
-                .background(R.color.light)
+                .background(R.color.colorPrimary)
                 .backgroundDark(R.color.lightGrey)
                 .layout(R.layout.slide_intro)
-                .build());
-
-        addSlide(new SimpleSlide.Builder()
-                .title(R.string.intro_title_4)
-                .description(R.string.intro_desc_4)
-                .image(R.drawable.art_canteen_intro1)
-                .background(R.color.light)
-                .backgroundDark(R.color.lightGrey)
-                .scrollable(false)
-                .permissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION})
                 .build());
 
         addOnNavigationBlockedListener(new OnNavigationBlockedListener() {

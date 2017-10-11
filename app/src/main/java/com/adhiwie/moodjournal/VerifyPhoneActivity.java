@@ -141,7 +141,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child("users").child(mUser.getUid()).getValue() == null) {
-                    UserData userData = new UserData("", "IF it is in the evening, THEN I will complete the mood questionnaires", 0, 0, 0, 0, "", "", 0.0, 0.0);
+                    UserData userData = new UserData("", "IF it is in the evening, THEN I will complete the mood questionnaires", 0, 0, 0, 0, "", "", 0.0, 0.0, 0, 0, 0);
                     Map<String, Object> userDataValue = userData.toMap();
                     dbRef.child("users").child(mUser.getUid()).updateChildren(userDataValue);
                 }

@@ -11,7 +11,8 @@
         android:fitsSystemWindows="false"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/mi_baseline">
+        android:padding="36dp"
+        android:background="@drawable/april">
 
         <ImageView
             android:id="@id/mi_image"
@@ -23,7 +24,7 @@
             android:gravity="center"
             android:adjustViewBounds="true"
             tools:ignore="ContentDescription"
-            tools:src="@android:drawable/sym_action_call" />
+            tools:src="@android:drawable/sym_action_call"/>
 
         <TextView
             android:id="@id/mi_title"

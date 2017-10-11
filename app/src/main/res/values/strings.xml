@@ -58,18 +58,14 @@
             being so fidgety or restless that you have been moving around a lot more than usual
         </item>
     </array>
-    <string name="intro_title_1">About this study</string>
-    <string name="intro_desc_1">This study investigates the impact of using context-aware implementation intention (IF THEN plan) on mood reporting task.
-            Research has shown that planning is more effective if you first identify a particular situation (IF),
-            and decide on a goal for what you will do in that situation (THEN).</string>
-    <string name="intro_title_2">Method</string>
-    <string name="intro_desc_2">You will be given an IF THEN plan: \"IF it is in the evening, THEN I will complete the mood questionnaires.\"
-            After a week, the app will ask you to specify the IF condition to be more specific that suits your availability.
-            For example by specifying the time, location, and your activity.</string>
+    <string name="intro_title_1">Welcome</string>
+    <string name="intro_desc_1">Keep track of your daily mood with a simple tap.</string>
+    <string name="intro_title_2">Private and secure</string>
+    <string name="intro_desc_2">We anonymise your data and store it securely.</string>
     <string name="intro_title_3">Reminder</string>
-    <string name="intro_desc_3">After a week, the app will start sending you a daily reminder to complete the questionnaires when the specified condition is detected.</string>
-    <string name="intro_title_4">Permission Request</string>
-    <string name="intro_desc_4">We need you to grant a permission for location request in order to get an appropriate context of your specified condition.</string>
+    <string name="intro_desc_3">Set a personalised reminder and we\'ll only send the reminder on your specified condition.</string>
+    <string name="intro_title_4">Permission request</string>
+    <string name="intro_desc_4">We need you to grant a permission for location request to only send the reminder on your preferred place.</string>
     <string name="service_not_available">Service not available</string>
     <string name="invalid_lat_long_used">Latitue and longitude are invalid</string>
     <string name="no_address_found">No address found</string>

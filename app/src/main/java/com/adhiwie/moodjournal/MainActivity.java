@@ -87,6 +87,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private double latitude;
     private double longitude;
     private long timeInMilis;
+    private int preTest;
+    private int postTest;
+    private int isQuestionnaire;
+    private String name;
 
     @Override
     public void onStart() {
@@ -117,6 +121,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 latitude = user.getDaily_reminder_latitude();
                 longitude = user.getDaily_reminder_longitude();
                 dailyReminderStatus = user.getDaily_reminder_status();
+                preTest = user.getPre_test();
+                postTest = user.getPost_test();
+                isQuestionnaire = user.is_questionnaire();
+                name = user.getUser_name();
+
 
                 TextView tv = (TextView) findViewById(R.id.plan);
                 tv.setText(planText);
@@ -125,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     dailyReminderView.setText("Awesome! You have completed the mood questionnaires for today. Have a good day :)");
                     answerNowView.setVisibility(View.GONE);
                 } else {
-                    dailyReminderView.setText("You have not completed the questionnaires for today");
+                    dailyReminderView.setText("You have not tracked your mood for today");
                     answerNowView.setVisibility(View.VISIBLE);
                 }
 
@@ -141,8 +150,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 if (groupIsSet == 0 && group !=0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-                    builder.setMessage("You need to specify the condition for your reminder. Tap the button below to set it.");
-                    builder.setPositiveButton("Set reminder", new DialogInterface.OnClickListener() {
+                    builder.setTitle("Reminder Settings");
+                    builder.setMessage("Do you know that you can change your reminder settings? Tap the button below to change it.");
+                    builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
                             dbRef.child("users").child(mUser.getUid()).child("group_is_set").setValue(1);
@@ -168,6 +178,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
+
+
         });
     }
 
@@ -268,11 +280,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         startActivity(intent);
     }
 
-    public void answerQuestionnaire(View view) {
-        final int ide = 1;
+    private void answerQuestionnaire() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-        if (ide == 0) {
+        if (preTest == 1) {
             builder.setTitle("Pre-test Questionnaire");
         } else {
             builder.setTitle("Post-test Questionnaire");
@@ -286,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 String urlPostTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSeBrAkHZMGR2pre63OpyZLCLt5oVg78FyTvxiNf-t0_aTZC9Q/viewform?usp=pp_url&entry.369076977=";
                 String urlPostTest2 = "&entry.1519610942";
                 Intent intent = new Intent(MainActivity.this, QuestionnaireActivity.class);
-                if (ide == 0) {
+                if (preTest == 1) {
                     intent.putExtra("url", urlPreTest1+mUser.getUid()+urlPreTest2);
                 } else {
                     intent.putExtra("url", urlPostTest1+mUser.getUid()+urlPostTest2);

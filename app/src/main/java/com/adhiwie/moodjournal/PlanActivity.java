@@ -208,7 +208,7 @@ public class PlanActivity extends AppCompatActivity {
             notifiedAt = cal.getTimeInMillis();
 
             String planStr = "IF the time is ";
-            String planStr2 = ", THEN I will record my mood.";
+            String planStr2 = ", THEN I will track my mood.";
             String str;
 
             if (!address.equals("")) {

@@ -3,8 +3,11 @@ package com.adhiwie.moodjournal;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -18,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.adhiwie.moodjournal.model.UserData;
 import com.adhiwie.moodjournal.service.KeepAppRunning;
@@ -37,7 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 import java.util.Map;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity implements ServiceConnection {
 
 
     private String[] titles;
@@ -64,6 +68,8 @@ public class SignUpActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_SIGN_IN = 123;
     private static final int REQUEST_CODE_INTRO = 100;
 
+    private KeepAppRunning s;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,8 +92,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         setIndex(index);
 
-
-        /*
         boolean firstStart = PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean(PREF_KEY_FIRST_START, true);
 
@@ -95,7 +99,7 @@ public class SignUpActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AppIntroActivity.class);
             startActivityForResult(intent, REQUEST_CODE_INTRO);
         }
-        */
+
 
         if (mAuth.getCurrentUser() != null) {
             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
@@ -148,7 +152,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (index == 2) {
             timeButton.setVisibility(View.GONE);
-            action.setText("Start phone verification");
             action.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -279,16 +282,28 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child("users").child(mUser.getUid()).getValue() == null) {
-                    String plan = "IF the time is "+timeInString+", THEN I will record my mood.";
-                    UserData userData = new UserData(name, plan, 0, 0, 0, timeInMillis, timeInString, "", 0.0, 0.0);
+                    String plan = "IF the time is "+timeInString+", THEN I will track my mood.";
+                    UserData userData = new UserData(name, plan, 0, 0, 0, timeInMillis, timeInString, "", 0.0, 0.0, 1, 0, 0);
                     Map<String, Object> userDataValue = userData.toMap();
                     dbRef.child("users").child(mUser.getUid()).updateChildren(userDataValue);
                 }
 
                 startService(new Intent(getApplicationContext(), KeepAppRunning.class));
 
+                /*
                 Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                */
+
+                String urlPreTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSdkXpxR8BZe2UMwwKcq1t18N9d9II0yuJy8GC-8eaUWUjl8hA/viewform?usp=pp_url&entry.503799090=";
+                String urlPreTest2 = "&entry.584420084&entry.788256975";
+
+                String urlPostTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSeBrAkHZMGR2pre63OpyZLCLt5oVg78FyTvxiNf-t0_aTZC9Q/viewform?usp=pp_url&entry.369076977=";
+                String urlPostTest2 = "&entry.1519610942";
+                Intent intent = new Intent(SignUpActivity.this, QuestionnaireActivity.class);
+                intent.putExtra("url", urlPreTest1+mUser.getUid()+urlPreTest2);
                 startActivity(intent);
                 finish();
             }
@@ -299,4 +314,15 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder binder) {
+        KeepAppRunning.MyBinder b = (KeepAppRunning.MyBinder) binder;
+        s = b.getService();
+        //Toast.makeText(SignUpActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
+        s = null;
+    }
 }
