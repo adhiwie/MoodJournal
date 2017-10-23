@@ -3,28 +3,28 @@ package com.adhiwie.moodjournal;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.adhiwie.moodjournal.model.UserData;
 import com.adhiwie.moodjournal.service.KeepAppRunning;
+import com.crashlytics.android.Crashlytics;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,16 +32,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.Map;
 
-public class SignUpActivity extends AppCompatActivity implements ServiceConnection {
+import io.fabric.sdk.android.Fabric;
+
+public class SignUpActivity extends AppCompatActivity {
 
 
     private String[] titles;
@@ -64,15 +64,19 @@ public class SignUpActivity extends AppCompatActivity implements ServiceConnecti
     private FirebaseAuth mAuth;
     private ConstraintLayout constraintLayout;
 
+    ProgressBar progressBar;
+
     public static final String PREF_KEY_FIRST_START = "PREF_KEY_FIRST_START";
     private static final int REQUEST_CODE_SIGN_IN = 123;
     private static final int REQUEST_CODE_INTRO = 100;
+    private static final String TAG = "SignUpActivity" ;
 
     private KeepAppRunning s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_sign_up);
 
         constraintLayout = findViewById(R.id.constraintLayout);
@@ -89,6 +93,9 @@ public class SignUpActivity extends AppCompatActivity implements ServiceConnecti
         nameEditText = findViewById(R.id.your_name);
         timeButton = findViewById(R.id.set_time);
         action = findViewById(R.id.action);
+
+        progressBar = findViewById(R.id.progressbar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         setIndex(index);
 
@@ -126,7 +133,8 @@ public class SignUpActivity extends AppCompatActivity implements ServiceConnecti
 
     }
 
-    private void setIndex(int index) {
+    public void setIndex(int index) {
+        Log.d(TAG, "Index: "+String.valueOf(index));
         titleTextView.setText(titles[index]);
         subtitleTextView.setText(subtitles[index]);
         questionTextView.setText(questions[index]);
@@ -138,40 +146,28 @@ public class SignUpActivity extends AppCompatActivity implements ServiceConnecti
     }
 
     public void onClick(View v) {
-
-        if (index < 2) {
-            setIndex(++index);
-        }
-
-        if (index == 1) {
-            name = nameEditText.getText().toString();
-            nameEditText.setVisibility(View.GONE);
-            timeButton.setVisibility(View.VISIBLE);
-            questionTextView.setText(name+","+questionTextView.getText().toString());
-        }
-
-        if (index == 2) {
-            timeButton.setVisibility(View.GONE);
-            action.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    signInAnonymously();
-                    /*
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setAvailableProviders(
-                                            Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.).build())
-                                    ).build(),
-                            REQUEST_CODE_SIGN_IN
-                    );
-                    */
-                }
-            });
+        switch (index) {
+            case 1:
+                setIndex(++index);
+                name = nameEditText.getText().toString();
+                nameEditText.setVisibility(View.GONE);
+                timeButton.setVisibility(View.VISIBLE);
+                questionTextView.setText(name+","+questionTextView.getText().toString());
+                break;
+            case 2:
+                timeButton.setVisibility(View.GONE);
+                action.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        signInAnonymously();
+                    }
+                });
+                break;
         }
     }
 
     private void signInAnonymously() {
+        progressBar.setVisibility(View.VISIBLE);
         mAuth.signInAnonymously()
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -277,52 +273,29 @@ public class SignUpActivity extends AppCompatActivity implements ServiceConnecti
 
         final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-
+        String plan = "IF the time is "+timeInString+", THEN I will track my mood.";
+        UserData userData = new UserData(name, plan, 0, 0, 0, timeInMillis, timeInString, "", 0.0, 0.0, 1, 0, 0);
+        Map<String, Object> userDataValue = userData.toMap();
+        dbRef.child("users").child(mUser.getUid()).updateChildren(userDataValue, new DatabaseReference.CompletionListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("users").child(mUser.getUid()).getValue() == null) {
-                    String plan = "IF the time is "+timeInString+", THEN I will track my mood.";
-                    UserData userData = new UserData(name, plan, 0, 0, 0, timeInMillis, timeInString, "", 0.0, 0.0, 1, 0, 0);
-                    Map<String, Object> userDataValue = userData.toMap();
-                    dbRef.child("users").child(mUser.getUid()).updateChildren(userDataValue);
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError == null) {
+                    String urlPreTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSdkXpxR8BZe2UMwwKcq1t18N9d9II0yuJy8GC-8eaUWUjl8hA/viewform?usp=pp_url&entry.503799090=";
+                    String urlPreTest2 = "&entry.584420084&entry.788256975";
+
+                    String urlPostTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSeBrAkHZMGR2pre63OpyZLCLt5oVg78FyTvxiNf-t0_aTZC9Q/viewform?usp=pp_url&entry.369076977=";
+                    String urlPostTest2 = "&entry.1519610942";
+                    Intent intent = new Intent(SignUpActivity.this, QuestionnaireActivity.class);
+                    intent.putExtra("url", urlPreTest1+mUser.getUid()+urlPreTest2);
+                    //startActivity(intent);
+                    //finish();
+                    progressBar.setVisibility(View.INVISIBLE);
+                } else {
+                    Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
 
-                startService(new Intent(getApplicationContext(), KeepAppRunning.class));
-
-                /*
-                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-                */
-
-                String urlPreTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSdkXpxR8BZe2UMwwKcq1t18N9d9II0yuJy8GC-8eaUWUjl8hA/viewform?usp=pp_url&entry.503799090=";
-                String urlPreTest2 = "&entry.584420084&entry.788256975";
-
-                String urlPostTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSeBrAkHZMGR2pre63OpyZLCLt5oVg78FyTvxiNf-t0_aTZC9Q/viewform?usp=pp_url&entry.369076977=";
-                String urlPostTest2 = "&entry.1519610942";
-                Intent intent = new Intent(SignUpActivity.this, QuestionnaireActivity.class);
-                intent.putExtra("url", urlPreTest1+mUser.getUid()+urlPreTest2);
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
             }
         });
-    }
-
-    @Override
-    public void onServiceConnected(ComponentName componentName, IBinder binder) {
-        KeepAppRunning.MyBinder b = (KeepAppRunning.MyBinder) binder;
-        s = b.getService();
-        //Toast.makeText(SignUpActivity.this, "Connected", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onServiceDisconnected(ComponentName componentName) {
-        s = null;
     }
 }

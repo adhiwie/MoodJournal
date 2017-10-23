@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adhiwie.moodjournal.model.UserData;
+import com.adhiwie.moodjournal.receiver.ReminderReceiver;
 import com.adhiwie.moodjournal.service.FetchAddressIntentService;
 import com.adhiwie.moodjournal.service.FetchAddressIntentService.Constants;
 import com.adhiwie.moodjournal.service.KeepAppRunning;
@@ -95,9 +96,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
         dailyReminderView = findViewById(R.id.daily_reminder);
         answerNowView = findViewById(R.id.answer_now);
         changePlanView = findViewById(R.id.change_plan);
+
+        startService(new Intent(getApplicationContext(), KeepAppRunning.class));
+
+        buildGoogleApiClient(this);
+
+        initVariables();
+
+        getLastLocation();
+        createLocationRequest();
+        setLocationCallback();
+        resetDailyReminderStatus();
 
         /*
         final ProgressDialog pd = new ProgressDialog(this);
@@ -181,21 +200,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
         });
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        buildGoogleApiClient(this);
-
-        initVariables();
-
-        getLastLocation();
-        createLocationRequest();
-        setLocationCallback();
-        resetDailyReminderStatus();
 
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
@@ -440,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE));
 
         AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        Intent intent = new Intent(getApplicationContext(), ReminderReceiver.class);
         intent.putExtra("plan", planText);
         intent.putExtra("group", group);
         intent.putExtra("latitude", latitude);
@@ -453,75 +457,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             intent.putExtra("currentLatitude",0);
             intent.putExtra("currentLongitude", 0);
         }
-
+        
         PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000, alarmIntent);
 
 
         //java.text.DateFormat dateFormat = DateFormat.getDateTimeInstance();
         //Log.i(TAG, dateFormat.format(calendar.getTimeInMillis()));
-    }
-
-    public static class AlarmReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String timeInString = intent.getStringExtra("timeInString");
-            String action = "It is "+timeInString+", time to record your mood.";
-
-            long group = intent.getLongExtra("group", 0);
-
-
-            double latitude = intent.getDoubleExtra("latitude", 0);
-            double longitude = intent.getDoubleExtra("longitude", 0);
-            Location designatedLocation = new Location("");
-            designatedLocation.setLatitude(latitude);
-            designatedLocation.setLongitude(longitude);
-
-            double currentLatitude = intent.getDoubleExtra("currentLatitude", 0);
-            double currentLongitude = intent.getDoubleExtra("currentLongitude", 0);
-            Location currentLocation = new Location("");
-            currentLocation.setLatitude(currentLatitude);
-            currentLocation.setLongitude(currentLongitude);
-
-            boolean isLocation = false;
-
-            if (currentLatitude == 0 && currentLongitude == 0) {
-                if (currentLocation.distanceTo(designatedLocation) < 50) {
-                    isLocation = true;
-                }
-            }
-
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(context)
-                            .setSmallIcon(R.drawable.small_icon)
-                            .setContentTitle("Mood Journal")
-                            .setContentText(action)
-                            .setAutoCancel(true)
-                            .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS);
-
-            Intent resultIntent = new Intent(context, MoodQuestionActivity.class);
-
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-            stackBuilder.addParentStack(MainActivity.class);
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-            mBuilder.setContentIntent(resultPendingIntent);
-            NotificationManager mNotificationManager =
-                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-            if (group == 1) {
-                mNotificationManager.notify(123, mBuilder.build());
-            } else if (group == 2 && isLocation) {
-                mNotificationManager.notify(123, mBuilder.build());
-            }
-
-        }
-
     }
 
     public static class DailyReminderReceiver extends BroadcastReceiver {

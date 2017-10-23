@@ -53,15 +53,14 @@
             android:name=".StartActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
+        <activity
+            android:name=".QuestionnaireActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <service
             android:name=".service.FetchAddressIntentService"
             android:exported="false" />
-
-        <receiver android:name=".MainActivity$AlarmReceiver" />
-        <receiver android:name=".MainActivity$DailyReminderReceiver" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -79,9 +78,17 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity
-            android:name=".QuestionnaireActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+        <receiver android:name=".receiver.ReminderReceiver" />
+        <receiver android:name=".MainActivity$DailyReminderReceiver" />
+        <receiver android:name=".receiver.StartServiceOnBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d2c64d24a315f25e696176af020ff4eaf696123c" />
     </application>
 
 </manifest>

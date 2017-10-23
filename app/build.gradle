@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 android {
     compileSdkVersion 26
@@ -30,6 +45,7 @@ dependencies {
     compile "com.android.support:support-vector-drawable:${google_support_library}"
     compile "com.google.firebase:firebase-database:${google_play_services_library}"
     compile "com.google.firebase:firebase-auth:${google_play_services_library}"
+    compile "com.google.firebase:firebase-messaging:${google_play_services_library}"
     compile "com.google.android.gms:play-services-location:${google_play_services_library}"
     compile "com.google.android.gms:play-services-maps:${google_play_services_library}"
     compile "com.firebaseui:firebase-ui-database:${firebase_ui}"
@@ -38,6 +54,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.heinrichreimersoftware:material-intro:1.6.2'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+        transitive = true;
+    }
 }
 apply plugin: 'com.google.gms.google-services'
