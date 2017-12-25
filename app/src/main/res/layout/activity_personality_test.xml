@@ -1,0 +1,122 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/tv_questionnaire_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:text="@string/personality_test_header"
+        android:textAllCaps="true"
+        android:textColor="@color/Blue8"
+        android:textSize="14sp"
+        android:textStyle="italic" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <TextView
+            android:id="@+id/tv_question"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:textColor="@color/Blue6"
+            android:textSize="20sp"
+            android:textStyle="italic|bold" />
+
+        <RadioGroup
+            android:id="@+id/rg_options"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:orientation="vertical" >
+
+            <RadioButton
+                android:id="@+id/rg_option_disagree"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/personality_test_option_disagree"
+                android:textColor="@color/Blue6"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/rg_option_somewhat_disagree"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/personality_test_option_somewhat_disagree"
+                android:textColor="@color/Blue6"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/rg_option_neither_agree_nor_disagree"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/personality_test_option_neither_agree_nor_disagree"
+                android:textColor="@color/Blue6"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/rg_option_somewhat_agree"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/personality_test_option_somewhat_agree"
+                android:textColor="@color/Blue6"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/rg_option_agree"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/personality_test_option_agree"
+                android:textColor="@color/Blue6"
+                android:textSize="14sp" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/control_btn_personality_test"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/filledbutton"
+            android:gravity="center"
+            android:onClick="onControlBtnClick"
+            android:text="Next"
+            android:textColor="@color/White"
+            android:textSize="16sp" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+</LinearLayout>

@@ -1,278 +1,464 @@
 package com.adhiwie.moodjournal;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.DialogInterface;
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.adhiwie.moodjournal.model.UserData;
-import com.adhiwie.moodjournal.receiver.ReminderReceiver;
-import com.adhiwie.moodjournal.receiver.ResetDailyReminderReceiver;
-import com.adhiwie.moodjournal.service.KeepAppRunningService;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.facebook.shimmer.ShimmerFrameLayout;
+import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
+import com.adhiwie.moodjournal.exception.IncompatibleAPIException;
+import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireActivity;
+import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireMgr;
+import com.adhiwie.moodjournal.questionnaire.personality.PersonalityTestActivity;
+import com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireActivity;
+import com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireMgr;
+import com.adhiwie.moodjournal.user.data.UserData;
+import com.adhiwie.moodjournal.user.permission.Permission;
+import com.adhiwie.moodjournal.user.permission.RuntimePermission;
+import com.adhiwie.moodjournal.utils.Log;
+import com.adhiwie.moodjournal.utils.Popup;
+import com.adhiwie.moodjournal.utils.Time;
 
-import java.util.Calendar;
+//consent given true 
+//user id static
+//registration time: static
+//mood_q count static
+//daily_q count static
 
-public class MainActivity extends AppCompatActivity {
+@SuppressWarnings("deprecation")
+@SuppressLint("NewApi")
+public class MainActivity extends Activity 
+{
 
-    private static final String REQUESTING_LOCATION_UPDATES_KEY = "123";
-    private static final String TAG = "MainActivity" ;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
-    private TextView dailyReminderView;
-    private Button answerNowView;
-    private Button changePlanView;
-    private String planText;
-    private long group;
-    private long groupIsSet;
-    private long dailyReminderStatus;
+	private Log log = new Log();
 
-    /* For plan details */
-    private String time;
-    private String address;
-    private double latitude;
-    private double longitude;
-    private long timeInMilis;
-    private int preTest;
-    private int postTest;
-    private int isQuestionnaire;
-    private String name;
+	private final String[] required_permissions = new String[] 
+			{
+			Manifest.permission.READ_CONTACTS, Manifest.permission.ACCESS_FINE_LOCATION,
+			Manifest.permission.READ_CALL_LOG, Manifest.permission.READ_SMS, 
+			Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    private TextView mPlanTextView;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) 
+	{
+		super.onCreate(savedInstanceState);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+		Drawable background;
 
-        dailyReminderView = findViewById(R.id.daily_reminder);
-        answerNowView = findViewById(R.id.answer_now);
-        changePlanView = findViewById(R.id.change_plan);
+		if(Build.VERSION.SDK_INT >= 21)
+			background = getResources().getDrawable(R.drawable.blue_background, null);
+		else
+			background = getResources().getDrawable(R.drawable.blue_background);
 
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
+		ActionBar actionBar = getActionBar();
+		actionBar.setBackgroundDrawable(background);
+		actionBar.setCustomView(R.layout.actionbar_layout);
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
+		actionBar.setDisplayHomeAsUpEnabled(false);
+		actionBar.setDisplayUseLogoEnabled(true);
 
-        startService(new Intent(getApplicationContext(), KeepAppRunningService.class));
+		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
+		actionbar_title.setText(getResources().getString(R.string.title_activity_main));
 
-        resetDailyReminderStatus();
+		ShimmerFrameLayout container = (ShimmerFrameLayout) findViewById(R.id.shimmer_action_bar);
+		container.setBaseAlpha(0.8f);
+		container.setAutoStart(true);
 
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                UserData user  = dataSnapshot.child("users").child(mUser.getUid()).getValue(UserData.class);
-                planText = user.getPlan();
-                group = user.getGroup_id();
-                groupIsSet = user.getGroup_is_set();
-                timeInMilis = user.getDaily_reminder_time();
-                time = user.getDaily_reminder_time_string();
-                address = user.getDaily_reminder_address();
-                latitude = user.getDaily_reminder_latitude();
-                longitude = user.getDaily_reminder_longitude();
-                dailyReminderStatus = user.getDaily_reminder_status();
-                preTest = user.getPre_test();
-                postTest = user.getPost_test();
-                isQuestionnaire = user.is_questionnaire();
-                name = user.getUser_name();
-
-                mPlanTextView = findViewById(R.id.plan);
-                mPlanTextView.setText(planText);
-
-                /*
-                /
-                 */
-
-                if (dailyReminderStatus > 0) {
-                    dailyReminderView.setText(R.string.message_mood_reported);
-                    answerNowView.setVisibility(View.GONE);
-                } else {
-                    dailyReminderView.setText(R.string.message_mood_not_reported);
-                    answerNowView.setVisibility(View.VISIBLE);
-                }
-
-                if (group != 0 ) {
-                    changePlanView.setVisibility(View.VISIBLE);
-                } else {
-                    changePlanView.setVisibility(View.GONE);
-                }
-
-                startDailyReminder();
-                //pd.dismiss();
-
-                if (groupIsSet == 0 && group !=0) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
-                    builder.setTitle("Reminder Settings");
-                    builder.setMessage("Do you know that you can change your reminder settings? Tap the button below to change it.");
-                    builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-                            dbRef.child("users").child(mUser.getUid()).child("group_is_set").setValue(1);
-                            Intent intent = new Intent(MainActivity.this, PlanActivity.class);
-                            intent.putExtra("className", "MainActivity");
-                            intent.putExtra("plan", planText);
-                            intent.putExtra("time", time);
-                            intent.putExtra("timeInMilis", timeInMilis);
-                            intent.putExtra("address", address);
-                            intent.putExtra("latitude", latitude);
-                            intent.putExtra("longitude", longitude);
-                            intent.putExtra("group", group);
-                            startActivity(intent);
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.setCancelable(false);
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.show();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
+		setContentView(R.layout.activity_main);
 
 
-        });
+		//		ShimmerFrameLayout exit_shimmer = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
+		//		exit_shimmer.setBaseAlpha(0.8f);
+		//		exit_shimmer.setAutoStart(true);
 
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
-        //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+		ShimmerFrameLayout mood_shimmer = (ShimmerFrameLayout) findViewById(R.id.mood_shimmer);
+		mood_shimmer.setBaseAlpha(0.8f);
+		mood_shimmer.setAutoStart(true);
 
-    }
+		ShimmerFrameLayout daily_shimmer = (ShimmerFrameLayout) findViewById(R.id.daily_shimmer);
+		daily_shimmer.setBaseAlpha(0.8f);
+		daily_shimmer.setAutoStart(true);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
+		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) ) 
+		{
+			Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
+		}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_logout:
-                signOut();
-                return true;
+	}
 
-            default:
-                return super.onOptionsItemSelected(item);
 
-        }
-    }
+	@Override
+	protected void onStart() 
+	{
+		super.onStart();
+		setLayout();
+		new GooglePlayServices().isGoogplePlayServiceAvailable(MainActivity.this);
+		if(getMissingPermissions().size() > 0)
+		{
+			askMissingPermissions();
+			return;
+		}
 
-    private void signOut() {
-        mAuth.signOut();
-        Intent intent = new Intent(MainActivity.this, StartActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
-        Toast.makeText(this, "You have been logged out", Toast.LENGTH_SHORT).show();
-    }
+		check_Consent_GooglePlayService_Permissions_LinkedTask();
+	}
 
-    public void answerNow(View view) {
-        Intent intent = new Intent(MainActivity.this, MoodQuestionActivity.class);
-        startActivity(intent);
-    }
 
-    public void changePlan(View view) {
-        Intent intent = new Intent(MainActivity.this, PlanActivity.class);
-        intent.putExtra("className", "MainActivity");
-        intent.putExtra("plan", planText);
-        intent.putExtra("time", time);
-        intent.putExtra("address", address);
-        intent.putExtra("latitude", latitude);
-        intent.putExtra("longitude", longitude);
-        intent.putExtra("group", group);
-        intent.putExtra("timeInMilis", timeInMilis);
-        startActivity(intent);
-    }
+	private void setLayout()
+	{
+		// set today's mood questionnaire status
+		ImageView mood1 = (ImageView) findViewById(R.id.mood_q1);
+		ImageView mood2 = (ImageView) findViewById(R.id.mood_q2);
+		ImageView mood3 = (ImageView) findViewById(R.id.mood_q3);
+		ImageView mood4 = (ImageView) findViewById(R.id.mood_q4);
+		MoodQuestionnaireMgr mood_mgr = new MoodQuestionnaireMgr(getApplicationContext());
+		int todays_count_mood_q = mood_mgr.getMoodQuestionnaireCountForToday();
+		switch (todays_count_mood_q) {
+		case 0:
+			mood1.setImageResource(R.drawable.answer_gray);
+			mood2.setImageResource(R.drawable.answer_gray);
+			mood3.setImageResource(R.drawable.answer_gray);
+			mood4.setImageResource(R.drawable.answer_gray);
+			break;
+		case 1:
+			mood1.setImageResource(R.drawable.answer_blue);
+			mood2.setImageResource(R.drawable.answer_gray);
+			mood3.setImageResource(R.drawable.answer_gray);
+			mood4.setImageResource(R.drawable.answer_gray);
+			break;
+		case 2:
+			mood1.setImageResource(R.drawable.answer_blue);
+			mood2.setImageResource(R.drawable.answer_blue);
+			mood3.setImageResource(R.drawable.answer_gray);
+			mood4.setImageResource(R.drawable.answer_gray);
+			break;
+		case 3:
+			mood1.setImageResource(R.drawable.answer_blue);
+			mood2.setImageResource(R.drawable.answer_blue);
+			mood3.setImageResource(R.drawable.answer_blue);
+			mood4.setImageResource(R.drawable.answer_gray);
+			break;
+		case 4:
+			mood1.setImageResource(R.drawable.answer_blue);
+			mood2.setImageResource(R.drawable.answer_blue);
+			mood3.setImageResource(R.drawable.answer_blue);
+			mood4.setImageResource(R.drawable.answer_blue);
+			break;
+		default:
+			break;
+		}
 
-    private void resetDailyReminderStatus() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
 
-        AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getApplicationContext(), ResetDailyReminderReceiver.class);
-        intent.putExtra("uid", mUser.getUid());
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000, alarmIntent);
-    }
+		// set today's daily questionnaire status
+		ImageView daily = (ImageView) findViewById(R.id.daily_q1);
+		WellBeingQuestionnaireMgr daily_mgr = new WellBeingQuestionnaireMgr(getApplicationContext());
+		int todays_count_daily_q = daily_mgr.getDailyQuestionnaireCountForToday();
+		switch (todays_count_daily_q) {
+		case 0:
+			daily.setImageResource(R.drawable.answer_gray);
+			break;
+		case 1:
+			daily.setImageResource(R.drawable.answer_blue);
+		default:
+			break;
+		}
 
-    private void startDailyReminder() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(timeInMilis);
-        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY));
-        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE));
 
-        AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		// set participation status
+		ProgressBar pb_days = (ProgressBar) findViewById(R.id.participation_days_progressbar);
+		ProgressBar pb_mood = (ProgressBar) findViewById(R.id.mood_questionnaires_progressbar);
+		ProgressBar pb_daily = (ProgressBar) findViewById(R.id.daily_questionnaires_progressbar);
+		TextView tv_days = (TextView) findViewById(R.id.participation_days_tv);
+		TextView tv_mood = (TextView) findViewById(R.id.mood_questionnaires_tv);
+		TextView tv_daily = (TextView) findViewById(R.id.daily_questionnaires_tv);
 
-        Intent intent = new Intent(getApplicationContext(), ReminderReceiver.class);
-        intent.putExtra("uid", mUser.getUid());
-        intent.putExtra("plan", planText);
-        intent.putExtra("group", group);
-        intent.putExtra("latitude", latitude);
-        intent.putExtra("longitude", longitude);
-        intent.putExtra("timeInString", time);
-        // TODO set current location before sending a reminder
-        intent.putExtra("currentLatitude",0);
-        intent.putExtra("currentLongitude", 0);
+		int start_date = new UserData(getApplicationContext()).getStartDate(); 
+		int current_date = new Time(Calendar.getInstance()).getEpochDays();
+		int participation_days = 1 + current_date - start_date;
+		pb_days.setProgress(participation_days);
+		pb_mood.setProgress(mood_mgr.getMoodQuestionnaireCount());
+		pb_daily.setProgress(daily_mgr.getDailyQuestionnaireCount());
+		tv_days.setText(participation_days + "/50");
+		tv_mood.setText(mood_mgr.getMoodQuestionnaireCount() + "/200");
+		tv_daily.setText(daily_mgr.getDailyQuestionnaireCount() + "/50");
+	}
 
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000, alarmIntent);
-    }
 
-    private void answerQuestionnaire() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-        if (preTest == 1) {
-            builder.setTitle("Pre-test Questionnaire");
-        } else {
-            builder.setTitle("Post-test Questionnaire");
-        }
-        builder.setMessage("Please answer the following questionnaire, it's important for our study.");
-        builder.setPositiveButton("Answer questionnaire", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                String urlPreTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSdkXpxR8BZe2UMwwKcq1t18N9d9II0yuJy8GC-8eaUWUjl8hA/viewform?usp=pp_url&entry.503799090=";
-                String urlPreTest2 = "&entry.584420084&entry.788256975";
+	private ArrayList<String> getMissingPermissions()
+	{
+		ArrayList<String> missing_permissions = new ArrayList<String>();
+		try 
+		{
+			RuntimePermission rp = new RuntimePermission(getApplicationContext());
+			missing_permissions = rp.getMissingPermissions(required_permissions);
+		} 
+		catch (IncompatibleAPIException e) {		}
+		return missing_permissions;
+	}
 
-                String urlPostTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSeBrAkHZMGR2pre63OpyZLCLt5oVg78FyTvxiNf-t0_aTZC9Q/viewform?usp=pp_url&entry.369076977=";
-                String urlPostTest2 = "&entry.1519610942";
-                Intent intent = new Intent(MainActivity.this, QuestionnaireActivity.class);
-                if (preTest == 1) {
-                    intent.putExtra("url", urlPreTest1+mUser.getUid()+urlPreTest2);
-                } else {
-                    intent.putExtra("url", urlPostTest1+mUser.getUid()+urlPostTest2);
-                }
-                startActivity(intent);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-    }
+	private void askMissingPermissions()
+	{
+		try 
+		{
+			RuntimePermission rp = new RuntimePermission(getApplicationContext());
+			ArrayList<String> missing_permissions = getMissingPermissions();
+			if(missing_permissions.size() > 0)
+			{
+				String[] p = new String[missing_permissions.size()];
+				for(int i = 0; i < missing_permissions.size(); i++)
+					p[i] = missing_permissions.get(i);
+				rp.askPermissions(MainActivity.this, p);
+			}
+		} 
+		catch (IncompatibleAPIException e) 
+		{
+			log.e(e.toString());
+		}
+	}
+
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) 
+	{
+		ArrayList<String> missing_permissions = getMissingPermissions();
+		if(missing_permissions.size() > 0)
+		{
+			try 
+			{
+				RuntimePermission rp = new RuntimePermission(getApplicationContext());
+
+				// check if never asked again is ticked
+				boolean never_asked_clicked = false;
+				for(String s : permissions)
+				{
+					System.out.println(s);
+					System.out.println(rp.isRationalRequired(MainActivity.this, s));
+					if(!rp.isRationalRequired(MainActivity.this, s))
+					{
+						never_asked_clicked = true;
+						break;
+					}
+				}
+
+				// show popup and direct to the settings page
+				if(never_asked_clicked)
+				{
+					rp.showRational(MainActivity.this);
+				}
+				// ask again
+				else
+				{
+					askMissingPermissions();
+				}
+			} 
+			catch (IncompatibleAPIException e) 
+			{
+				log.e(e.toString());
+			}
+		}
+		else
+		{
+			check_Consent_GooglePlayService_Permissions_LinkedTask();
+		}
+	}
+
+
+
+
+	private void check_Consent_GooglePlayService_Permissions_LinkedTask()
+	{
+		if(!new ConsentMgr(getApplicationContext()).isConsentGiven())
+		{
+			startActivity(new Intent(this, ConsentActivity.class));
+			this.finish();
+			return;
+		}
+
+		if(!new GooglePlayServices().isGoogplePlayServiceAvailable(MainActivity.this))
+		{
+			Toast.makeText(getApplicationContext(), "Error with Google Play Service.", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		Permission p = new Permission(getApplicationContext());
+		if(!p.isAccessibilityPermitted())
+		{
+			p.startAccessibilityServicePermissionActivityIfRequired();
+			this.finish();
+			return;
+		}
+		if(!p.isAppAccessPermitted())
+		{
+			p.startAppUsagePermissionActivityIfRequired();
+			this.finish();
+			return;
+		}
+		if(!p.isNSLPermitted())
+		{
+			p.startNSLPermissionActivityIfRequired();
+			this.finish();
+			return;
+		}
+
+		try{ 
+			new LinkedTasks(getApplicationContext()).checkAllExceptPermission(); 
+		} 
+		catch(Exception e){}
+	}
+
+
+
+
+
+
+
+	//menu items
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) 
+	{
+		getMenuInflater().inflate(R.menu.main_menu, menu);
+		return true;
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		// Handle presses on the action bar items
+		switch (item.getItemId()) 
+		{
+		case R.id.menu_info:
+			String message = 
+					"Your unique id is: " + new UserData(getApplicationContext()).getUuid() 
+					+ "\n\n "
+					+ "My Traces app has been developed by researchers at the University "
+					+ "of Birmingham (UoB) and University College London (UCL) to collect data for "
+					+ "research and teaching purposes." 
+					+ " \n\n "
+					+ "We would love to hear your feedback for us and issues with the app. "
+					+ "Please send us an email - a.mehrotra@ucl.ac.uk." 
+					+ " \n\n "
+					+ "Thank You!";
+			
+			new Popup().showPopup(MainActivity.this, getResources().getString(R.string.info_title), message);
+			return true;
+		case R.id.menu_personality_test:
+			startActivity(new Intent(getApplicationContext(), PersonalityTestActivity.class));
+			return true;
+			
+//		case R.id.menu_error:
+//			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//			builder.setTitle("Type Your Message");
+//
+//			// Set up the input
+//			final EditText input = new EditText(this);
+//			builder.setView(input);
+//			builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() { 
+//			    @Override
+//			    public void onClick(DialogInterface dialog, int which) {
+//			        if(input.getText() == null || input.getText().toString().length() == 0)
+//			        {
+//			        	Toast.makeText(getApplicationContext(), "There was no message to be sent.", Toast.LENGTH_SHORT).show();
+//			        	return;
+//			        }
+//
+//			        String m = input.getText().toString();
+//			        new FileMgr(getApplicationContext()).addData(new ErrorLogData(m));
+//			        
+//					try 
+//					{
+//						new DataTransmitterMgr(getApplicationContext()).uploadFileByDataType(new DataTypes().ERROR_LOG);
+//						Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_SHORT).show();
+//						dialog.cancel();
+//					} 
+//					catch (Exception e) {
+//						new Log().e(e.toString());
+//					}
+//					
+//			    }
+//			});
+//			builder.show();
+			
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+
+
+
+	// button click functions
+	public void moodTest(View v) 
+	{
+
+		MoodQuestionnaireMgr mgr = new MoodQuestionnaireMgr(getApplicationContext());
+
+//		if(mgr.getMoodQuestionnaireCountForToday() > 3)
+//		{
+//			Toast.makeText(getApplicationContext(), "Today's mood questionnaires are already completed.", Toast.LENGTH_SHORT).show();
+//			return;
+//		}
+
+		long current_time = Calendar.getInstance().getTimeInMillis();
+		long last_time = mgr.getLastMoodQuestionnaireTime();
+		int diff_mins = (int) ((current_time - last_time)/(60*1000));
+		if(diff_mins < 3*60)
+		{
+			int mins_left = 3*60 - diff_mins;
+			if(mins_left > 59)
+			{
+				int hours_left = mins_left/60;
+				mins_left = mins_left % 60;
+				Toast.makeText(getApplicationContext(), "Next mood questionnaire will be available after " + hours_left + " hours " + mins_left + " mins.", Toast.LENGTH_SHORT).show();
+			}
+			else
+				Toast.makeText(getApplicationContext(), "Next mood questionnaire will be available after " + mins_left + " mins.", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		startActivity(new Intent(this, MoodQuestionnaireActivity.class));
+	}
+
+
+	public void dailyTest(View v) 
+	{
+		if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 16)
+		{
+			Toast.makeText(getApplicationContext(), "Today's daily questionnaire will be available after 4pm.", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		WellBeingQuestionnaireMgr mgr = new WellBeingQuestionnaireMgr(getApplicationContext());
+		if(mgr.getDailyQuestionnaireCountForToday() > 0)
+		{
+			Toast.makeText(getApplicationContext(), "Today's daily questionnaire is already completed.", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		startActivity(new Intent(this, WellBeingQuestionnaireActivity.class));
+	}
+
+	//	public void exit(View v) throws JSONException
+	//	{
+	//		this.finish();
+	//	}
+
+
+
 }

@@ -1,0 +1,10 @@
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeNotificationStateChanged|typeTouchExplorationGestureStart|typeTouchExplorationGestureEnd|typeViewClicked|typeViewFocused|typeViewHoverEnter|typeViewHoverExit|typeViewLongClicked|typeViewScrolled|typeViewSelected|typeViewTextChanged|typeViewTextSelectionChanged"
+    android:accessibilityFeedbackType="feedbackAllMask"
+    android:description="@string/accessibility_service_description"
+    android:notificationTimeout="100" />
+
+    
+
+				
+				

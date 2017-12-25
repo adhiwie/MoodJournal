@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.nsds.meandmynotifications.AppUsageStatsActivity" >
+
+    
+    <item
+        android:id="@+id/menu_personality_test"
+        android:icon="@drawable/ic_action_personality_test"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/menu_personality_test"/>
+    
+    
+       <item
+        android:id="@+id/menu_info"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_info"
+        android:title="@string/menu_info"/>
+    
+    
+<!--        <item -->
+<!--         android:id="@+id/menu_error" -->
+<!--         android:orderInCategory="100" -->
+<!--         android:showAsAction="never" -->
+<!--         android:icon="@drawable/ic_action_error" -->
+<!--         android:title="@string/menu_error"/> -->
+    
+
+</menu>
