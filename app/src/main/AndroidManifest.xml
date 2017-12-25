@@ -61,6 +61,18 @@
         <service
             android:name=".service.FetchAddressIntentService"
             android:exported="false" />
+
+        <service
+            android:name=".service.KeepAppRunningService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service android:name=".service.NotificationService"
+            android:permission="android.permission.BIND_NOTIFIATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -73,13 +85,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <service
-            android:name=".service.KeepAppRunning"
-            android:enabled="true"
-            android:exported="true" />
-
         <receiver android:name=".receiver.ReminderReceiver" />
-        <receiver android:name=".MainActivity$DailyReminderReceiver" />
+        <receiver android:name=".receiver.ResetDailyReminderReceiver" />
         <receiver android:name=".receiver.StartServiceOnBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

@@ -21,15 +21,7 @@ public class AppIntroActivity extends IntroActivity {
         super.onCreate(savedInstanceState);
 
         setButtonBackVisible(false);
-        setButtonNextVisible(false);
-        setButtonCtaVisible(true);
-        setButtonCtaTintMode(BUTTON_CTA_TINT_MODE_BACKGROUND);
-        TypefaceSpan labelSpan = new TypefaceSpan(
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? "sans-serif-medium" : "sans serif");
-        SpannableString label = SpannableString
-                .valueOf("Get started");
-        label.setSpan(labelSpan, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        setButtonCtaLabel(label);
+        setButtonNextVisible(true);
 
         setPageScrollDuration(500);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

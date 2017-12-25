@@ -98,6 +98,7 @@ public class MoodQuestionActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
 
             }
         });
@@ -112,13 +113,13 @@ public class MoodQuestionActivity extends AppCompatActivity {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             mLastLocation = location;
-                            startIntentService();
+                            fetchAddress();
                         }
                     }
                 });
     }
 
-    protected void startIntentService() {
+    protected void fetchAddress() {
         mResultReceiver = new AddressResultReceiver(new Handler());
         Intent intent = new Intent(this, FetchAddressIntentService.class);
         intent.putExtra(FetchAddressIntentService.Constants.RECEIVER, mResultReceiver);

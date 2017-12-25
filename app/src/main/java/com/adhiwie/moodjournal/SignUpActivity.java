@@ -23,7 +23,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.adhiwie.moodjournal.model.UserData;
-import com.adhiwie.moodjournal.service.KeepAppRunning;
 import com.crashlytics.android.Crashlytics;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -49,10 +48,10 @@ public class SignUpActivity extends AppCompatActivity {
     private String[] questions;
     private TextView titleTextView;
     private TextView subtitleTextView;
-    private TextView questionTextView;
+    private TextView messageTextView;
     private EditText nameEditText;
     private Button timeButton;
-    private Button action;
+    private Button actionButton;
 
     private String name;
     private int index;
@@ -64,14 +63,12 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ConstraintLayout constraintLayout;
 
-    ProgressBar progressBar;
+    private ProgressBar mProgressBar;
 
     public static final String PREF_KEY_FIRST_START = "PREF_KEY_FIRST_START";
     private static final int REQUEST_CODE_SIGN_IN = 123;
     private static final int REQUEST_CODE_INTRO = 100;
     private static final String TAG = "SignUpActivity" ;
-
-    private KeepAppRunning s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,13 +86,12 @@ public class SignUpActivity extends AppCompatActivity {
 
         titleTextView = findViewById(R.id.title);
         subtitleTextView = findViewById(R.id.subtitle);
-        questionTextView = findViewById(R.id.question);
+        messageTextView = findViewById(R.id.question);
         nameEditText = findViewById(R.id.your_name);
         timeButton = findViewById(R.id.set_time);
-        action = findViewById(R.id.action);
+        actionButton = findViewById(R.id.action);
 
-        progressBar = findViewById(R.id.progressbar);
-        progressBar.setVisibility(View.INVISIBLE);
+        mProgressBar = findViewById(R.id.progress_bar);
 
         setIndex(index);
 
@@ -119,12 +115,12 @@ public class SignUpActivity extends AppCompatActivity {
             nameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId== EditorInfo.IME_ACTION_DONE){
+                    if (actionId == EditorInfo.IME_ACTION_DONE){
                         setIndex(++index);
                         name = nameEditText.getText().toString();
                         nameEditText.setVisibility(View.GONE);
                         timeButton.setVisibility(View.VISIBLE);
-                        questionTextView.setText(name+", "+questionTextView.getText().toString());
+                        messageTextView.setText(name+", "+ messageTextView.getText().toString());
                     }
                     return false;
                 }
@@ -134,10 +130,9 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void setIndex(int index) {
-        Log.d(TAG, "Index: "+String.valueOf(index));
         titleTextView.setText(titles[index]);
         subtitleTextView.setText(subtitles[index]);
-        questionTextView.setText(questions[index]);
+        messageTextView.setText(questions[index]);
     }
 
     public void showTimePicker(View v) {
@@ -145,18 +140,26 @@ public class SignUpActivity extends AppCompatActivity {
         newFragment.show(getFragmentManager(), "timePicker");
     }
 
+    public void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        messageTextView.setVisibility(View.INVISIBLE);
+        actionButton.setVisibility(View.INVISIBLE);
+    }
+
     public void onClick(View v) {
+        Log.d(TAG, "Index : "+String.valueOf(index));
         switch (index) {
-            case 1:
+            case 0:
                 setIndex(++index);
                 name = nameEditText.getText().toString();
                 nameEditText.setVisibility(View.GONE);
                 timeButton.setVisibility(View.VISIBLE);
-                questionTextView.setText(name+","+questionTextView.getText().toString());
+                messageTextView.setText(name+", "+ messageTextView.getText().toString());
                 break;
-            case 2:
+            case 1:
+                setIndex(++index);
                 timeButton.setVisibility(View.GONE);
-                action.setOnClickListener(new View.OnClickListener() {
+                actionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         signInAnonymously();
@@ -167,7 +170,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void signInAnonymously() {
-        progressBar.setVisibility(View.VISIBLE);
+        showProgressBar();
         mAuth.signInAnonymously()
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -279,20 +282,23 @@ public class SignUpActivity extends AppCompatActivity {
         dbRef.child("users").child(mUser.getUid()).updateChildren(userDataValue, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                mProgressBar.setVisibility(View.INVISIBLE);
                 if (databaseError == null) {
-                    String urlPreTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSdkXpxR8BZe2UMwwKcq1t18N9d9II0yuJy8GC-8eaUWUjl8hA/viewform?usp=pp_url&entry.503799090=";
-                    String urlPreTest2 = "&entry.584420084&entry.788256975";
 
-                    String urlPostTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSeBrAkHZMGR2pre63OpyZLCLt5oVg78FyTvxiNf-t0_aTZC9Q/viewform?usp=pp_url&entry.369076977=";
-                    String urlPostTest2 = "&entry.1519610942";
-                    Intent intent = new Intent(SignUpActivity.this, QuestionnaireActivity.class);
-                    intent.putExtra("url", urlPreTest1+mUser.getUid()+urlPreTest2);
-                    //startActivity(intent);
-                    //finish();
-                    progressBar.setVisibility(View.INVISIBLE);
+                    //String urlPreTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSdkXpxR8BZe2UMwwKcq1t18N9d9II0yuJy8GC-8eaUWUjl8hA/viewform?usp=pp_url&entry.503799090=";
+                    //String urlPreTest2 = "&entry.584420084&entry.788256975";
+
+                    //String urlPostTest1 = "https://docs.google.com/forms/d/e/1FAIpQLSeBrAkHZMGR2pre63OpyZLCLt5oVg78FyTvxiNf-t0_aTZC9Q/viewform?usp=pp_url&entry.369076977=";
+                    //String urlPostTest2 = "&entry.1519610942";
+                    //Intent intent = new Intent(SignUpActivity.this, QuestionnaireActivity.class);
+                    //intent.putExtra("url", urlPreTest1+mUser.getUid()+urlPreTest2);
+
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
                 } else {
                     Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.INVISIBLE);
                 }
 
             }

@@ -13,14 +13,32 @@ import android.support.v4.app.TaskStackBuilder;
 import com.adhiwie.moodjournal.MainActivity;
 import com.adhiwie.moodjournal.MoodQuestionActivity;
 import com.adhiwie.moodjournal.R;
+import com.adhiwie.moodjournal.model.MoodModel;
+import com.adhiwie.moodjournal.model.NotificationModel;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
+import java.util.Map;
 
 public class ReminderReceiver extends BroadcastReceiver {
+
+    private final String CHANNEL_ID = "reminder";
+    private final int NOTIFICATION_ID = 123;
+
+    private Location mLastLocation;
+    private FusedLocationProviderClient mFusedLocationClient;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String timeInString = intent.getStringExtra("timeInString");
         String action = "It is "+timeInString+", time to record your mood.";
 
+        String uid = intent.getStringExtra("uid");
         long group = intent.getLongExtra("group", 0);
 
 
@@ -36,6 +54,9 @@ public class ReminderReceiver extends BroadcastReceiver {
         currentLocation.setLatitude(currentLatitude);
         currentLocation.setLongitude(currentLongitude);
 
+        Calendar cal = Calendar.getInstance();
+        long timestamp = cal.getTimeInMillis();
+
         boolean isLocation = false;
 
         if (currentLatitude == 0 && currentLongitude == 0) {
@@ -43,7 +64,7 @@ public class ReminderReceiver extends BroadcastReceiver {
         }
 
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
+                new NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(R.drawable.small_icon)
                         .setContentTitle("Mood Journal")
                         .setContentText(action)
@@ -64,12 +85,11 @@ public class ReminderReceiver extends BroadcastReceiver {
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (group == 1) {
-            mNotificationManager.notify(123, mBuilder.build());
-        } else if (group == 2 && isLocation) {
-            mNotificationManager.notify(123, mBuilder.build());
-        }
+        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 
+        NotificationModel notificationModel = new NotificationModel(uid, timestamp);
+        Map<String, Object> notificationValue = notificationModel.toMap();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef.child("notifications").push().setValue(notificationValue);
     }
-
 }

@@ -37,10 +37,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 
-
-/**
- * Created by adhiwie on 14/08/15.
- */
 public class ChangeLocationActivity extends AppCompatActivity
         implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
