@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">My Traces</string>
+    <string name="app_name">Mood Journal</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="menu_personality_test">Personality Test</string>
     <string name="menu_info">About</string>
     <string name="menu_error">Report a bug</string>
     <string name="info_title">About Us</string>
-    <string name="info_string">My Traces app has been developed by researchers at the University 
+    <string name="info_string">Mood Journal has been developed by researchers at the University
         of Birmingham (UoB) and University College London (UCL) to collect data for 
         research and teaching purposes.
         
         \n\n
         
         We would love to hear your feedback for us and issues with the app. Please send us an email 
-        to a.mehrotra@ucl.ac.uk. </string>
-    <string name="accessibility_service_description">My Traces will now be able to receive your phone interaction events such as click, back, home.</string>
-    <string name="title_activity_main">My Traces</string>
+        to axw412@cs.bham.ac.uk. </string>
+    <string name="accessibility_service_description">Mood Journal will now be able to receive your phone interaction events such as click, back, home.</string>
+    <string name="title_activity_main">Mood Journal</string>
     <string name="title_activity_consent">Registration</string>
     <string name="title_activity_personality_test">Personality Test</string>
     <string name="title_activity_app_usage_permission">App Usage Permission</string>
@@ -42,7 +42,7 @@
     <string name="nsl_permission_revoked_message_part3">Click the button below to open your notification settings page. 
         Once you\'re there, enable/reset the app permission and click back button.</string>
     <string name="consent_statement">
-        My Traces app logs your mobility, mood, and phone usage information. Mobility and phone interaction 
+        Mood Journal app logs your mobility, mood, and phone usage information. Mobility and phone interaction
         traces are collected in the background. The app samples your contextual information such as location, 
         WiFi connectivity, current physical activity and notification details including arrival time, 
         response time, seen time, sender app name and title. However, to collect your mood logs the 
@@ -71,8 +71,8 @@
         the application. Moreover, I have the right to access any information in the data set related 
         to me, and request for any part of that data to be removed.</string>
     <string name="consent_watch_draw_label">Win a Moto 360 Smart Watch</string>
-    <string name="consent_password_label">Password</string>
-    <string name="consent_password_hint">Set a unique password. This will be required to claim a prize.</string>
+    <string name="consent_id_label">Email address</string>
+    <string name="consent_id_hint">Enter your email address. This is used to send updates.</string>
     <string name="consent_referral_code_label">Referral Code</string>
      <string name="consent_referral_code_hint">If someone has referred this app to you, 
          please enter his/her id (user\'s unique id can be found by clicking at the information 

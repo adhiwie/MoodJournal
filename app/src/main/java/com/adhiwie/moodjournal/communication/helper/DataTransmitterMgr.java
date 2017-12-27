@@ -121,7 +121,7 @@ public class DataTransmitterMgr
 				sp.add(LAST_FILE_UPLOAD_DATE(data_type), (new UserData(context).getStartDate()));
 				return;
 			}
-			else if(last_upload_date == new Time(Calendar.getInstance()).getEpochDays())
+			else if(last_upload_date < new Time(Calendar.getInstance()).getEpochDays())
 			{
 				uploadFileByDataType(data_type);
 			}

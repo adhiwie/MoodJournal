@@ -347,7 +347,7 @@ public class MainActivity extends Activity
 			String message = 
 					"Your unique id is: " + new UserData(getApplicationContext()).getUuid() 
 					+ "\n\n "
-					+ "My Traces app has been developed by researchers at the University "
+					+ "Mood Journal app has been developed by researchers at the University "
 					+ "of Birmingham (UoB) and University College London (UCL) to collect data for "
 					+ "research and teaching purposes." 
 					+ " \n\n "

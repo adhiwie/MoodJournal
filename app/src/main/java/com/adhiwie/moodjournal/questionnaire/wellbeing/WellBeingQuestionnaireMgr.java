@@ -63,7 +63,7 @@ public class WellBeingQuestionnaireMgr {
 	private void updateDailyNotifcationCount()
 	{
 		if(getDailyQuestionnaireCount() == 0)
-			sp.add(Daily_Notification_Count, 16);
+			sp.add(Daily_Notification_Count, 0);
 		sp.add(Daily_Notification_Count, getDailyQuestionnaireCount()+1);
 	}
 

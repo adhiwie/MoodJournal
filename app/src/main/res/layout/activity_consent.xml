@@ -17,11 +17,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:padding="5dp"
             android:text="@string/consent_statement"
-            android:textColor="@color/Blue6"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
     </ScrollView>
 
     <!--
@@ -47,7 +45,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="20dp"
-        android:text="@string/consent_password_hint"
+        android:text="@string/consent_id_hint"
         android:textColor="@color/Red"
         android:textSize="12sp" />
 
@@ -60,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/consent_password_label"
+            android:text="@string/consent_id_label"
             android:textColor="@color/Blue6"
             android:textSize="16sp" />
 

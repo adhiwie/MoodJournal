@@ -8,6 +8,7 @@ import com.adhiwie.moodjournal.communication.DataTransmitter;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.utils.DataTypes;
+import com.adhiwie.moodjournal.utils.Log;
 
 public class RegistrationDataTransmission {
 
@@ -18,6 +19,7 @@ public class RegistrationDataTransmission {
 	{
 		this.context = context;
 		this.data = new UserData(context).toJSONString();
+		new Log().d(data);
 		
 		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) ) 
 		{

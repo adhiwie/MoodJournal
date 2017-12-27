@@ -87,6 +87,7 @@ public class ConsentActivity extends Activity {
 				pwd = et.getText().toString();
 			}
 			
+/*
 
 			EditText et_r_code = (EditText) findViewById(R.id.referral_code);
 			if (r_code == null && (et_r_code.getText() == null || et_r_code.getText().toString().length() == 0)) 
@@ -101,11 +102,12 @@ public class ConsentActivity extends Activity {
 			{
 				r_code = et_r_code.getText().toString();
 			}
+*/
 
 			
 			UserData ud = new UserData(getApplicationContext());
 			ud.setPassword(pwd);
-			ud.setReferralCode(r_code);
+//			ud.setReferralCode(r_code);
 
 			RegistrationDataTransmission rdt = new RegistrationDataTransmission(getApplicationContext());
 			rdt.registerNow( new RegisterationResultListener() {

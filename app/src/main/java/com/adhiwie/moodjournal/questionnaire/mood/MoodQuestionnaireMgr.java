@@ -84,7 +84,7 @@ public class MoodQuestionnaireMgr {
 	private void updateMoodNotifcationCount()
 	{
 		if(getMoodQuestionnaireCount() == 0)
-			sp.add(Mood_Notification_Count, 52);
+			sp.add(Mood_Notification_Count, 0);
 		sp.add(Mood_Notification_Count, getMoodQuestionnaireCount()+1);
 	}
 	
