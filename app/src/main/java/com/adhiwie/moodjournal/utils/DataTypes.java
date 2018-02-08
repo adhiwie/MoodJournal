@@ -21,6 +21,8 @@ public class DataTypes {
 	public final String POWER_CONNECTIVITY = "power_connectivity";
 	public final String RINGER_MODE = "ringer_mode";
 	public final String SMS = "sms";
+
+	public final String PLAN = "plan";
 	
 
 	

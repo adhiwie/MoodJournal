@@ -7,8 +7,8 @@
 
             <gradient
                 android:angle="270"
-                    android:endColor="@color/Blue2"
-                    android:startColor="@color/White" />
+                    android:endColor="@color/LightGray"
+                    android:startColor="@color/LightGray" />
         </shape>
     </item>
     <item android:id="@android:id/secondaryProgress">
@@ -18,8 +18,8 @@
 
                 <gradient
                     android:angle="270"
-                    android:endColor="@color/Blue7"
-                    android:startColor="@color/White" />
+                    android:endColor="@color/WhiteSmoke"
+                    android:startColor="@color/WhiteSmoke" />
             </shape>
         </clip>
     </item>
@@ -30,8 +30,8 @@
 
                 <gradient
                     android:angle="270"
-                    android:endColor="@color/Blue6"
-                    android:startColor="@color/Blue4" />
+                    android:startColor="@color/MediumSeaGreen"
+                    android:endColor="@color/SeaGreen"/>
             </shape>
         </clip>
     </item>

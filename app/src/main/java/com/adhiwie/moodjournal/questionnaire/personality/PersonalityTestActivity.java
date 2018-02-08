@@ -24,7 +24,6 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.communication.helper.PersonalityTestDataTransmission;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
@@ -75,11 +74,6 @@ public class PersonalityTestActivity extends Activity
 		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
 		actionbar_title.setText(getResources().getString(R.string.title_activity_personality_test));
 
-
-		ShimmerFrameLayout container = (ShimmerFrameLayout) findViewById(R.id.shimmer_action_bar);
-		container.setBaseAlpha(0.8f);
-		container.setAutoStart(true);
-
 		sp = new SharedPref(getApplicationContext());
 		if(new PersonalityTestMgr(getApplicationContext()).getPersonalityTestStatus() == false)
 			setContentView(R.layout.activity_personality_test);
@@ -91,10 +85,6 @@ public class PersonalityTestActivity extends Activity
 			Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
 		}
 
-
-		ShimmerFrameLayout container1 = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
-		container1.setBaseAlpha(0.8f);
-		container1.setAutoStart(true);
 	}
 
 

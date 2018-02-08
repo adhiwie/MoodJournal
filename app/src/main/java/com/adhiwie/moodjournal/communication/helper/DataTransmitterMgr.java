@@ -88,7 +88,7 @@ public class DataTransmitterMgr
 
 	private void transmitQuestionnaireData()
 	{
-		transmitData(new DataTypes().DAILY_QUESTIONNAIRE);
+		//transmitData(new DataTypes().DAILY_QUESTIONNAIRE);
 		transmitData(new DataTypes().MOOD_QUESTIONNAIRE);
 	}
 

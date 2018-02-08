@@ -1,4 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.nsds.meandmynotifications.AppUsageStatsActivity" >
 
@@ -7,16 +8,16 @@
         android:id="@+id/menu_personality_test"
         android:icon="@drawable/ic_action_personality_test"
         android:orderInCategory="100"
-        android:showAsAction="always"
-        android:title="@string/menu_personality_test"/>
+        android:title="@string/menu_personality_test"
+        android:showAsAction="always" />
     
     
        <item
         android:id="@+id/menu_info"
         android:orderInCategory="100"
-        android:showAsAction="always"
         android:icon="@drawable/ic_action_info"
-        android:title="@string/menu_info"/>
+        android:title="@string/menu_info"
+        android:showAsAction="always" />
     
     
 <!--        <item -->

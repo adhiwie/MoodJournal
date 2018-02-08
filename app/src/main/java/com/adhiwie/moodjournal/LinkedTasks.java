@@ -27,7 +27,7 @@ public class LinkedTasks {
 		new MoodQuestionnaireMgr(context).notifyUserIfRequired();
 
 		// check for mood questionnaire
-		new WellBeingQuestionnaireMgr(context).notifyUserIfRequired();
+		// new WellBeingQuestionnaireMgr(context).notifyUserIfRequired();
 
 		// check for data transmission
 		new CommunicationMgr(context).transmissionDataIfRequired();
@@ -39,8 +39,8 @@ public class LinkedTasks {
 
 		//check for permissions
 		Permission p = new Permission(context);
-		p.notifyUserIfAccessibilityPermissionRevoked();
-		p.notifyUserIfAppUsagePermissionRevoked();
+		//p.notifyUserIfAccessibilityPermissionRevoked();
+		//p.notifyUserIfAppUsagePermissionRevoked();
 		p.notifyUserIfNSLPermissionRevoked();
 	}
 	
@@ -50,7 +50,7 @@ public class LinkedTasks {
 		new MoodQuestionnaireMgr(context).notifyUserIfRequired();
 
 		// check for mood questionnaire
-		new WellBeingQuestionnaireMgr(context).notifyUserIfRequired();
+		// new WellBeingQuestionnaireMgr(context).notifyUserIfRequired();
 
 		// check for data transmission
 		new CommunicationMgr(context).transmissionDataIfRequired();
@@ -70,7 +70,7 @@ public class LinkedTasks {
 		new MoodQuestionnaireMgr(context).notifyUserIfRequired();
 
 		// check for mood questionnaire
-		new WellBeingQuestionnaireMgr(context).notifyUserIfRequired();
+		// new WellBeingQuestionnaireMgr(context).notifyUserIfRequired();
 	}
 
 //	public void checkPermission()

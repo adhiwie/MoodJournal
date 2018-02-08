@@ -1,8 +1,5 @@
 package com.adhiwie.moodjournal;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -19,9 +16,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.exception.IncompatibleAPIException;
+import com.adhiwie.moodjournal.plan.PlanActivity;
+import com.adhiwie.moodjournal.plan.PlanMgr;
 import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireActivity;
 import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireMgr;
 import com.adhiwie.moodjournal.questionnaire.personality.PersonalityTestActivity;
@@ -33,6 +31,9 @@ import com.adhiwie.moodjournal.user.permission.RuntimePermission;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.Popup;
 import com.adhiwie.moodjournal.utils.Time;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 //consent given true 
 //user id static
@@ -75,10 +76,6 @@ public class MainActivity extends Activity
 		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
 		actionbar_title.setText(getResources().getString(R.string.title_activity_main));
 
-		ShimmerFrameLayout container = (ShimmerFrameLayout) findViewById(R.id.shimmer_action_bar);
-		container.setBaseAlpha(0.8f);
-		container.setAutoStart(true);
-
 		setContentView(R.layout.activity_main);
 
 
@@ -86,7 +83,7 @@ public class MainActivity extends Activity
 		//		exit_shimmer.setBaseAlpha(0.8f);
 		//		exit_shimmer.setAutoStart(true);
 
-
+/*
 		ShimmerFrameLayout mood_shimmer = (ShimmerFrameLayout) findViewById(R.id.mood_shimmer);
 		mood_shimmer.setBaseAlpha(0.8f);
 		mood_shimmer.setAutoStart(true);
@@ -94,8 +91,8 @@ public class MainActivity extends Activity
 		ShimmerFrameLayout daily_shimmer = (ShimmerFrameLayout) findViewById(R.id.daily_shimmer);
 		daily_shimmer.setBaseAlpha(0.8f);
 		daily_shimmer.setAutoStart(true);
-
-		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) ) 
+*/
+		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) )
 		{
 			Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
 		}
@@ -123,47 +120,22 @@ public class MainActivity extends Activity
 	{
 		// set today's mood questionnaire status
 		ImageView mood1 = (ImageView) findViewById(R.id.mood_q1);
-		ImageView mood2 = (ImageView) findViewById(R.id.mood_q2);
-		ImageView mood3 = (ImageView) findViewById(R.id.mood_q3);
-		ImageView mood4 = (ImageView) findViewById(R.id.mood_q4);
 		MoodQuestionnaireMgr mood_mgr = new MoodQuestionnaireMgr(getApplicationContext());
 		int todays_count_mood_q = mood_mgr.getMoodQuestionnaireCountForToday();
 		switch (todays_count_mood_q) {
 		case 0:
-			mood1.setImageResource(R.drawable.answer_gray);
-			mood2.setImageResource(R.drawable.answer_gray);
-			mood3.setImageResource(R.drawable.answer_gray);
-			mood4.setImageResource(R.drawable.answer_gray);
+			mood1.setImageResource(R.drawable.ic_check_circle_grey);
 			break;
 		case 1:
-			mood1.setImageResource(R.drawable.answer_blue);
-			mood2.setImageResource(R.drawable.answer_gray);
-			mood3.setImageResource(R.drawable.answer_gray);
-			mood4.setImageResource(R.drawable.answer_gray);
-			break;
-		case 2:
-			mood1.setImageResource(R.drawable.answer_blue);
-			mood2.setImageResource(R.drawable.answer_blue);
-			mood3.setImageResource(R.drawable.answer_gray);
-			mood4.setImageResource(R.drawable.answer_gray);
-			break;
-		case 3:
-			mood1.setImageResource(R.drawable.answer_blue);
-			mood2.setImageResource(R.drawable.answer_blue);
-			mood3.setImageResource(R.drawable.answer_blue);
-			mood4.setImageResource(R.drawable.answer_gray);
-			break;
-		case 4:
-			mood1.setImageResource(R.drawable.answer_blue);
-			mood2.setImageResource(R.drawable.answer_blue);
-			mood3.setImageResource(R.drawable.answer_blue);
-			mood4.setImageResource(R.drawable.answer_blue);
+			mood1.setImageResource(R.drawable.ic_check_circle_green);
 			break;
 		default:
 			break;
 		}
 
+		planSetup();
 
+/*
 		// set today's daily questionnaire status
 		ImageView daily = (ImageView) findViewById(R.id.daily_q1);
 		WellBeingQuestionnaireMgr daily_mgr = new WellBeingQuestionnaireMgr(getApplicationContext());
@@ -177,25 +149,25 @@ public class MainActivity extends Activity
 		default:
 			break;
 		}
-
+*/
 
 		// set participation status
 		ProgressBar pb_days = (ProgressBar) findViewById(R.id.participation_days_progressbar);
 		ProgressBar pb_mood = (ProgressBar) findViewById(R.id.mood_questionnaires_progressbar);
-		ProgressBar pb_daily = (ProgressBar) findViewById(R.id.daily_questionnaires_progressbar);
+		//ProgressBar pb_daily = (ProgressBar) findViewById(R.id.daily_questionnaires_progressbar);
 		TextView tv_days = (TextView) findViewById(R.id.participation_days_tv);
 		TextView tv_mood = (TextView) findViewById(R.id.mood_questionnaires_tv);
-		TextView tv_daily = (TextView) findViewById(R.id.daily_questionnaires_tv);
+		//TextView tv_daily = (TextView) findViewById(R.id.daily_questionnaires_tv);
 
 		int start_date = new UserData(getApplicationContext()).getStartDate(); 
 		int current_date = new Time(Calendar.getInstance()).getEpochDays();
 		int participation_days = 1 + current_date - start_date;
 		pb_days.setProgress(participation_days);
 		pb_mood.setProgress(mood_mgr.getMoodQuestionnaireCount());
-		pb_daily.setProgress(daily_mgr.getDailyQuestionnaireCount());
-		tv_days.setText(participation_days + "/50");
-		tv_mood.setText(mood_mgr.getMoodQuestionnaireCount() + "/200");
-		tv_daily.setText(daily_mgr.getDailyQuestionnaireCount() + "/50");
+		//pb_daily.setProgress(daily_mgr.getDailyQuestionnaireCount());
+		tv_days.setText(participation_days + "/30");
+		tv_mood.setText(mood_mgr.getMoodQuestionnaireCount() + "/30");
+		//tv_daily.setText(daily_mgr.getDailyQuestionnaireCount() + "/50");
 	}
 
 
@@ -297,21 +269,28 @@ public class MainActivity extends Activity
 		}
 
 		Permission p = new Permission(getApplicationContext());
-		if(!p.isAccessibilityPermitted())
+		/*if(!p.isAccessibilityPermitted())
 		{
 			p.startAccessibilityServicePermissionActivityIfRequired();
 			this.finish();
 			return;
-		}
-		if(!p.isAppAccessPermitted())
+		}*/
+		/*if(!p.isAppAccessPermitted())
 		{
 			p.startAppUsagePermissionActivityIfRequired();
 			this.finish();
 			return;
-		}
+		}*/
 		if(!p.isNSLPermitted())
 		{
 			p.startNSLPermissionActivityIfRequired();
+			this.finish();
+			return;
+		}
+
+		if(!new PlanMgr(getApplicationContext()).isPlanGiven())
+		{
+			startActivity(new Intent(this, PlanActivity.class));
 			this.finish();
 			return;
 		}
@@ -320,12 +299,8 @@ public class MainActivity extends Activity
 			new LinkedTasks(getApplicationContext()).checkAllExceptPermission(); 
 		} 
 		catch(Exception e){}
+
 	}
-
-
-
-
-
 
 
 	//menu items
@@ -352,7 +327,7 @@ public class MainActivity extends Activity
 					+ "research and teaching purposes." 
 					+ " \n\n "
 					+ "We would love to hear your feedback for us and issues with the app. "
-					+ "Please send us an email - a.mehrotra@ucl.ac.uk." 
+					+ "Please send us an email - axw412@cs.bham.ac.uk."
 					+ " \n\n "
 					+ "Thank You!";
 			
@@ -400,8 +375,38 @@ public class MainActivity extends Activity
 		}
 	}
 
+	private void planSetup()
+	{
+		TextView plan_label = (TextView) findViewById(R.id.plan_label);
+		String plan;
+		String routine = new PlanMgr(getApplicationContext()).getPlanRoutineDesc();
 
+		if (routine != null) {
+			if (routine.equals("going to bed")) {
+				plan = getResources().getString(R.string.plan_reminder_content,
+						new PlanMgr(getApplicationContext()).getPlanTiming(),
+						"before",
+						routine);
+			} else {
+				plan = getResources().getString(R.string.plan_reminder_content,
+						new PlanMgr(getApplicationContext()).getPlanTiming(),
+						"after",
+						routine);
+			}
+		} else {
+			plan = "No plan created";
+		}
 
+		plan_label.setText(plan);
+	}
+
+	public void changePlan(View v)
+	{
+		Intent intent = new Intent(this, PlanActivity.class);
+		int step_num = 0;
+		intent.putExtra("step", step_num);
+		startActivity(intent);
+	}
 
 	// button click functions
 	public void moodTest(View v) 
@@ -409,27 +414,26 @@ public class MainActivity extends Activity
 
 		MoodQuestionnaireMgr mgr = new MoodQuestionnaireMgr(getApplicationContext());
 
-//		if(mgr.getMoodQuestionnaireCountForToday() > 3)
-//		{
-//			Toast.makeText(getApplicationContext(), "Today's mood questionnaires are already completed.", Toast.LENGTH_SHORT).show();
-//			return;
-//		}
-
-		long current_time = Calendar.getInstance().getTimeInMillis();
-		long last_time = mgr.getLastMoodQuestionnaireTime();
-		int diff_mins = (int) ((current_time - last_time)/(60*1000));
-		if(diff_mins < 3*60)
+		if(mgr.getMoodQuestionnaireCountForToday() > 0)
 		{
-			int mins_left = 3*60 - diff_mins;
-			if(mins_left > 59)
-			{
-				int hours_left = mins_left/60;
-				mins_left = mins_left % 60;
-				Toast.makeText(getApplicationContext(), "Next mood questionnaire will be available after " + hours_left + " hours " + mins_left + " mins.", Toast.LENGTH_SHORT).show();
-			}
-			else
-				Toast.makeText(getApplicationContext(), "Next mood questionnaire will be available after " + mins_left + " mins.", Toast.LENGTH_SHORT).show();
-			return;
+            Calendar tomorrow = Calendar.getInstance();
+            tomorrow.set(Calendar.HOUR_OF_DAY, 0);
+            tomorrow.set(Calendar.MINUTE, 0);
+            tomorrow.set(Calendar.SECOND, 0);
+            tomorrow.set(Calendar.MILLISECOND, 0);
+            tomorrow.add(Calendar.DAY_OF_MONTH, 1);
+            long tomorrow_time = tomorrow.getTimeInMillis();
+            long current_time = Calendar.getInstance().getTimeInMillis();
+            int diff_mins = (int) ((tomorrow_time - current_time)/(60*1000));
+            if(diff_mins > 59)
+            {
+                int hours_left = diff_mins/60;
+                diff_mins = diff_mins % 60;
+                Toast.makeText(getApplicationContext(), "Today's mood questionnaire has been completed. Next questionnaire will be available after " + hours_left + " hours " + diff_mins + " mins.", Toast.LENGTH_LONG).show();
+            }
+            else
+                Toast.makeText(getApplicationContext(), "Today's mood questionnaire has been completed. Next questionnaire will be available after " + diff_mins + " mins.", Toast.LENGTH_LONG).show();
+            return;
 		}
 
 		startActivity(new Intent(this, MoodQuestionnaireActivity.class));

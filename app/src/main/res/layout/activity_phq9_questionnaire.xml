@@ -14,7 +14,6 @@
         android:gravity="center_horizontal"
         android:text="@string/phq_test_header"
         android:textAllCaps="true"
-        android:textColor="@color/Blue8"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -25,7 +24,6 @@
         android:gravity="center_horizontal"
         android:text="@string/phq_test_info"
         android:textAllCaps="false"
-        android:textColor="@color/Blue8"
         android:textSize="16sp"
         android:textStyle="bold|italic" />
 
@@ -44,7 +42,6 @@
             android:layout_weight="1"
             android:gravity="center"
             android:padding="2dp"
-            android:textColor="@color/Blue6"
             android:textSize="18sp"
             android:textStyle="italic" />
 
@@ -64,7 +61,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="@string/phq_test_option_not_at_all"
-                android:textColor="@color/Blue6"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -73,7 +69,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="@string/phq_test_option_several_days"
-                android:textColor="@color/Blue6"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -82,7 +77,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="@string/phq_test_option_more_than_half_days"
-                android:textColor="@color/Blue6"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -91,12 +85,11 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="@string/phq_test_option_nearly_every_day"
-                android:textColor="@color/Blue6"
                 android:textSize="14sp" />
         </RadioGroup>
     </LinearLayout>
 
-    <com.facebook.shimmer.ShimmerFrameLayout
+    <LinearLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -119,6 +112,6 @@
             android:text="Next"
             android:textColor="@color/White"
             android:textSize="16sp" />
-    </com.facebook.shimmer.ShimmerFrameLayout>
+    </LinearLayout>
 
 </LinearLayout>

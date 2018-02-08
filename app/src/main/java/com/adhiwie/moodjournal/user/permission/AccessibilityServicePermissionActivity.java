@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.adhiwie.moodjournal.MainActivity;
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
@@ -43,11 +42,7 @@ public class AccessibilityServicePermissionActivity extends Activity {
 
 		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
 		actionbar_title.setText(getResources().getString(R.string.title_activity_accessibility_permission));
-		
-		ShimmerFrameLayout container = (ShimmerFrameLayout) findViewById(R.id.shimmer_action_bar);
-		container.setBaseAlpha(0.8f);
-		container.setAutoStart(true);
-		
+
 		setContentView(R.layout.activity_accessibility_permission);
 		
 		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) ) 
@@ -55,9 +50,6 @@ public class AccessibilityServicePermissionActivity extends Activity {
 			Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
 		}
 
-		ShimmerFrameLayout container1 = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
-		container1.setBaseAlpha(0.8f);
-		container1.setAutoStart(true);
 	}
 
 	

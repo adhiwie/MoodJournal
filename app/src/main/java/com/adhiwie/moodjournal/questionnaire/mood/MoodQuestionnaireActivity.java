@@ -9,8 +9,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,7 +19,6 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.adhiwie.moodjournal.MainActivity;
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
@@ -72,11 +69,6 @@ public class MoodQuestionnaireActivity extends Activity {
 
 		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
 		actionbar_title.setText(getResources().getString(R.string.title_activity_mood_questionnaire));
-
-
-		ShimmerFrameLayout container = (ShimmerFrameLayout) findViewById(R.id.shimmer_action_bar);
-		container.setBaseAlpha(0.8f);
-		container.setAutoStart(true);
 		
 		setContentView(R.layout.activity_mood_questionnaire);
 		
@@ -84,11 +76,6 @@ public class MoodQuestionnaireActivity extends Activity {
 		{
 			Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
 		}
-
-		
-		ShimmerFrameLayout container1 = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
-		container1.setBaseAlpha(0.8f);
-		container1.setAutoStart(true);
 		
 		start_time = Calendar.getInstance().getTimeInMillis();
 		res = getResources();
@@ -114,7 +101,6 @@ public class MoodQuestionnaireActivity extends Activity {
 			public boolean onTouch(View v, MotionEvent event) {
 				if(sk1_thumb == false)
 				{
-					sk1.setThumb(getThumb());
 					int value = 1+sk1.getProgress();
 					a1 = value;
 					setResponseLabelSK1(value);
@@ -129,7 +115,6 @@ public class MoodQuestionnaireActivity extends Activity {
 			public boolean onTouch(View v, MotionEvent event) {
 				if(sk2_thumb == false)
 				{
-					sk2.setThumb(getThumb());
 					int value = 1+sk2.getProgress();
 					a2 = value;
 					setResponseLabelSK2(value);
@@ -144,7 +129,6 @@ public class MoodQuestionnaireActivity extends Activity {
 			public boolean onTouch(View v, MotionEvent event) {
 				if(sk3_thumb == false)
 				{
-					sk3.setThumb(getThumb());
 					int value = 1+sk3.getProgress();
 					a3 = value;
 					setResponseLabelSK3(value);
@@ -211,23 +195,6 @@ public class MoodQuestionnaireActivity extends Activity {
 		//remove notification if present
 		NotificationManager mgr = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 		mgr.cancel(6011);
-	}
-
-	@SuppressWarnings("deprecation")
-	private Drawable getThumb()
-	{
-		Drawable thumb;
-		if(Build.VERSION.SDK_INT >= 21)
-			thumb = getResources().getDrawable(R.drawable.ic_launcher, null);
-		else
-			thumb = getResources().getDrawable(R.drawable.ic_launcher);
-
-		Resources res = getResources();
-        Bitmap bmpOrg = ((BitmapDrawable) thumb).getBitmap();
-        Bitmap bmpScaled = Bitmap.createScaledBitmap(bmpOrg, 100, 100, true);
-        Drawable new_thumb = new BitmapDrawable(res, bmpScaled);
-        
-		return new_thumb;
 	}
 
 	private void setResponseLabelSK1(int value)
@@ -308,8 +275,6 @@ public class MoodQuestionnaireActivity extends Activity {
 	
 	public void submit(View v)
 	{
-		Log log = new Log();
-		log.e("Values-- " + a1 + ", " + a2 + ", " + a3);
 		Popup popup = new Popup();
 		if(a1 == 0)
 		{
@@ -328,6 +293,8 @@ public class MoodQuestionnaireActivity extends Activity {
 		}
 		
 		long end_time = Calendar.getInstance().getTimeInMillis();
+		Log log = new Log();
+		log.e("Start time: " + start_time + ", End time: " + end_time +", Values-- " + a1 + ", " + a2 + ", " + a3);
 		
 		MoodQuestionnaireData data = new MoodQuestionnaireData(start_time, end_time, a1, a2, a3);
 		FileMgr fm = new FileMgr(getApplicationContext());

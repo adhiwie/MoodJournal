@@ -41,7 +41,7 @@ public class UserData
 	public String toJSONString() throws JSONException {
 		JSONObject json = new JSONObject();
 		json.put("uuid", getUuid());
-		json.put("password", getPassword());
+		json.put("email", getEmail());
 		json.put("referral_code", getReferralCode());
 		json.put("reg_time_millis", getRegTimeMillis());
 		json.put("reg_timezone", getRegTimezone());
@@ -100,15 +100,15 @@ public class UserData
 	}
 
 
-	private final String USER_PWD_ADDRESS = "USER_PWD_ADDRESS";
-	private String getPassword()
+	private final String USER_EMAIL_ADDRESS = "USER_EMAIL_ADDRESS";
+	private String getEmail()
 	{
-		return sp.getString(USER_PWD_ADDRESS);
+		return sp.getString(USER_EMAIL_ADDRESS);
 	}
 	
-	public void setPassword(String pwd)
+	public void setEmail(String email)
 	{
-		sp.add(USER_PWD_ADDRESS, pwd);
+		sp.add(USER_EMAIL_ADDRESS, email);
 	}
 
 

@@ -14,7 +14,6 @@
         android:gravity="center_horizontal"
         android:text="@string/personality_test_header"
         android:textAllCaps="true"
-        android:textColor="@color/Blue8"
         android:textSize="14sp"
         android:textStyle="italic" />
 
@@ -34,7 +33,6 @@
             android:layout_weight="1"
             android:gravity="center"
             android:padding="2dp"
-            android:textColor="@color/Blue6"
             android:textSize="20sp"
             android:textStyle="italic|bold" />
 
@@ -54,7 +52,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="@string/personality_test_option_disagree"
-                android:textColor="@color/Blue6"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -63,7 +60,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="@string/personality_test_option_somewhat_disagree"
-                android:textColor="@color/Blue6"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -72,7 +68,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="@string/personality_test_option_neither_agree_nor_disagree"
-                android:textColor="@color/Blue6"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -81,7 +76,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="@string/personality_test_option_somewhat_agree"
-                android:textColor="@color/Blue6"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -90,12 +84,11 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="@string/personality_test_option_agree"
-                android:textColor="@color/Blue6"
                 android:textSize="14sp" />
         </RadioGroup>
     </LinearLayout>
 
-    <com.facebook.shimmer.ShimmerFrameLayout
+    <LinearLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -117,6 +110,6 @@
             android:text="Next"
             android:textColor="@color/White"
             android:textSize="16sp" />
-    </com.facebook.shimmer.ShimmerFrameLayout>
+    </LinearLayout>
 
 </LinearLayout>

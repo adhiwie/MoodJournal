@@ -3,6 +3,7 @@ package com.adhiwie.moodjournal;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -12,20 +13,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.adhiwie.moodjournal.communication.helper.RegistrationDataTransmission;
 import com.adhiwie.moodjournal.communication.helper.RegistrationDataTransmission.RegisterationResultListener;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.utils.Log;
-import com.adhiwie.moodjournal.utils.Popup;
 import com.adhiwie.moodjournal.utils.SharedPref;
 
 public class ConsentActivity extends Activity {
 
 
-	private String pwd = null;
-	private String r_code = null; 
+	private String email = null;
+	private String r_code = null;
+	private ProgressDialog progress;
 	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
@@ -50,21 +50,14 @@ public class ConsentActivity extends Activity {
 		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
 		actionbar_title.setText(getResources().getString(R.string.title_activity_consent));
 
-		ShimmerFrameLayout container = (ShimmerFrameLayout) findViewById(R.id.shimmer_action_bar);
-		container.setBaseAlpha(0.8f);
-		container.setAutoStart(true);
-
 		setContentView(R.layout.activity_consent);
-
-
-		ShimmerFrameLayout container1 = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
-		container1.setBaseAlpha(0.8f);
-		container1.setAutoStart(true);
 
 		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) ) 
 		{
 			Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
 		}
+
+		progress = new ProgressDialog(this);
 
 	}
 
@@ -72,19 +65,20 @@ public class ConsentActivity extends Activity {
 	{
 		try
 		{
-//			addShortcutIcon(MainActivity.class, getResources().getString(R.string.app_name));
+			addShortcutIcon(MainActivity.class, getResources().getString(R.string.app_name));
 			EditText et = (EditText) findViewById(R.id.email_address);
-			if (pwd == null && (et.getText() == null || et.getText().toString().length() == 0)) 
+			if (et.getText() == null || et.getText().toString().length() == 0)
 			{
-				pwd = "hidden";
-				new Popup().showPopup(getApplicationContext(), "Moto 360 Smart-Watch", 
-						"You must enter a password to enter the lottery for Moto 360 Smart-Watch. "
-						+ "Leave it blank if you do not want to participate.");
+				Toast.makeText(getApplicationContext(), "Email may not be empty.", Toast.LENGTH_SHORT).show();
 				return;
 			} 
 			else 
 			{
-				pwd = et.getText().toString();
+				progress.setTitle("Please wait");
+				progress.setMessage("We are registering your data...");
+				progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+				progress.show();
+				email = et.getText().toString();
 			}
 			
 /*
@@ -106,7 +100,7 @@ public class ConsentActivity extends Activity {
 
 			
 			UserData ud = new UserData(getApplicationContext());
-			ud.setPassword(pwd);
+			ud.setEmail(email);
 //			ud.setReferralCode(r_code);
 
 			RegistrationDataTransmission rdt = new RegistrationDataTransmission(getApplicationContext());
@@ -119,6 +113,7 @@ public class ConsentActivity extends Activity {
 						Toast.makeText(getApplicationContext(), "Unable to register you. Check the network connectivity on your device.", Toast.LENGTH_SHORT).show();
 						return;
 					}
+					progress.dismiss();
 					Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
 					new ConsentMgr(getApplicationContext()).setConsentGiven();
 					startActivity(new Intent(getApplicationContext(), MainActivity.class));

@@ -1,18 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/White"
-    android:orientation="vertical"
-    android:padding="5dp" >
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/emptybox"
         android:fillViewport="true"
-        android:scrollbars="vertical" >
+        android:scrollbars="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -40,80 +38,39 @@
         android:layout_weight="1"
         android:src="@drawable/watch" />-->
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="@string/consent_id_hint"
-        android:textColor="@color/Red"
-        android:textSize="12sp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical"
+        android:background="@color/WhiteSmoke">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="@string/consent_id_label"
-            android:textColor="@color/Blue6"
-            android:textSize="16sp" />
+            android:text="@string/consent_id_hint"
+            android:textColor="@color/Red"
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/email_address"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="12" />
-    </LinearLayout>
-
-    <!--<TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/consent_referral_code_hint"
-        android:textColor="@color/Red"
-        android:textSize="12sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/consent_referral_code_label"
-            android:textColor="@color/Blue6"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/referral_code"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="12" />
-    </LinearLayout>-->
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical" >
+            android:layout_gravity="center"
+            android:ems="12"
+            android:hint="Email address"
+            android:inputType="textEmailAddress" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="bottom"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
             android:layout_marginBottom="2dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
             android:layout_marginTop="2dp"
             android:background="@drawable/filledbutton"
             android:gravity="center"
@@ -121,6 +78,38 @@
             android:text="@string/consent_button_label"
             android:textColor="@color/White"
             android:textSize="16sp" />
-    </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+        <!--<TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/consent_referral_code_hint"
+            android:textColor="@color/Red"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/consent_referral_code_label"
+                android:textColor="@color/Blue6"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/referral_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="12" />
+        </LinearLayout>-->
+
+    </LinearLayout>
 
 </LinearLayout>

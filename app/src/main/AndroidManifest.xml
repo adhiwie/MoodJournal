@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.adhiwie.moodjournal"
     android:versionCode="20"
-    android:versionName="0.20" >
+    android:versionName="0.20">
 
     <uses-sdk
-        android:minSdkVersion="19"
+        android:minSdkVersion="14"
         android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,19 +25,20 @@
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.adhiwie.moodjournal.MainActivity"
-            android:label="@string/app_name" >
+            android:name=".MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,40 +46,33 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.adhiwie.moodjournal.ConsentActivity"
-            android:label="@string/title_activity_consent" >
-        </activity>
+            android:name=".ConsentActivity"
+            android:label="@string/title_activity_consent" />
         <activity
-            android:name="com.adhiwie.moodjournal.questionnaire.personality.PersonalityTestActivity"
+            android:name=".questionnaire.personality.PersonalityTestActivity"
             android:label="@string/title_activity_personality_test"
-            android:parentActivityName="com.adhiwie.moodjournal.MainActivity" >
-        </activity>
+            android:parentActivityName=".MainActivity" />
         <activity
-            android:name="com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireActivity"
+            android:name=".questionnaire.wellbeing.WellBeingQuestionnaireActivity"
             android:label="@string/title_activity_wellbeing_questionnaire"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireActivity"
+            android:name=".questionnaire.mood.MoodQuestionnaireActivity"
             android:label="@string/title_activity_mood_questionnaire"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.adhiwie.moodjournal.user.permission.AccessibilityServicePermissionActivity"
-            android:label="@string/title_activity_accessibility_permission" >
-        </activity>
+            android:name=".user.permission.AccessibilityServicePermissionActivity"
+            android:label="@string/title_activity_accessibility_permission" />
         <activity
-            android:name="com.adhiwie.moodjournal.user.permission.AppUsagePermissionActivity"
-            android:label="@string/title_activity_app_usage_permission" >
-        </activity>
+            android:name=".user.permission.AppUsagePermissionActivity"
+            android:label="@string/title_activity_app_usage_permission" />
         <activity
-            android:name="com.adhiwie.moodjournal.user.permission.NSLPermissionActivity"
-            android:label="@string/title_activity_nsl_permission" >
-        </activity>
+            android:name=".user.permission.NSLPermissionActivity"
+            android:label="@string/title_activity_nsl_permission" />
 
         <service
-            android:name="com.adhiwie.moodjournal.sensor.push.AccessibilitySensor"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
+            android:name=".sensor.push.AccessibilitySensor"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
@@ -88,40 +82,40 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
         <service
-            android:name="com.adhiwie.moodjournal.sensor.push.ActivitySensor"
+            android:name=".sensor.push.ActivitySensor"
             android:exported="false"
-            android:label="@string/app_name" >
-        </service>
+            android:label="@string/app_name" />
         <service
-            android:name="com.adhiwie.moodjournal.sensor.push.LocationSensor"
+            android:name=".sensor.push.LocationSensor"
             android:exported="false"
-            android:label="@string/app_name" >
-        </service>
+            android:label="@string/app_name" />
         <service
-            android:name="com.adhiwie.moodjournal.notification.NotificationMonitorService"
+            android:name=".notification.NotificationMonitorService"
             android:label="@string/app_name"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
 
-        <receiver android:name="com.adhiwie.moodjournal.sensor.push.NetworkStateSensor" >
+        <receiver android:name=".sensor.push.NetworkStateSensor">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.adhiwie.moodjournal.sensor.push.PowerConnectionSensor" >
+        <receiver android:name=".sensor.push.PowerConnectionSensor">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.adhiwie.moodjournal.sensor.push.RingerModeSensor" >
+        <receiver android:name=".sensor.push.RingerModeSensor">
             <intent-filter>
                 <action android:name="android.media.RINGER_MODE_CHANGED" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".plan.PlanActivity"></activity>
     </application>
 
 </manifest>

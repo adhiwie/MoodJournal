@@ -2,20 +2,9 @@
 <resources>
 
     <string name="app_name">Mood Journal</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
     <string name="menu_personality_test">Personality Test</string>
     <string name="menu_info">About</string>
-    <string name="menu_error">Report a bug</string>
     <string name="info_title">About Us</string>
-    <string name="info_string">Mood Journal has been developed by researchers at the University
-        of Birmingham (UoB) and University College London (UCL) to collect data for 
-        research and teaching purposes.
-        
-        \n\n
-        
-        We would love to hear your feedback for us and issues with the app. Please send us an email 
-        to axw412@cs.bham.ac.uk. </string>
     <string name="accessibility_service_description">Mood Journal will now be able to receive your phone interaction events such as click, back, home.</string>
     <string name="title_activity_main">Mood Journal</string>
     <string name="title_activity_consent">Registration</string>
@@ -25,7 +14,8 @@
     <string name="title_activity_accessibility_permission">Accessibility Permission</string>
     <string name="title_activity_mood_questionnaire">Mood Questionnaire</string>
     <string name="title_activity_wellbeing_questionnaire">Well-being Questionnaire</string>
-    
+    <string name="title_activity_create_plan">Plan Reminder</string>
+
     <string name="open_accessibility_settings">Allow Accessibility Access</string>
     <string name="open_app_settings">Allow App Usage Access</string>
     <string name="open_nls_settings">Allow Notification Access</string>
@@ -46,14 +36,14 @@
         traces are collected in the background. The app samples your contextual information such as location, 
         WiFi connectivity, current physical activity and notification details including arrival time, 
         response time, seen time, sender app name and title. However, to collect your mood logs the 
-        app will trigger 5 mood related questionnaires in a day. All the personal information will be anonymised, and securely transmitted and stored on the server. No additional information related to 
+        app will trigger one mood related questionnaire in a day. All the personal information will be anonymised, and securely transmitted and stored on the server. No additional information related to
         contacts \(telephone numbers, email addresses etc.\) on your device or history of communication made with the 
         contact made would be collected by the application. 
         
         \n\n 
         
         The app is developed to collect data for research and teaching modules 
-        at University College London and University of Birmingham. In order to get your data please enter 
+        at University College London and University of Birmingham. In order to get your data please enter
         a valid email address because we will send your data file to the same email address.
         
         \n\n 
@@ -63,34 +53,25 @@
         By clicking \"I Agree\" below, I confirm that I am over 18 years of age and allow the app to collect 
         your data. I also confirm that I am the sole prominent user of this device. I understand that 
         access to any data collected will only be allowed to me and the members of the 
-        Networked Systems and Data Science Lab team at University of Birmingham \(UoB\) and 
-        University College London \(UCL\). 
+        Networked Systems and Data Science Lab team at University of Birmingham \(UoB\) and
+        University College London \(UCL\).
         Any published results of this study will only refer to anonymised and obfuscated data, and 
         aggregated statistics that do not reveal the identities of the participants. As a participant, 
         I have the right to opt out of the data collection at any time during this experiment by uninstalling 
         the application. Moreover, I have the right to access any information in the data set related 
         to me, and request for any part of that data to be removed.</string>
-    <string name="consent_watch_draw_label">Win a Moto 360 Smart Watch</string>
     <string name="consent_id_label">Email address</string>
     <string name="consent_id_hint">Enter your email address. This is used to send updates.</string>
-    <string name="consent_referral_code_label">Referral Code</string>
-     <string name="consent_referral_code_hint">If someone has referred this app to you, 
-         please enter his/her id (user\'s unique id can be found by clicking at the information 
-         button on the main screen of their app). \n You can also leave this blank.</string>
-   <string name="consent_button_label">I Agree</string>
+    <string name="consent_button_label">I Agree</string>
     <string name="ok_string">OK</string>
-    
-    <string name="todays_mood_q_stats_label">Today\'s Mood Questionnaires</string>
-    <string name="answer_mood_q_btn_label">Answer A Mood Questionnaire Now</string>
-    <string name="todays_wellbeing_q_stats_label">Today\'s Well-being Questionnaire</string>
-    <string name="answer_wellbeing_q_btn_label">Answer A Well-being Questionnaire Now</string>
+
+    <string name="todays_mood_q_stats_label">Today\'s Mood Questionnaire</string>
+    <string name="answer_mood_q_btn_label">Report Mood</string>
     <string name="participation_status_label">Participation Status</string>
     <string name="days_count">Days</string>
     <string name="mood_q_count">Mood questionnaires</string>
-    <string name="wellbeing_q_count">Well-being questionnaires</string>
-    <string name="count_zero_out_of_fifty">0/50</string>
-    <string name="count_zero_out_of_two_hundered">0/200</string>
-  
+    <string name="count_zero_out_of_thirty">0/30</string>
+
     <string name="personality_test_header">Question 1 of 50</string>
     <string name="personality_test_option_disagree">Strongly disagree</string>
     <string name="personality_test_option_somewhat_disagree">Somewhat disagree</string>
@@ -186,7 +167,6 @@
     </string-array>
 
     <string name="mood_test_info">Over the last few hours, what is your mood level?</string>
-    <string name="mood_test_submit">Submit</string>
     <string name="mood_test_question1">My Stress Level</string>
     <string name="mood_test_question2">My Activeness Level</string>
     <string name="mood_test_question3">My Happiness Level</string>
@@ -212,5 +192,45 @@
     <string name="mood_test_question3_option4">Somewhat Happy</string>
     <string name="mood_test_question3_option5">Very Happy</string>
     <string name="mood_test_question3_option5_tv">Very\nHappy</string>
+    <string name="create_plan_introduction">Research has shown that forming new habits is easier
+        when you identify the cues that trigger your behavioural action. Your existing routine events
+        are effective when used as cues for your intended habit.
+
+        \n \nTo help you form new habit of logging your mood every day, we will guide you to identify
+        your most suitable routine as a cue to report your mood.
+    </string>
+    <string name="create_plan_step_1_message">When do you want to report your mood?</string>
+    <string-array name="general_timings">
+        <item>Morning</item>
+        <item>Lunchtime</item>
+        <item>Evening</item>
+    </string-array>
+    <string name="create_plan_step_2_message">After which routine event do you want to report your mood?</string>
+    <string-array name="morning_routines">
+        <item>Waking up</item>
+        <item>Taking a shower</item>
+        <item>Getting dressed</item>
+        <item>Morning coffee</item>
+        <item>Eating breakfast</item>
+        <item>Arriving at office</item>
+    </string-array>
+    <string-array name="lunch_routines">
+        <item>Eating lunch</item>
+        <item>Taking a break</item>
+        <item>Taking a nap</item>
+        <item>Going to the gym</item>
+    </string-array>
+    <string-array name="evening_routines">
+        <item>Arriving at home</item>
+        <item>Going to bed</item>
+        <item>Going to the gym</item>
+        <item>Eating dinner</item>
+        <item>Brushing teeth</item>
+    </string-array>
+    <string name="create_plan_step_3_message">What time do you usually %1$s?</string>
+    <string name="plan_reminder_title">Plan Reminder</string>
+    <string name="plan_reminder_content">Every %1$s, %2$s %3$s, I will report my mood</string>
+    <string name="plan_reminder_change_button_label">Change plan</string>
+    <string name="activity_create_plan_intro_button_label">Let\'s start</string>
 
 </resources>

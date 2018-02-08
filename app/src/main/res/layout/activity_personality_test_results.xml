@@ -14,7 +14,6 @@
         android:gravity="center_horizontal"
         android:text="@string/personality_test_results_header"
         android:textAllCaps="true"
-        android:textColor="@color/Blue8"
         android:textSize="14sp"
         android:textStyle="italic" />
 
@@ -33,7 +32,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="@string/personality_type"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -44,7 +42,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="Your\nscore"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -55,7 +52,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="Best\nscore"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -75,7 +71,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="@string/personality_type_extraversion"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
 
@@ -87,7 +82,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="0"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
 
@@ -98,7 +92,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="50"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
     </LinearLayout>
@@ -118,7 +111,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="@string/personality_type_agreeableness"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
 
@@ -130,7 +122,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="0"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
 
@@ -141,7 +132,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="50"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
     </LinearLayout>
@@ -161,7 +151,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="@string/personality_type_conscientiousness"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
 
@@ -173,7 +162,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="0"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
 
@@ -184,7 +172,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="50"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
     </LinearLayout>
@@ -204,7 +191,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="@string/personality_type_neuroticism"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
 
@@ -216,7 +202,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="0"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
 
@@ -227,7 +212,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="50"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
     </LinearLayout>
@@ -247,7 +231,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="@string/personality_type_openness"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
 
@@ -259,7 +242,6 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="0"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
 
@@ -270,12 +252,11 @@
             android:gravity="center_horizontal"
             android:padding="2dp"
             android:text="50"
-            android:textColor="@color/Blue6"
             android:textSize="15sp"
             android:textStyle="italic" />
     </LinearLayout>
 
-    <com.facebook.shimmer.ShimmerFrameLayout
+    <LinearLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -297,7 +278,7 @@
             android:text="Done"
             android:textColor="@color/White"
             android:textSize="16sp" />
-    </com.facebook.shimmer.ShimmerFrameLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

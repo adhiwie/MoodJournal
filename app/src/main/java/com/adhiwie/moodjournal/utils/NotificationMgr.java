@@ -41,13 +41,14 @@ public class NotificationMgr
 	public void triggerPriorityNotification(Context context, PendingIntent pi, int id, String title, String message)
 	{
 		Notification.Builder b = new Notification.Builder(context)
-		.setSmallIcon(getNotificationIcon())
+		.setSmallIcon(R.drawable.ic_mood)
 		.setContentTitle(title)
 		.setContentText(message)
 		.setAutoCancel(true)
 		.setNumber(0)
 		.setContentIntent(pi)
 		.setVibrate(new long[]{0l})
+		.setStyle(new Notification.BigTextStyle().bigText(message))
 		.setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND);
 
 		Notification n;
@@ -62,9 +63,10 @@ public class NotificationMgr
 		NotificationManager n_manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		n_manager.notify(id, n);
 	}
-	
+/*
 	private int getNotificationIcon() {
 	    boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
 	    return useWhiteIcon ? R.drawable.ic_launcher_silhouette : R.drawable.ic_launcher;
 	}
+	*/
 }

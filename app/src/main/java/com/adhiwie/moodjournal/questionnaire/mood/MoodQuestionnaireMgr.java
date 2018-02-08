@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import com.adhiwie.moodjournal.plan.PlanMgr;
+import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.NotificationMgr;
 import com.adhiwie.moodjournal.utils.SharedPref;
 import com.adhiwie.moodjournal.utils.Time;
@@ -23,11 +25,12 @@ public class MoodQuestionnaireMgr {
 	
 	public void notifyUserIfRequired()
 	{
-		if(getMoodQuestionnaireCountForToday() > 3)
+		if(getMoodQuestionnaireCountForToday() > 0)
 			return;
-			
-		long current_time = Calendar.getInstance().getTimeInMillis();
 
+/*
+
+		long current_time = Calendar.getInstance().getTimeInMillis();
 		// no notification if last notification was triggered within 30mins
 		long last_trigger_time = getLastMoodQuestionnaireTriggerTime();
 		if(current_time - last_trigger_time < 30*60*1000)
@@ -36,20 +39,37 @@ public class MoodQuestionnaireMgr {
 		long last_time = getLastMoodQuestionnaireTime();
 		if(current_time - last_time < 3*60*60*1000)
 			return;
-		
+
 		int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 		if(hour < 9 || hour > 22)
 			return;
-		
-		Intent i = new Intent(context, MoodQuestionnaireActivity.class);
-		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-		
-		PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
-		new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Questionnaire", "Your response needed!");
-		
-		updateLastMoodQuestionnaireTriggerTime();
+*/
+		PlanMgr planMgr = new PlanMgr(context);
+		int trigger_time = planMgr.getPlanHour();
+		int current_time = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+
+		new Log().e("trigger_time: "+trigger_time);
+		new Log().e("current_time: "+current_time);
+
+		if (trigger_time - current_time == 1) {
+			Intent i = new Intent(context, MoodQuestionnaireActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+			String routine_event = new PlanMgr(context).getPlanRoutineDesc();
+
+
+			PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
+			if (routine_event.equals("going to bed")) {
+				new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Questionnaire", "Remember to report your mood before "+routine_event+"!");
+			} else {
+				new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Questionnaire", "Remember to report your mood after "+routine_event+"!");
+			}
+
+			updateLastMoodQuestionnaireTriggerTime();
+		}
+
 	}
 	
 	

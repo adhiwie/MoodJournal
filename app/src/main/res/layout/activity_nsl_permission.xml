@@ -12,7 +12,6 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="@string/nsl_permission_revoked_message_part1"
-        android:textColor="@color/Blue6"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -21,7 +20,7 @@
         android:layout_height="80dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:src="@drawable/notification_permission_icon" />
+        android:src="@drawable/ic_email" />
 
     <TextView
         android:layout_width="match_parent"
@@ -41,11 +40,10 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="@string/nsl_permission_revoked_message_part3"
-        android:textColor="@color/Blue6"
         android:textSize="16sp"
         android:textStyle="italic" />
 
-    <com.facebook.shimmer.ShimmerFrameLayout
+    <LinearLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,6 +65,6 @@
             android:text="@string/open_nls_settings"
             android:textColor="@color/White"
             android:textSize="16sp" />
-    </com.facebook.shimmer.ShimmerFrameLayout>
+    </LinearLayout>
 
 </LinearLayout>
