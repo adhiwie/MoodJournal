@@ -275,12 +275,12 @@ public class MainActivity extends Activity
 			this.finish();
 			return;
 		}*/
-		/*if(!p.isAppAccessPermitted())
+		if(!p.isAppAccessPermitted())
 		{
 			p.startAppUsagePermissionActivityIfRequired();
 			this.finish();
 			return;
-		}*/
+		}
 		if(!p.isNSLPermitted())
 		{
 			p.startNSLPermissionActivityIfRequired();

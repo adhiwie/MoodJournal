@@ -28,14 +28,12 @@ public class MoodQuestionnaireMgr {
 		if(getMoodQuestionnaireCountForToday() > 0)
 			return;
 
-/*
-
-		long current_time = Calendar.getInstance().getTimeInMillis();
 		// no notification if last notification was triggered within 30mins
+		long current_time = Calendar.getInstance().getTimeInMillis();
 		long last_trigger_time = getLastMoodQuestionnaireTriggerTime();
-		if(current_time - last_trigger_time < 30*60*1000)
+		if(current_time - last_trigger_time < 1000)
 			return;
-		
+/*
 		long last_time = getLastMoodQuestionnaireTime();
 		if(current_time - last_time < 3*60*60*1000)
 			return;
@@ -47,7 +45,7 @@ public class MoodQuestionnaireMgr {
 */
 		PlanMgr planMgr = new PlanMgr(context);
 		int trigger_time = planMgr.getPlanHour();
-		int current_time = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+		current_time = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
 		new Log().e("trigger_time: "+trigger_time);
 		new Log().e("current_time: "+current_time);
@@ -57,17 +55,20 @@ public class MoodQuestionnaireMgr {
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-			String routine_event = new PlanMgr(context).getPlanRoutineDesc();
+			String routine_desc = new PlanMgr(context).getPlanRoutineDesc();
 
 
 			PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
-			if (routine_event.equals("going to bed")) {
-				new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Questionnaire", "Remember to report your mood before "+routine_event+"!");
+			if (routine_desc.equals("going to bed")) {
+				new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Questionnaire", "Remember to report your mood before "+routine_desc+"!");
 			} else {
-				new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Questionnaire", "Remember to report your mood after "+routine_event+"!");
+				new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Questionnaire", "Remember to report your mood after "+routine_desc+"!");
 			}
 
 			updateLastMoodQuestionnaireTriggerTime();
+
+			/* Log notification and send the data to server */
+
 		}
 
 	}

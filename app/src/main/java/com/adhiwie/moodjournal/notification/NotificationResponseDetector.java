@@ -35,7 +35,7 @@ public class NotificationResponseDetector extends AsyncTask<Void, Void, Notifica
 
 		ApplicationUsage au = new ApplicationUsage(context);	
 		String package_name = n_data.getAppPackageName();
-		long start_time = n_data.getRemovalTime() - 10000; // subtracted the threshold 10 seconds
+		long start_time = n_data.getRemovalTime() - (1000*60*60); // subtracted the threshold 1 hour
 		boolean clicked = au.isAppLaunched(package_name, start_time);
 		if(clicked)
 			n_data.setClicked(1);

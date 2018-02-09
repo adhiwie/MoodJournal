@@ -56,7 +56,7 @@ public class NotificationMgr
 			n = b.getNotification();
 		else
 		{
-			b = b.setPriority(Notification.PRIORITY_DEFAULT);
+			b = b.setPriority(Notification.PRIORITY_HIGH);
 			n = b.build();
 		}
 

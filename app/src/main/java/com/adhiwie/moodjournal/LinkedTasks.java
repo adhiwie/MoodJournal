@@ -40,7 +40,7 @@ public class LinkedTasks {
 		//check for permissions
 		Permission p = new Permission(context);
 		//p.notifyUserIfAccessibilityPermissionRevoked();
-		//p.notifyUserIfAppUsagePermissionRevoked();
+		p.notifyUserIfAppUsagePermissionRevoked();
 		p.notifyUserIfNSLPermissionRevoked();
 	}
 	
