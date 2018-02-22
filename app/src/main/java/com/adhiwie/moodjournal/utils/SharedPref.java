@@ -1,5 +1,6 @@
 package com.adhiwie.moodjournal.utils;
 
+import java.util.Map;
 import java.util.Set;
 
 import android.content.Context;
@@ -95,6 +96,10 @@ public class SharedPref {
 	public long getLong(String key)
 	{
 		return sp.getLong(key, 0);
+	}
+
+	public Map<String, ?> getAll() {
+		return sp.getAll();
 	}
 	
 }

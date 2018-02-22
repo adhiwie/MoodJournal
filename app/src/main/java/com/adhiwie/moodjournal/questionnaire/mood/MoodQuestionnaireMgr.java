@@ -1,18 +1,25 @@
 package com.adhiwie.moodjournal.questionnaire.mood;
 
 import java.util.Calendar;
+import java.util.Map;
 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import com.adhiwie.moodjournal.file.FileMgr;
 import com.adhiwie.moodjournal.plan.PlanMgr;
+import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.NotificationMgr;
 import com.adhiwie.moodjournal.utils.SharedPref;
 import com.adhiwie.moodjournal.utils.Time;
 
+import org.json.JSONException;
+
 public class MoodQuestionnaireMgr {
+
+	private final String MOOD_REPORT_DATA = "mood_report_data";
 
 	private final Context context;
 	private final SharedPref sp;
@@ -56,19 +63,24 @@ public class MoodQuestionnaireMgr {
 			i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
 			String routine_desc = new PlanMgr(context).getPlanRoutineDesc();
-
+			String message;
 
 			PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
 			if (routine_desc.equals("going to bed")) {
-				new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Questionnaire", "Remember to report your mood before "+routine_desc+"!");
+				message = "Remember to report your mood before "+routine_desc+"!";
 			} else {
-				new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Questionnaire", "Remember to report your mood after "+routine_desc+"!");
+				message = "Remember to report your mood after "+routine_desc+"!";
 			}
+			new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Questionnaire", message);
 
 			updateLastMoodQuestionnaireTriggerTime();
 
-			/* Log notification and send the data to server */
+			/* Log reminder and send the data to server */
 
+			current_time = Calendar.getInstance().getTimeInMillis();
+			ReminderData data = new ReminderData(new UserData(context).getUuid(), current_time, message);
+			FileMgr fm = new FileMgr(context);
+			fm.addData(data);
 		}
 
 	}
@@ -143,5 +155,12 @@ public class MoodQuestionnaireMgr {
 			return sp.getInt(Mood_Notification_Count_For_Today);
 		else
 			return 0;
+	}
+
+	public void saveDailyMoodReportData(String data) {
+		sp.add(MOOD_REPORT_DATA, data);
+		Map<String, ?> map = sp.getAll();
+		new Log().d("Daily mood report");
+		new Log().d(map.toString());
 	}
 }

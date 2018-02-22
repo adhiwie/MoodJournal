@@ -115,7 +115,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".plan.PlanActivity"></activity>
+        <activity android:name=".plan.PlanActivity" />
+        <activity android:name=".report.MoodReportActivity" />
     </application>
 
 </manifest>

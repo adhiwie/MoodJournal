@@ -23,8 +23,14 @@ import com.adhiwie.moodjournal.MainActivity;
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.file.FileMgr;
+import com.adhiwie.moodjournal.utils.DataTypes;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.Popup;
+import com.adhiwie.moodjournal.utils.SharedPref;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @SuppressLint("NewApi")
 public class MoodQuestionnaireActivity extends Activity {
@@ -273,8 +279,7 @@ public class MoodQuestionnaireActivity extends Activity {
 	}
 	
 	
-	public void submit(View v)
-	{
+	public void submit(View v) throws JSONException {
 		Popup popup = new Popup();
 		if(a1 == 0)
 		{
@@ -299,9 +304,54 @@ public class MoodQuestionnaireActivity extends Activity {
 		MoodQuestionnaireData data = new MoodQuestionnaireData(start_time, end_time, a1, a2, a3);
 		FileMgr fm = new FileMgr(getApplicationContext());
 		fm.addData(data);
-		new MoodQuestionnaireMgr(getApplicationContext()).updateLastMoodQuestionnaireTime();
+
+		MoodQuestionnaireMgr mgr = new MoodQuestionnaireMgr(getApplicationContext());
+		mgr.updateLastMoodQuestionnaireTime();
+		mgr.saveDailyMoodReportData(data.toJSONString());
+
+		SharedPref sharedPref = new SharedPref(getApplicationContext());
+		String moodData = sharedPref.getString("DAILY_MOOD_REPORT");
+
+		JSONArray jsonArray;
+
+		if (moodData == null) {
+			jsonArray = new JSONArray();
+		} else {
+			jsonArray = new JSONArray(moodData);
+		}
+
+		jsonArray.put(data.toJSONString());
+		//sharedPref.add("DAILY_MOOD_REPORT", jsonArray.toString());
+
+		/*for (int i=1; i<=60; i++){
+
+			Calendar start_time_next = Calendar.getInstance();
+			start_time_next.setTimeInMillis(start_time);
+			start_time_next.add(Calendar.DAY_OF_MONTH, i); //add a day
+
+			Calendar end_time_next = Calendar.getInstance();
+			end_time_next.setTimeInMillis(end_time);
+			end_time_next.add(Calendar.DAY_OF_MONTH, i); //add a day
+			MoodQuestionnaireData d = new MoodQuestionnaireData(start_time_next.getTimeInMillis(), end_time_next.getTimeInMillis(), randomWithRange(1,5), randomWithRange(1,5), randomWithRange(1,5));
+
+
+			new Log().e("Start: "+start_time_next.getTime()+" - End: "+end_time_next.getTime());
+			jsonArray.put(d.toJSONString());
+		}*/
+
+		sharedPref.add("DAILY_MOOD_REPORT", jsonArray.toString());
+
+		new Log().e(sharedPref.getString("DAILY_MOOD_REPORT"));
+
+
 		startActivity(new Intent(this, MainActivity.class));
 		finish();
+	}
+
+	int randomWithRange(int min, int max)
+	{
+		int range = (max - min) + 1;
+		return (int)(Math.random() * range) + min;
 	}
 	
 }

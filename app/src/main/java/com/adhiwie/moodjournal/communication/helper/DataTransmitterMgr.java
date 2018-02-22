@@ -90,6 +90,7 @@ public class DataTransmitterMgr
 	{
 		//transmitData(new DataTypes().DAILY_QUESTIONNAIRE);
 		transmitData(new DataTypes().MOOD_QUESTIONNAIRE);
+		transmitData(new DataTypes().REMINDER);
 	}
 
 	private void transmitPendingDataIfAny()

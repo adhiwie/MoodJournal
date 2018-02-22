@@ -25,6 +25,7 @@ import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireMgr;
 import com.adhiwie.moodjournal.questionnaire.personality.PersonalityTestActivity;
 import com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireActivity;
 import com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireMgr;
+import com.adhiwie.moodjournal.report.MoodReportActivity;
 import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.user.permission.Permission;
 import com.adhiwie.moodjournal.user.permission.RuntimePermission;
@@ -269,12 +270,12 @@ public class MainActivity extends Activity
 		}
 
 		Permission p = new Permission(getApplicationContext());
-		/*if(!p.isAccessibilityPermitted())
+		if(!p.isAccessibilityPermitted())
 		{
 			p.startAccessibilityServicePermissionActivityIfRequired();
 			this.finish();
 			return;
-		}*/
+		}
 		if(!p.isAppAccessPermitted())
 		{
 			p.startAppUsagePermissionActivityIfRequired();
@@ -321,14 +322,14 @@ public class MainActivity extends Activity
 		case R.id.menu_info:
 			String message = 
 					"Your unique id is: " + new UserData(getApplicationContext()).getUuid() 
-					+ "\n\n "
+					+ "\n\n"
 					+ "Mood Journal app has been developed by researchers at the University "
 					+ "of Birmingham (UoB) and University College London (UCL) to collect data for "
 					+ "research and teaching purposes." 
-					+ " \n\n "
+					+ "\n\n"
 					+ "We would love to hear your feedback for us and issues with the app. "
 					+ "Please send us an email - axw412@cs.bham.ac.uk."
-					+ " \n\n "
+					+ "\n\n"
 					+ "Thank You!";
 			
 			new Popup().showPopup(MainActivity.this, getResources().getString(R.string.info_title), message);
@@ -437,6 +438,11 @@ public class MainActivity extends Activity
 		}
 
 		startActivity(new Intent(this, MoodQuestionnaireActivity.class));
+	}
+
+	public void moodReport(View v)
+	{
+		startActivity(new Intent(this, MoodReportActivity.class));
 	}
 
 

@@ -24,7 +24,7 @@ public class LinkedTasks {
 	public void checkAll()
 	{
 		// check for mood questionnaire
-		new MoodQuestionnaireMgr(context).notifyUserIfRequired();
+		//new MoodQuestionnaireMgr(context).notifyUserIfRequired();
 
 		// check for mood questionnaire
 		// new WellBeingQuestionnaireMgr(context).notifyUserIfRequired();
@@ -47,7 +47,7 @@ public class LinkedTasks {
 	public void checkAllExceptPermission()
 	{
 		// check for mood questionnaire
-		new MoodQuestionnaireMgr(context).notifyUserIfRequired();
+		//new MoodQuestionnaireMgr(context).notifyUserIfRequired();
 
 		// check for mood questionnaire
 		// new WellBeingQuestionnaireMgr(context).notifyUserIfRequired();
@@ -67,7 +67,7 @@ public class LinkedTasks {
 	public void checkQuestionnaires()
 	{
 		// check for mood questionnaire
-		new MoodQuestionnaireMgr(context).notifyUserIfRequired();
+		//new MoodQuestionnaireMgr(context).notifyUserIfRequired();
 
 		// check for mood questionnaire
 		// new WellBeingQuestionnaireMgr(context).notifyUserIfRequired();

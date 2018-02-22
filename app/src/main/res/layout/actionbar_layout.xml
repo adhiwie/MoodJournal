@@ -1,6 +1,6 @@
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -10,13 +10,12 @@
             android:id="@+id/tvActionBarTitle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_gravity="center"
+            android:layout_gravity="left|center_vertical"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="left|center_vertical"
             android:text="@string/app_name"
             android:textAllCaps="false"
             android:textColor="@color/White"
-            android:textSize="20sp"
-            android:textStyle="italic" />
+            android:textSize="20sp"/>
 
 </LinearLayout>

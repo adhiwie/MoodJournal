@@ -25,9 +25,9 @@ import com.adhiwie.moodjournal.MainActivity;
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.communication.helper.PlanDataTransmission;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
-import com.adhiwie.moodjournal.file.FileMgr;
 import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.utils.Log;
+import com.adhiwie.moodjournal.utils.Popup;
 import com.adhiwie.moodjournal.utils.SharedPref;
 
 import org.json.JSONException;
@@ -59,6 +59,7 @@ public class PlanActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Drawable background;
 
         if(Build.VERSION.SDK_INT >= 21)
@@ -100,13 +101,13 @@ public class PlanActivity extends Activity {
         step = 0;
 
         intro_layout = (LinearLayout) findViewById(R.id.intro_layout);
-        step_1_layout = (LinearLayout) findViewById(R.id.step_1_layout);
+        //step_1_layout = (LinearLayout) findViewById(R.id.step_1_layout);
         step_2_layout = (LinearLayout) findViewById(R.id.step_2_layout);
         step_3_layout = (LinearLayout) findViewById(R.id.step_3_layout);
         control_btn = (Button) findViewById(R.id.create_plan);
 
         intro_layout.setVisibility(View.VISIBLE);
-        step_1_layout.setVisibility(View.GONE);
+        //step_1_layout.setVisibility(View.GONE);
         step_2_layout.setVisibility(View.GONE);
         step_3_layout.setVisibility(View.GONE);
     }
@@ -123,10 +124,7 @@ public class PlanActivity extends Activity {
                         initLayout();
                         break;
                     case 2:
-                        goToStepOne();
-                        break;
-                    case 3:
-                        goToStepTwo(routine);
+                        goToStepOne(2);
                         break;
 
                 }
@@ -137,9 +135,12 @@ public class PlanActivity extends Activity {
     }
 
     public void onCreateButtonClick(View v) {
-        goToStepOne();
+        timing = "evening";
+        routine = 2;
+        goToStepOne(2);
     }
 
+    /*
     private void goToStepOne() {
         step = 1;
 
@@ -157,18 +158,18 @@ public class PlanActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 timing = timing_list.getItemAtPosition(position).toString().toLowerCase();
                 routine = position;
-                goToStepTwo(position);
+                goToStepOne(position);
             }
         });
     }
 
+*/
 
-
-    private void goToStepTwo(int time_mode) {
-        step = 2;
+    private void goToStepOne(int time_mode) {
+        step = 1;
 
         intro_layout.setVisibility(View.GONE);
-        step_1_layout.setVisibility(View.GONE);
+        //step_1_layout.setVisibility(View.GONE);
         step_2_layout.setVisibility(View.VISIBLE);
         step_3_layout.setVisibility(View.GONE);
         switch (time_mode) {
@@ -189,16 +190,16 @@ public class PlanActivity extends Activity {
         routine_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                goToStepThree(routine_list.getItemAtPosition(position).toString().toLowerCase());
+                goToStepTwo(routine_list.getItemAtPosition(position).toString().toLowerCase());
             }
         });
     }
 
-    private void goToStepThree(String item) {
-        step = 3;
+    private void goToStepTwo(String item) {
+        step = 2;
 
         intro_layout.setVisibility(View.GONE);
-        step_1_layout.setVisibility(View.GONE);
+        //step_1_layout.setVisibility(View.GONE);
         step_2_layout.setVisibility(View.GONE);
         step_3_layout.setVisibility(View.VISIBLE);
 
@@ -223,7 +224,7 @@ public class PlanActivity extends Activity {
             case 2:
                 hour = 21;
                 minutes = 0;
-                timeString = "21:00";
+                timeString = "18:00";
                 break;
             default:
                 hour = 0;
@@ -307,6 +308,14 @@ public class PlanActivity extends Activity {
             time_tv.setText(String.valueOf(hourOfDay) + ":" + mins);
 
         }
+    }
+
+    private void showReherseal() {
+        String message =
+                "Now imagine this situation: you are "+routine_desc+" in the evening."
+                    +"Right after that routine happens, report your mood immediately.";
+
+        new Popup().showPopup(PlanActivity.this, "", message);
     }
 
 }

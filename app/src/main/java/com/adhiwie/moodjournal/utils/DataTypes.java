@@ -23,6 +23,8 @@ public class DataTypes {
 	public final String SMS = "sms";
 
 	public final String PLAN = "plan";
+	public final String MOOD_REPORT = "mood_report";
+	public final String REMINDER = "reminder";
 	
 
 	

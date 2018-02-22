@@ -14,7 +14,7 @@
     <string name="title_activity_accessibility_permission">Accessibility Permission</string>
     <string name="title_activity_mood_questionnaire">Mood Questionnaire</string>
     <string name="title_activity_wellbeing_questionnaire">Well-being Questionnaire</string>
-    <string name="title_activity_create_plan">Plan Reminder</string>
+    <string name="title_activity_create_plan">Setting a Plan</string>
 
     <string name="open_accessibility_settings">Allow Accessibility Access</string>
     <string name="open_app_settings">Allow App Usage Access</string>
@@ -192,12 +192,19 @@
     <string name="mood_test_question3_option4">Somewhat Happy</string>
     <string name="mood_test_question3_option5">Very Happy</string>
     <string name="mood_test_question3_option5_tv">Very\nHappy</string>
-    <string name="create_plan_introduction">Research has shown that forming new habits is easier
-        when you identify the cues that trigger your behavioural action. Your existing routine events
-        are effective when used as cues for your intended habit.
+    <string name="create_plan_introduction">
+        Do you know that mood &amp; emotion really affect the decisions you make every day? In fact, being emotionally aware
+        is really important. We want to help you be more aware of your mood &amp; emotion by creating daily mood reporting
+        as new habit.
 
-        \n \nTo help you form new habit of logging your mood every day, we will guide you to identify
-        your most suitable routine as a cue to report your mood.
+        \n\nResearch has shown that forming new habits is easier when you create a strategic plan called implementation
+        intention, by specifying when, where, and how you will execute your goal: \"If Y happens, I will do Z!\".
+        And this app will guide you setup an implementation intention.
+
+        \n\nWe will start by identifying your existing routine which you will be used as a trigger.
+        Remember that just after the routine occurs, make sure to report your mood immediately. Repeat this process every day.
+
+        \n\nIf you ready to begin, press the button below.
     </string>
     <string name="create_plan_step_1_message">When do you want to report your mood?</string>
     <string-array name="general_timings">
@@ -221,16 +228,19 @@
         <item>Going to the gym</item>
     </string-array>
     <string-array name="evening_routines">
+        <item>Commuting</item>
         <item>Arriving at home</item>
-        <item>Going to bed</item>
         <item>Going to the gym</item>
+        <item>Taking a shower</item>
         <item>Eating dinner</item>
+        <item>Going to bed</item>
         <item>Brushing teeth</item>
     </string-array>
     <string name="create_plan_step_3_message">What time do you usually %1$s?</string>
     <string name="plan_reminder_title">Plan Reminder</string>
     <string name="plan_reminder_content">Every %1$s, %2$s %3$s, I will report my mood</string>
     <string name="plan_reminder_change_button_label">Change plan</string>
-    <string name="activity_create_plan_intro_button_label">Let\'s start</string>
+    <string name="activity_create_plan_intro_button_label">Let\'s begin</string>
+    <string name="date_range">"%1$s - %2$s %3$s</string>
 
 </resources>
