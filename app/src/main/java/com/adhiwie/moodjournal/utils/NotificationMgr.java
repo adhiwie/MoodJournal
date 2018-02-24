@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.support.v4.app.NotificationCompat;
 
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.system.APILevel;
@@ -40,7 +41,7 @@ public class NotificationMgr
 	@SuppressLint("NewApi")
 	public void triggerPriorityNotification(Context context, PendingIntent pi, int id, String title, String message)
 	{
-		Notification.Builder b = new Notification.Builder(context)
+		NotificationCompat.Builder b = new NotificationCompat.Builder(context)
 		.setSmallIcon(R.drawable.ic_mood)
 		.setContentTitle(title)
 		.setContentText(message)
@@ -48,7 +49,7 @@ public class NotificationMgr
 		.setNumber(0)
 		.setContentIntent(pi)
 		.setVibrate(new long[]{0l})
-		.setStyle(new Notification.BigTextStyle().bigText(message))
+		.setStyle(new NotificationCompat.BigTextStyle().bigText(message))
 		.setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND);
 
 		Notification n;

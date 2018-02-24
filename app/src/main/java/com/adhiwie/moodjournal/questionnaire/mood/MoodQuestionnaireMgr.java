@@ -40,24 +40,25 @@ public class MoodQuestionnaireMgr {
 		long last_trigger_time = getLastMoodQuestionnaireTriggerTime();
 		if(current_time - last_trigger_time < 1000)
 			return;
-/*
+
+		/*
 		long last_time = getLastMoodQuestionnaireTime();
 		if(current_time - last_time < 3*60*60*1000)
 			return;
+		*/
 
 		int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-		if(hour < 9 || hour > 22)
+		if(hour < 12 || hour > 14)
 			return;
 
-*/
-		PlanMgr planMgr = new PlanMgr(context);
-		int trigger_time = planMgr.getPlanHour();
-		current_time = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+//		PlanMgr planMgr = new PlanMgr(context);
+//		int trigger_time = planMgr.getPlanHour();
+//		current_time = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+//
+//		new Log().e("trigger_time: "+trigger_time);
+//		new Log().e("current_time: "+current_time);
 
-		new Log().e("trigger_time: "+trigger_time);
-		new Log().e("current_time: "+current_time);
-
-		if (trigger_time - current_time == 1) {
+//		if (trigger_time - current_time == 1) {
 			Intent i = new Intent(context, MoodQuestionnaireActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -67,21 +68,21 @@ public class MoodQuestionnaireMgr {
 
 			PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
 			if (routine_desc.equals("going to bed")) {
-				message = "Remember to report your mood before "+routine_desc+"!";
+				message = "Remember to report your mood before "+routine_desc+" in the evening!";
 			} else {
-				message = "Remember to report your mood after "+routine_desc+"!";
+				message = "Remember to report your mood after "+routine_desc+" in the evening!";
 			}
-			new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Questionnaire", message);
+			new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Journal", message);
 
 			updateLastMoodQuestionnaireTriggerTime();
 
 			/* Log reminder and send the data to server */
 
-			current_time = Calendar.getInstance().getTimeInMillis();
+//			current_time = Calendar.getInstance().getTimeInMillis();
 			ReminderData data = new ReminderData(new UserData(context).getUuid(), current_time, message);
 			FileMgr fm = new FileMgr(context);
 			fm.addData(data);
-		}
+//		}
 
 	}
 	

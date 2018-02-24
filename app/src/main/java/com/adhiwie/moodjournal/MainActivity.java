@@ -51,7 +51,7 @@ public class MainActivity extends Activity
 
 	private final String[] required_permissions = new String[] 
 			{
-			Manifest.permission.READ_CONTACTS, Manifest.permission.ACCESS_FINE_LOCATION,
+			Manifest.permission.ACCESS_FINE_LOCATION,
 			Manifest.permission.READ_CALL_LOG, Manifest.permission.READ_SMS, 
 			Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
@@ -107,11 +107,11 @@ public class MainActivity extends Activity
 		super.onStart();
 		setLayout();
 		new GooglePlayServices().isGoogplePlayServiceAvailable(MainActivity.this);
-		if(getMissingPermissions().size() > 0)
+		/*if(getMissingPermissions().size() > 0)
 		{
 			askMissingPermissions();
 			return;
-		}
+		}*/
 
 		check_Consent_GooglePlayService_Permissions_LinkedTask();
 	}
@@ -205,6 +205,7 @@ public class MainActivity extends Activity
 		}
 	}
 
+/*
 
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) 
@@ -250,6 +251,7 @@ public class MainActivity extends Activity
 			check_Consent_GooglePlayService_Permissions_LinkedTask();
 		}
 	}
+*/
 
 
 
@@ -269,6 +271,7 @@ public class MainActivity extends Activity
 			return;
 		}
 
+		/*
 		Permission p = new Permission(getApplicationContext());
 		if(!p.isAccessibilityPermitted())
 		{
@@ -288,6 +291,7 @@ public class MainActivity extends Activity
 			this.finish();
 			return;
 		}
+		*/
 
 		if(!new PlanMgr(getApplicationContext()).isPlanGiven())
 		{

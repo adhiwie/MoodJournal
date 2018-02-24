@@ -46,7 +46,7 @@ public class UserData
 		json.put("reg_time_millis", getRegTimeMillis());
 		json.put("reg_timezone", getRegTimezone());
 		json.put("device_api_level", getDeviceApiLevel());
-		json.put("contact_list", getContactList());
+		//json.put("contact_list", getContactList());
 		json.put("app_list", getAppList());
 		return json.toString();
 	}
