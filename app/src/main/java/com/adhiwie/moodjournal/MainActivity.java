@@ -325,7 +325,7 @@ public class MainActivity extends Activity
 					"Your unique id is: " + new UserData(getApplicationContext()).getUuid() 
 					+ "\n\n"
 					+ "Mood Journal app has been developed by researchers at the University "
-					+ "of Birmingham (UoB) and University College London (UCL) to collect data for "
+					+ "of Birmingham (UoB) to collect data for "
 					+ "research and teaching purposes." 
 					+ "\n\n"
 					+ "We would love to hear your feedback for us and issues with the app. "
