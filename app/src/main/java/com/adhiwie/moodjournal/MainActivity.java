@@ -107,11 +107,11 @@ public class MainActivity extends Activity
 		super.onStart();
 		setLayout();
 		new GooglePlayServices().isGoogplePlayServiceAvailable(MainActivity.this);
-		/*if(getMissingPermissions().size() > 0)
+		if(getMissingPermissions().size() > 0)
 		{
 			askMissingPermissions();
 			return;
-		}*/
+		}
 
 		check_Consent_GooglePlayService_Permissions_LinkedTask();
 	}
@@ -205,8 +205,6 @@ public class MainActivity extends Activity
 		}
 	}
 
-/*
-
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) 
 	{
@@ -251,7 +249,6 @@ public class MainActivity extends Activity
 			check_Consent_GooglePlayService_Permissions_LinkedTask();
 		}
 	}
-*/
 
 
 
