@@ -300,7 +300,7 @@ public class MoodQuestionnaireActivity extends Activity {
 		long end_time = Calendar.getInstance().getTimeInMillis();
 		Log log = new Log();
 		log.e("Start time: " + start_time + ", End time: " + end_time +", Values-- " + a1 + ", " + a2 + ", " + a3);
-		
+
 		MoodQuestionnaireData data = new MoodQuestionnaireData(start_time, end_time, a1, a2, a3);
 		FileMgr fm = new FileMgr(getApplicationContext());
 		fm.addData(data);

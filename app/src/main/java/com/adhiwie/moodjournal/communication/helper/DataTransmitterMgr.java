@@ -59,7 +59,7 @@ public class DataTransmitterMgr
 			{
 				new Log().v("Thread created.");
 				transmitPushSensorData();
-				transmitPullSensorData();
+				//transmitPullSensorData();
 				transmitQuestionnaireData();
 				transmitPendingDataIfAny();
 			}

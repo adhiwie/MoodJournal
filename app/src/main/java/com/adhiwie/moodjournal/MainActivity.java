@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +45,7 @@ import java.util.Calendar;
 
 @SuppressWarnings("deprecation")
 @SuppressLint("NewApi")
-public class MainActivity extends Activity 
+public class MainActivity extends Activity
 {
 
 	private Log log = new Log();
@@ -52,7 +53,6 @@ public class MainActivity extends Activity
 	private final String[] required_permissions = new String[] 
 			{
 			Manifest.permission.ACCESS_FINE_LOCATION,
-			Manifest.permission.READ_CALL_LOG, Manifest.permission.READ_SMS, 
 			Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
 	@Override
@@ -208,6 +208,7 @@ public class MainActivity extends Activity
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) 
 	{
+
 		ArrayList<String> missing_permissions = getMissingPermissions();
 		if(missing_permissions.size() > 0)
 		{
