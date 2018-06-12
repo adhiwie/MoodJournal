@@ -1,17 +1,10 @@
 package com.adhiwie.moodjournal.communication.helper;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 
 import com.adhiwie.moodjournal.communication.DataTransmitter;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
-import com.adhiwie.moodjournal.plan.PlanData;
 import com.adhiwie.moodjournal.plan.PlanMgr;
-import com.adhiwie.moodjournal.questionnaire.personality.PersonalityTestMgr;
-import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.utils.DataTypes;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.SharedPref;

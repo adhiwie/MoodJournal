@@ -23,8 +23,9 @@ public class DataTypes {
 	public final String SMS = "sms";
 
 	public final String PLAN = "plan";
-	public final String MOOD_REPORT = "mood_report";
 	public final String REMINDER = "reminder";
+	public final String GOAL_COMMITMENT_SCALE = "goal_commitment_scale";
+	public final String SRBAI_SCORE = "srbai_score";
 	
 
 	

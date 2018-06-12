@@ -13,16 +13,25 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
-        android:text="@string/personality_test_header"
+        android:text="@string/srbai_header"
         android:textAllCaps="true"
         android:textSize="14sp"
         android:textStyle="italic" />
 
+    <TextView
+        android:id="@+id/tv_questionnaire_instruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:text="@string/srbai_instruction"
+        android:textSize="14sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="1"
         android:orientation="vertical"
         android:visibility="visible" >
@@ -31,10 +40,11 @@
             android:id="@+id/tv_question"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center"
             android:padding="2dp"
             android:textSize="20sp"
+            android:text="Question here"
             android:textStyle="italic|bold" />
 
         <RadioGroup
@@ -48,11 +58,19 @@
             android:orientation="vertical" >
 
             <RadioButton
+                android:id="@+id/rg_option_strongly_disagree"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/seven_scale_option_disagree"
+                android:textSize="14sp" />
+
+            <RadioButton
                 android:id="@+id/rg_option_disagree"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="@string/five_scale_option_disagree"
+                android:text="@string/seven_scale_option_disagree"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -60,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="@string/five_scale_option_somewhat_disagree"
+                android:text="@string/seven_scale_option_somewhat_disagree"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -68,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="@string/five_scale_option_neither_agree_nor_disagree"
+                android:text="@string/seven_scale_option_neither_agree_nor_disagree"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -76,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="@string/five_scale_option_somewhat_agree"
+                android:text="@string/seven_scale_option_somewhat_agree"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -84,7 +102,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="@string/five_scale_option_agree"
+                android:text="@string/seven_scale_option_agree"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/rg_option_strongly_agree"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/seven_scale_option_strongly_agree"
                 android:textSize="14sp" />
         </RadioGroup>
     </LinearLayout>

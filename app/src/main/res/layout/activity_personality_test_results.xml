@@ -3,8 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/White"
-    android:orientation="vertical"
-    android:padding="2dp" >
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
 
     <TextView
         android:id="@+id/tv_questionnaire_header"

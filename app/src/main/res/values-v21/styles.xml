@@ -5,14 +5,41 @@
         AppBaseTheme from BOTH res/values/styles.xml and
         res/values-v21/styles.xml on API 21+ devices.
     -->
-    <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- API 21 theme customizations can go here. -->
         <item name="android:colorPrimary">@color/MediumSeaGreen</item>
         <!--   darker variant for the status bar and contextual app bars -->
         <item name="android:colorPrimaryDark">@color/SeaGreen</item>
         <!--   theme UI controls like checkboxes and text fields -->
         <item name="android:colorAccent">@color/MediumSeaGreen</item>
+        <item name="android:textViewStyle">@style/TextViewStyle</item>
+        <item name="android:textAppearanceButton">@style/TextViewStyleButton</item>
+        <item name="android:radioButtonStyle">@style/RadioButtonStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
 
     </style>
 
+    <style name="TextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">#333333</item>
+        <item name="android:fontFamily">@font/asap_regular</item>
+    </style>
+
+    <style name="TextViewStyleButton" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/asap_regular</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:text">bold</item>
+    </style>
+
+    <style name="RadioButtonStyle" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:textColor">#333333</item>
+        <item name="android:fontFamily">@font/asap_regular</item>
+    </style>
+
+    <style name="HeaderBar">
+        <item name="android:background">@color/SeaGreen</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+    </style>
 </resources>

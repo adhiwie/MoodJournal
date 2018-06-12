@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -36,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class MoodReportActivity extends Activity {
+public class MoodReportActivity extends AppCompatActivity {
 
     LineChart stressChart;
     LineChart activenessChart;
@@ -50,28 +52,38 @@ public class MoodReportActivity extends Activity {
     List<JSONObject> dataInJsonObject;
     long currentTimeMillis;
 
+    private Toolbar mTopToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Drawable background;
-
-        if(Build.VERSION.SDK_INT >= 21)
-            background = getResources().getDrawable(R.drawable.blue_background, null);
-        else
-            background = getResources().getDrawable(R.drawable.blue_background);
-
-
-        ActionBar actionBar = getActionBar();
-        actionBar.setBackgroundDrawable(background);
-        actionBar.setCustomView(R.layout.actionbar_layout);
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayUseLogoEnabled(true);
-
-        TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-        actionbar_title.setText("Mood Data");
+//        Drawable background;
+//
+//        if(Build.VERSION.SDK_INT >= 21)
+//            background = getResources().getDrawable(R.drawable.blue_background, null);
+//        else
+//            background = getResources().getDrawable(R.drawable.blue_background);
+//
+//
+//        ActionBar actionBar = getActionBar();
+//        actionBar.setBackgroundDrawable(background);
+//        actionBar.setCustomView(R.layout.actionbar_layout);
+//        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar.setDisplayUseLogoEnabled(true);
+//
+//        TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
+//        actionbar_title.setText("Mood Data");
         setContentView(R.layout.activity_mood_report);
+        mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mTopToolbar);
+
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         try {
             initialiseData();

@@ -14,6 +14,8 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,8 +33,9 @@ import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.Popup;
 import com.adhiwie.moodjournal.utils.SharedPref;
 
-public class PersonalityTestActivity extends Activity 
+public class PersonalityTestActivity extends AppCompatActivity
 {
+	private Toolbar mTopToolbar;
 	private final String PERSONALITY_TEST_RESULT = "PERSONALITY_TEST_RESULT";
 	private final String PERSONALITY_TEST_ALERT_SHOWN = "PERSONALITY_TEST_ALERT_SHOWN";
 	private final String PERSONALITY_TEST_QUESTION_NUMBER = "PERSONALITY_TEST_QUESTION_NUMBER";
@@ -54,31 +57,40 @@ public class PersonalityTestActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 
-		Drawable background;
-
-		if(Build.VERSION.SDK_INT >= 21)
-			background = getResources().getDrawable(R.drawable.blue_background, null);
-		else
-			background = getResources().getDrawable(R.drawable.blue_background);
-
-
-		ActionBar actionBar = getActionBar();
-		actionBar.setBackgroundDrawable(background);
-		actionBar.setCustomView(R.layout.actionbar_layout);
-		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setDisplayUseLogoEnabled(true);
-		if(Build.VERSION.SDK_INT >= 18)
-			actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
-
-		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-		actionbar_title.setText(getResources().getString(R.string.title_activity_personality_test));
+//		Drawable background;
+//
+//		if(Build.VERSION.SDK_INT >= 21)
+//			background = getResources().getDrawable(R.drawable.blue_background, null);
+//		else
+//			background = getResources().getDrawable(R.drawable.blue_background);
+//
+//
+//		ActionBar actionBar = getActionBar();
+//		actionBar.setBackgroundDrawable(background);
+//		actionBar.setCustomView(R.layout.actionbar_layout);
+//		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
+//		actionBar.setDisplayHomeAsUpEnabled(true);
+//		actionBar.setDisplayUseLogoEnabled(true);
+//		if(Build.VERSION.SDK_INT >= 18)
+//			actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
+//
+//		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
+//		actionbar_title.setText(getResources().getString(R.string.title_activity_personality_test));
 
 		sp = new SharedPref(getApplicationContext());
 		if(new PersonalityTestMgr(getApplicationContext()).getPersonalityTestStatus() == false)
 			setContentView(R.layout.activity_personality_test);
 		else
 			setContentView(R.layout.activity_personality_test_results);
+
+		mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(mTopToolbar);
+
+		// add back arrow to toolbar
+		if (getSupportActionBar() != null){
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			getSupportActionBar().setDisplayShowHomeEnabled(true);
+		}
 
 		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) ) 
 		{
@@ -108,7 +120,7 @@ public class PersonalityTestActivity extends Activity
 		if(new PersonalityTestMgr(getApplicationContext()).getPersonalityTestStatus() == false)
 		{
 			tv_questionnaire_header = (TextView) findViewById(R.id.tv_questionnaire_header);
-			control_btn = (Button) findViewById(R.id.control_btn_personality_test);
+			control_btn = (Button) findViewById(R.id.control_btn_test);
 			questions = getResources().getStringArray(R.array.personality_test_questions);
 			q_num = getCurrentQuestionNumber();
 			setQuestion(q_num);
@@ -273,44 +285,44 @@ public class PersonalityTestActivity extends Activity
 
 		if(code < 0)
 		{
-			if(response.equals(res.getString(R.string.personality_test_option_disagree)))
+			if(response.equals(res.getString(R.string.five_scale_option_disagree)))
 				return 5;
 
 
-			if(response.equals(res.getString(R.string.personality_test_option_somewhat_disagree)))
+			if(response.equals(res.getString(R.string.five_scale_option_somewhat_disagree)))
 				return 4;
 
 
-			if(response.equals(res.getString(R.string.personality_test_option_neither_agree_nor_disagree)))
+			if(response.equals(res.getString(R.string.five_scale_option_neither_agree_nor_disagree)))
 				return 3;
 
 
-			if(response.equals(res.getString(R.string.personality_test_option_somewhat_agree)))
+			if(response.equals(res.getString(R.string.five_scale_option_somewhat_agree)))
 				return 2;
 
 
-			if(response.equals(res.getString(R.string.personality_test_option_agree)))
+			if(response.equals(res.getString(R.string.five_scale_option_agree)))
 				return 1;
 		}
 		else
 		{
-			if(response.equals(res.getString(R.string.personality_test_option_disagree)))
+			if(response.equals(res.getString(R.string.five_scale_option_disagree)))
 				return 1;
 
 
-			if(response.equals(res.getString(R.string.personality_test_option_somewhat_disagree)))
+			if(response.equals(res.getString(R.string.five_scale_option_somewhat_disagree)))
 				return 2;
 
 
-			if(response.equals(res.getString(R.string.personality_test_option_neither_agree_nor_disagree)))
+			if(response.equals(res.getString(R.string.five_scale_option_neither_agree_nor_disagree)))
 				return 3;
 
 
-			if(response.equals(res.getString(R.string.personality_test_option_somewhat_agree)))
+			if(response.equals(res.getString(R.string.five_scale_option_somewhat_agree)))
 				return 4;
 
 
-			if(response.equals(res.getString(R.string.personality_test_option_agree)))
+			if(response.equals(res.getString(R.string.five_scale_option_agree)))
 				return 5;
 		}
 		throw new NullPointerException();

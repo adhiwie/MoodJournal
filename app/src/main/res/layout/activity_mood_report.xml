@@ -6,6 +6,8 @@
     android:background="@color/WhiteSmoke"
     android:orientation="vertical">
 
+    <include layout="@layout/toolbar"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -58,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Weekly stress data"
-                    style="@style/Base.TextAppearance.AppCompat.Title"/>
+                    android:textSize="20sp"/>
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/stress_chart"
@@ -80,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Weekly activeness data"
-                    style="@style/Base.TextAppearance.AppCompat.Title"/>
+                    android:textSize="20sp"/>
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/activeness_chart"
@@ -102,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Weekly happiness data"
-                    style="@style/Base.TextAppearance.AppCompat.Title"/>
+                    android:textSize="20sp"/>
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/happiness_chart"

@@ -2,13 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/White"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/WhiteSmoke">
+
+    <include layout="@layout/toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:background="@color/White"
         android:fillViewport="true"
         android:scrollbars="vertical">
 
@@ -43,8 +48,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/WhiteSmoke">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -52,7 +56,6 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/consent_id_hint"
-            android:textColor="@color/Red"
             android:textSize="12sp" />
 
         <EditText
@@ -61,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="12"
-            android:hint="Email address"
+            android:hint="MTurk ID"
             android:inputType="textEmailAddress" />
 
         <Button
@@ -70,7 +73,7 @@
             android:layout_gravity="bottom"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="2dp"
             android:background="@drawable/filledbutton"
             android:gravity="center"

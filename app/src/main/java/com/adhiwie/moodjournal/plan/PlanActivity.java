@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +36,7 @@ import org.json.JSONException;
 
 import java.util.Calendar;
 
-public class PlanActivity extends Activity {
+public class PlanActivity extends AppCompatActivity {
 
     private final String CREATE_PLAN_STEP_NUMBER = "CREATE_PLAN_STEP_NUMBER";
     private int total_steps = 4;
@@ -56,29 +58,40 @@ public class PlanActivity extends Activity {
     private String routine_desc;
     private String timing;
 
+    private Toolbar mTopToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Drawable background;
-
-        if(Build.VERSION.SDK_INT >= 21)
-            background = getResources().getDrawable(R.drawable.blue_background, null);
-        else
-            background = getResources().getDrawable(R.drawable.blue_background);
-
-
-        ActionBar actionBar = getActionBar();
-        actionBar.setBackgroundDrawable(background);
-        actionBar.setCustomView(R.layout.actionbar_layout);
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayUseLogoEnabled(true);
-
-        TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-        actionbar_title.setText(getResources().getString(R.string.title_activity_create_plan));
+//        Drawable background;
+//
+//        if(Build.VERSION.SDK_INT >= 21)
+//            background = getResources().getDrawable(R.drawable.blue_background, null);
+//        else
+//            background = getResources().getDrawable(R.drawable.blue_background);
+//
+//
+//        ActionBar actionBar = getActionBar();
+//        actionBar.setBackgroundDrawable(background);
+//        actionBar.setCustomView(R.layout.actionbar_layout);
+//        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar.setDisplayUseLogoEnabled(true);
+//
+//        TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
+//        actionbar_title.setText(getResources().getString(R.string.title_activity_create_plan));
 
         setContentView(R.layout.activity_create_plan);
+
+        mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mTopToolbar);
+
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         if (getIntent().getIntExtra("step", 0) == 0) {
             initLayout();
@@ -222,7 +235,7 @@ public class PlanActivity extends Activity {
                 timeString = "12:00";
                 break;
             case 2:
-                hour = 21;
+                hour = 18;
                 minutes = 0;
                 timeString = "18:00";
                 break;

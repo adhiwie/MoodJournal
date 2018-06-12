@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "com.adhiwie.moodjournal"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 23
-        versionCode 8
-        versionName "2.5"
+        versionCode 9
+        versionName "2.6"
     }
 
     buildTypes {
@@ -21,9 +21,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:support-v4:26.1.0'
     compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.google.android.gms:play-services-location:11.8.0'
+    compile 'com.google.android.gms:play-services-location:15.0.1'
+    compile "com.android.support:support-core-utils:26.1.0"
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }

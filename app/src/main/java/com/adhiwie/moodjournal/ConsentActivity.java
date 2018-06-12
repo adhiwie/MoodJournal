@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,37 +22,41 @@ import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.SharedPref;
 
-public class ConsentActivity extends Activity {
+public class ConsentActivity extends AppCompatActivity {
 
 
 	private String email = null;
 	private String r_code = null;
 	private ProgressDialog progress;
+	private Toolbar mTopToolbar;
 	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Drawable background;
-
-		if(Build.VERSION.SDK_INT >= 21)
-			background = getResources().getDrawable(R.drawable.blue_background, null);
-		else
-			background = getResources().getDrawable(R.drawable.blue_background);
-
-
-		ActionBar actionBar = getActionBar();
-		actionBar.setBackgroundDrawable(background);
-		actionBar.setCustomView(R.layout.actionbar_layout);
-		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-		actionBar.setDisplayHomeAsUpEnabled(false);
-		actionBar.setDisplayUseLogoEnabled(true);
-
-		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-		actionbar_title.setText(getResources().getString(R.string.title_activity_consent));
+//		Drawable background;
+//
+//		if(Build.VERSION.SDK_INT >= 21)
+//			background = getResources().getDrawable(R.drawable.blue_background, null);
+//		else
+//			background = getResources().getDrawable(R.drawable.blue_background);
+//
+//
+//		ActionBar actionBar = getActionBar();
+//		actionBar.setBackgroundDrawable(background);
+//		actionBar.setCustomView(R.layout.actionbar_layout);
+//		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
+//		actionBar.setDisplayHomeAsUpEnabled(false);
+//		actionBar.setDisplayUseLogoEnabled(true);
+//
+//		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
+//		actionbar_title.setText(getResources().getString(R.string.title_activity_consent));
 
 		setContentView(R.layout.activity_consent);
+
+		mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(mTopToolbar);
 
 		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) ) 
 		{

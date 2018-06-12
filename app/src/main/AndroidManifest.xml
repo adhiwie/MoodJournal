@@ -1,32 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.adhiwie.moodjournal"
-    android:versionCode="21"
-    android:versionName="0.21">
-
-    <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="23" />
+    package="com.adhiwie.moodjournal">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    <!--<uses-permission android:name="android.permission.READ_CONTACTS" />-->
+    <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
-    <!--<uses-permission android:name="android.permission.READ_CALL_LOG" />-->
-    <!--<uses-permission android:name="android.permission.READ_SMS" />-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission
-        android:name="android.permission.PACKAGE_USAGE_STATS"
-        tools:ignore="ProtectedPermissions" />
-    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
 
+    <!-- <uses-permission android:name="android.permission.READ_CALL_LOG" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_SMS" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
+    <!-- <uses-permission -->
+    <!-- android:name="android.permission.PACKAGE_USAGE_STATS" -->
+    <!-- tools:ignore="ProtectedPermissions" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -69,6 +63,13 @@
         <activity
             android:name=".user.permission.NSLPermissionActivity"
             android:label="@string/title_activity_nsl_permission" />
+        <activity android:name=".plan.PlanActivity"
+            android:label="@string/title_activity_create_plan"/>
+        <activity android:name=".report.MoodReportActivity" />
+        <activity android:name=".questionnaire.pretest.GCSActivity"
+            android:label="@string/title_activity_gcs_test"/>
+        <activity android:name=".questionnaire.posttest.SRBAIActivity"
+            android:label="@string/title_activity_srbai_test"/>
 
         <service
             android:name=".sensor.push.AccessibilitySensor"
@@ -115,8 +116,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".plan.PlanActivity" />
-        <activity android:name=".report.MoodReportActivity" />
     </application>
 
 </manifest>

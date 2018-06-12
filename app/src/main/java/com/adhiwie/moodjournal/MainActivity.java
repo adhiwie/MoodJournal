@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,9 @@ import com.adhiwie.moodjournal.plan.PlanMgr;
 import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireActivity;
 import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireMgr;
 import com.adhiwie.moodjournal.questionnaire.personality.PersonalityTestActivity;
+import com.adhiwie.moodjournal.questionnaire.posttest.SRBAIActivity;
+import com.adhiwie.moodjournal.questionnaire.pretest.GCSActivity;
+import com.adhiwie.moodjournal.questionnaire.pretest.GCSMgr;
 import com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireActivity;
 import com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireMgr;
 import com.adhiwie.moodjournal.report.MoodReportActivity;
@@ -45,10 +49,11 @@ import java.util.Calendar;
 
 @SuppressWarnings("deprecation")
 @SuppressLint("NewApi")
-public class MainActivity extends Activity
+public class MainActivity extends AppCompatActivity
 {
 
 	private Log log = new Log();
+	private Toolbar mTopToolbar;
 
 	private final String[] required_permissions = new String[] 
 			{
@@ -60,24 +65,27 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 
-		Drawable background;
-
-		if(Build.VERSION.SDK_INT >= 21)
-			background = getResources().getDrawable(R.drawable.blue_background, null);
-		else
-			background = getResources().getDrawable(R.drawable.blue_background);
-
-		ActionBar actionBar = getActionBar();
-		actionBar.setBackgroundDrawable(background);
-		actionBar.setCustomView(R.layout.actionbar_layout);
-		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-		actionBar.setDisplayHomeAsUpEnabled(false);
-		actionBar.setDisplayUseLogoEnabled(true);
-
-		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-		actionbar_title.setText(getResources().getString(R.string.title_activity_main));
+//		Drawable background;
+//
+//		if(Build.VERSION.SDK_INT >= 21)
+//			background = getResources().getDrawable(R.drawable.blue_background, null);
+//		else
+//			background = getResources().getDrawable(R.drawable.blue_background);
+//
+//		ActionBar actionBar = getActionBar();
+//		actionBar.setBackgroundDrawable(background);
+//		actionBar.setCustomView(R.layout.actionbar_layout);
+//		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
+//		actionBar.setDisplayHomeAsUpEnabled(false);
+//		actionBar.setDisplayUseLogoEnabled(true);
+//
+//		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
+//		actionbar_title.setText(getResources().getString(R.string.title_activity_main));
 
 		setContentView(R.layout.activity_main);
+
+		mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(mTopToolbar);
 
 
 		//		ShimmerFrameLayout exit_shimmer = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
@@ -298,6 +306,13 @@ public class MainActivity extends Activity
 			return;
 		}
 
+		if(!new GCSMgr(getApplicationContext()).getGCSStatus())
+		{
+			startActivity(new Intent(this, GCSActivity.class));
+			this.finish();
+			return;
+		}
+
 		try{ 
 			new LinkedTasks(getApplicationContext()).checkAllExceptPermission(); 
 		} 
@@ -412,7 +427,7 @@ public class MainActivity extends Activity
 	}
 
 	// button click functions
-	public void moodTest(View v) 
+	public void moodTest(View v)
 	{
 
 		MoodQuestionnaireMgr mgr = new MoodQuestionnaireMgr(getApplicationContext());

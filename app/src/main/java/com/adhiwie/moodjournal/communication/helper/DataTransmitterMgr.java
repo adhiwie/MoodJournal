@@ -58,7 +58,7 @@ public class DataTransmitterMgr
 			public void run()
 			{
 				new Log().v("Thread created.");
-				transmitPushSensorData();
+				//transmitPushSensorData();
 				//transmitPullSensorData();
 				transmitQuestionnaireData();
 				transmitPendingDataIfAny();
@@ -100,6 +100,14 @@ public class DataTransmitterMgr
 			PersonalityTestDataTransmission pt = new PersonalityTestDataTransmission(context);
 			if(pt.isDataAvailable() && !pt.isDataTransmitted())
 				pt.transmitData();
+
+			GCSDataTransmission gt = new GCSDataTransmission(context);
+			if(gt.isDataAvailable() && !gt.isDataTransmitted())
+				gt.transmitData();
+
+			SRBAIDataTransmission st = new SRBAIDataTransmission(context);
+			if(st.isDataAvailable() && !st.isDataTransmitted())
+				st.transmitData();
 		}
 		catch(Exception e)
 		{

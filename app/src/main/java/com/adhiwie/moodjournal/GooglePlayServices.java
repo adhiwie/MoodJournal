@@ -6,20 +6,20 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 public class GooglePlayServices {
 
 	public boolean isGoogplePlayServiceAvailable(final Activity activity)
 	{
 		boolean status = false;
-		int code = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
+		int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity);
 		switch (code) 
 		{
 		case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED: 
 			try 
 			{
-				Dialog d = GooglePlayServicesUtil.getErrorDialog(code, activity, 0);
+				Dialog d = GoogleApiAvailability.getInstance().getErrorDialog(activity, code, 0);
 				d.setOnCancelListener(new OnCancelListener() {
 					@Override
 					public void onCancel(DialogInterface arg0) 
@@ -35,7 +35,7 @@ public class GooglePlayServices {
 		case ConnectionResult.API_UNAVAILABLE: 
 			try 
 			{
-				Dialog d = GooglePlayServicesUtil.getErrorDialog(code, activity, 0);
+				Dialog d = GoogleApiAvailability.getInstance().getErrorDialog(activity, code, 0);
 				d.setOnCancelListener(new OnCancelListener() {
 					@Override
 					public void onCancel(DialogInterface arg0) {

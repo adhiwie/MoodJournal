@@ -1,13 +1,23 @@
 package com.adhiwie.moodjournal;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.adhiwie.moodjournal.communication.helper.CommunicationMgr;
 import com.adhiwie.moodjournal.exception.ConsetMissingException;
+import com.adhiwie.moodjournal.plan.PlanActivity;
 import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireMgr;
+import com.adhiwie.moodjournal.questionnaire.posttest.SRBAIActivity;
+import com.adhiwie.moodjournal.questionnaire.posttest.SRBAIMgr;
+import com.adhiwie.moodjournal.questionnaire.pretest.GCSActivity;
+import com.adhiwie.moodjournal.questionnaire.pretest.GCSMgr;
 import com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireMgr;
 import com.adhiwie.moodjournal.sensor.manager.SensorSubscriptionManager;
+import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.user.permission.Permission;
+import com.adhiwie.moodjournal.utils.Time;
+
+import java.util.Calendar;
 
 public class LinkedTasks {
 
@@ -42,6 +52,9 @@ public class LinkedTasks {
 		//p.notifyUserIfAccessibilityPermissionRevoked();
 		//p.notifyUserIfAppUsagePermissionRevoked();
 		//p.notifyUserIfNSLPermissionRevoked();
+
+		// check for SRBAI questionnaire
+		new SRBAIMgr(context).notifyUserIfRequired();
 	}
 	
 	public void checkAllExceptPermission()
@@ -59,6 +72,9 @@ public class LinkedTasks {
 		SensorSubscriptionManager ss = new SensorSubscriptionManager(context);
 		ss.startActivitySensingIfNotWorking();
 		ss.startLocationSensingIfWorking();
+
+		// check for SRBAI questionnaire
+		new SRBAIMgr(context).notifyUserIfRequired();
 	}
 
 
@@ -71,6 +87,9 @@ public class LinkedTasks {
 
 		// check for mood questionnaire
 		// new WellBeingQuestionnaireMgr(context).notifyUserIfRequired();
+
+		// check for SRBAI questionnaire
+		new SRBAIMgr(context).notifyUserIfRequired();
 	}
 
 //	public void checkPermission()

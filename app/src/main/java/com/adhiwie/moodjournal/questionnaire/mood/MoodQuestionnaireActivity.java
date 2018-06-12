@@ -12,6 +12,8 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -33,7 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 @SuppressLint("NewApi")
-public class MoodQuestionnaireActivity extends Activity {
+public class MoodQuestionnaireActivity extends AppCompatActivity {
 
 	private long start_time;
 	private Resources res;
@@ -50,7 +52,8 @@ public class MoodQuestionnaireActivity extends Activity {
 	private boolean sk1_thumb;
 	private boolean sk2_thumb;
 	private boolean sk3_thumb;
-	
+
+	private Toolbar mTopToolbar;
 	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
@@ -58,25 +61,28 @@ public class MoodQuestionnaireActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		Drawable background;
-
-		if(Build.VERSION.SDK_INT >= 21)
-			background = getResources().getDrawable(R.drawable.blue_background, null);
-		else
-			background = getResources().getDrawable(R.drawable.blue_background);
-
-
-		ActionBar actionBar = getActionBar();
-		actionBar.setBackgroundDrawable(background);
-		actionBar.setCustomView(R.layout.actionbar_layout);
-		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-		actionBar.setDisplayHomeAsUpEnabled(false);
-		actionBar.setDisplayUseLogoEnabled(true);
-
-		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-		actionbar_title.setText(getResources().getString(R.string.title_activity_mood_questionnaire));
+//		Drawable background;
+//
+//		if(Build.VERSION.SDK_INT >= 21)
+//			background = getResources().getDrawable(R.drawable.blue_background, null);
+//		else
+//			background = getResources().getDrawable(R.drawable.blue_background);
+//
+//
+//		ActionBar actionBar = getActionBar();
+//		actionBar.setBackgroundDrawable(background);
+//		actionBar.setCustomView(R.layout.actionbar_layout);
+//		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
+//		actionBar.setDisplayHomeAsUpEnabled(false);
+//		actionBar.setDisplayUseLogoEnabled(true);
+//
+//		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
+//		actionbar_title.setText(getResources().getString(R.string.title_activity_mood_questionnaire));
 		
 		setContentView(R.layout.activity_mood_questionnaire);
+
+		mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(mTopToolbar);
 		
 		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) ) 
 		{

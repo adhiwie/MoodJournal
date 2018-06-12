@@ -7,7 +7,7 @@
     <string name="info_title">About Us</string>
     <string name="accessibility_service_description">Mood Journal will now be able to receive your phone interaction events such as click, back, home.</string>
     <string name="title_activity_main">Mood Journal</string>
-    <string name="title_activity_consent">Registration</string>
+    <string name="title_activity_consent">Consent Form</string>
     <string name="title_activity_personality_test">Personality Test</string>
     <string name="title_activity_app_usage_permission">App Usage Permission</string>
     <string name="title_activity_nsl_permission">Notification Permission</string>
@@ -15,6 +15,8 @@
     <string name="title_activity_mood_questionnaire">Mood Questionnaire</string>
     <string name="title_activity_wellbeing_questionnaire">Well-being Questionnaire</string>
     <string name="title_activity_create_plan">Setting a Plan</string>
+    <string name="title_activity_gcs_test">Goal Commitment Scale Test</string>
+    <string name="title_activity_srbai_test">SRBAI Test</string>
 
     <string name="open_accessibility_settings">Allow Accessibility Access</string>
     <string name="open_app_settings">Allow App Usage Access</string>
@@ -56,7 +58,7 @@
         the application. Moreover, I have the right to access any information in the data set related 
         to me, and request for any part of that data to be removed.</string>
     <string name="consent_id_label">Email address</string>
-    <string name="consent_id_hint">Enter your email address. This is used to send updates.</string>
+    <string name="consent_id_hint">Enter your MTurk ID. This is used to label the data.</string>
     <string name="consent_button_label">I Agree</string>
     <string name="ok_string">OK</string>
 
@@ -68,11 +70,6 @@
     <string name="count_zero_out_of_thirty">0/30</string>
 
     <string name="personality_test_header">Question 1 of 50</string>
-    <string name="personality_test_option_disagree">Strongly disagree</string>
-    <string name="personality_test_option_somewhat_disagree">Somewhat disagree</string>
-    <string name="personality_test_option_neither_agree_nor_disagree">Neither agree nor disagree</string>
-    <string name="personality_test_option_somewhat_agree">Somewhat agree</string>
-    <string name="personality_test_option_agree">Strongly agree</string>
     <string name="personality_test_results_header">Your Personality Test Results</string>
     <string name="personality_type">Quality</string>
     <string name="personality_type_extraversion">Extraversion</string>
@@ -80,7 +77,7 @@
     <string name="personality_type_conscientiousness">Conscientiousness</string>
     <string name="personality_type_neuroticism">Neuroticism</string>
     <string name="personality_type_openness">Openness</string>
-    <string name="personality_test_info_string">        You cannot go back to change your answer. It is not mandatory to completely the test in one go. 
+    <string name="personality_test_info_string">You cannot go back to change your answer. It is not mandatory to completely the test in one go.
         So, take your time and try to answer the questions as accurate as possible.
         
         \n\n 
@@ -238,4 +235,59 @@
     <string name="activity_create_plan_intro_button_label">Let\'s begin</string>
     <string name="date_range">"%1$s - %2$s %3$s</string>
 
+    <string name="gcs_header">Question 1 of 5</string>
+    <string name="gcs_instruction">Please indicate how do you feel about tracking your mood every day. Choose the appropriate response for each item.</string>
+    <string name="gcs_results_header">Your Goal Commitment Test Results</string>
+    <string name="gcs_results_info">Goal Commitment Scale</string>
+    <string name="gcs_results_explained">You have scored %1$d out of 25</string>
+    <string name="gcs_info_string">You cannot go back to change your answer. It is mandatory to complete the test in one go.
+        So, take your time and try to answer the questions as accurate as possible.
+
+        \n\n
+        Note that this test uses HWK Scale to measure goal commitment, developed by Hollenbeck, Williams, and Klein (1989).
+
+        Thank you! </string>
+
+    <string-array name="gcs_questions">
+        <item>I am strongly committed to pursuing this goal.</item>
+        <item>I think this is a good goal to aim for.</item>
+        <item>It would not take much to make me abandon this goal.</item>
+        <item>Quite frankly, I do not care if I achieve this goal or not.</item>
+        <item>It is hard to take this goal seriously.</item>
+    </string-array>
+
+    <string name="srbai_header">Question 1 of 4</string>
+    <string name="srbai_instruction">Please answer the following questions by choosing the right scale that
+        represents your perception towards completing a mood reporting task as your activity.</string>
+    <string name="srbai_results_header">SRBAI Test Results</string>
+    <string name="srbai_results_info">Your automaticity score</string>
+    <string name="srbai_info_string">You cannot go back to change your answer. It is mandatory to complete the test in one go.
+        So, take your time and try to answer the questions as accurate as possible.
+
+        \n\n
+        Note that this test uses SRBAI questionnaire to measure automaticity of behaviour, developed by Gardner et. al. (2012).
+
+        Thank you! </string>
+
+    <string-array name="srbai_questions">
+        <item>I report my mood automatically.</item>
+        <item>I report my mood without having to consciously remember.</item>
+        <item>I report my mood without thinking.</item>
+        <item>I start reporting my mood before I realise I am doing it.</item>
+    </string-array>
+
+    <!-- Likert scale -->
+    <string name="five_scale_option_disagree">Strongly disagree</string>
+    <string name="five_scale_option_somewhat_disagree">Disagree</string>
+    <string name="five_scale_option_neither_agree_nor_disagree">Neither agree nor disagree</string>
+    <string name="five_scale_option_somewhat_agree">Agree</string>
+    <string name="five_scale_option_agree">Strongly agree</string>
+
+    <string name="seven_scale_option_strongly_disagree">Strongly disagree</string>
+    <string name="seven_scale_option_disagree">Disagree</string>
+    <string name="seven_scale_option_somewhat_disagree">Somewhat disagree</string>
+    <string name="seven_scale_option_neither_agree_nor_disagree">Neither agree nor disagree</string>
+    <string name="seven_scale_option_somewhat_agree">Somewhat agree</string>
+    <string name="seven_scale_option_agree">Agree</string>
+    <string name="seven_scale_option_strongly_agree">Strongly agree</string>
 </resources>
