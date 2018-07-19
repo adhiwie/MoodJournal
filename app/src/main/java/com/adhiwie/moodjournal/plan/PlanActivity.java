@@ -1,18 +1,14 @@
 package com.adhiwie.moodjournal.plan;
 
-import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateFormat;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,43 +16,31 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.adhiwie.moodjournal.MainActivity;
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.communication.helper.PlanDataTransmission;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.user.data.UserData;
-import com.adhiwie.moodjournal.utils.Log;
-import com.adhiwie.moodjournal.utils.Popup;
 import com.adhiwie.moodjournal.utils.SharedPref;
 
 import org.json.JSONException;
 
-import java.util.Calendar;
-
 public class PlanActivity extends AppCompatActivity {
 
-    private final String CREATE_PLAN_STEP_NUMBER = "CREATE_PLAN_STEP_NUMBER";
-    private int total_steps = 4;
     private int step;
     private String[] routines;
-    private int routine;
+    private String routine;
     private SharedPref sp;
     private Button control_btn;
     private LinearLayout intro_layout;
     private LinearLayout step_1_layout;
-    private LinearLayout step_2_layout;
-    private LinearLayout step_3_layout;
+    private RelativeLayout step_2_layout;
+    private RelativeLayout step_3_layout;
     private ArrayAdapter<String> list_adapter;
-    private TextView time_tv;
-    private Button change_time;
-    private TextView time_message;
-    private int hour;
-    private int minutes;
-    private String routine_desc;
-    private String timing;
+    private TextView detailed_plan_tv;
 
     private Toolbar mTopToolbar;
 
@@ -114,13 +98,13 @@ public class PlanActivity extends AppCompatActivity {
         step = 0;
 
         intro_layout = (LinearLayout) findViewById(R.id.intro_layout);
-        //step_1_layout = (LinearLayout) findViewById(R.id.step_1_layout);
-        step_2_layout = (LinearLayout) findViewById(R.id.step_2_layout);
-        step_3_layout = (LinearLayout) findViewById(R.id.step_3_layout);
+        step_1_layout = (LinearLayout) findViewById(R.id.step_1_layout);
+        step_2_layout = (RelativeLayout) findViewById(R.id.step_2_layout);
+        step_3_layout = (RelativeLayout) findViewById(R.id.step_3_layout);
         control_btn = (Button) findViewById(R.id.create_plan);
 
         intro_layout.setVisibility(View.VISIBLE);
-        //step_1_layout.setVisibility(View.GONE);
+        step_1_layout.setVisibility(View.GONE);
         step_2_layout.setVisibility(View.GONE);
         step_3_layout.setVisibility(View.GONE);
     }
@@ -139,6 +123,9 @@ public class PlanActivity extends AppCompatActivity {
                     case 2:
                         goToStepOne(2);
                         break;
+                    case 3:
+                        goToStepTwo(routine);
+                        break;
 
                 }
                 return true;
@@ -148,13 +135,10 @@ public class PlanActivity extends AppCompatActivity {
     }
 
     public void onCreateButtonClick(View v) {
-        timing = "evening";
-        routine = 2;
         goToStepOne(2);
     }
 
-    /*
-    private void goToStepOne() {
+    private void goToStepOne(int time_mode) {
         step = 1;
 
         intro_layout.setVisibility(View.GONE);
@@ -162,29 +146,6 @@ public class PlanActivity extends AppCompatActivity {
         step_2_layout.setVisibility(View.GONE);
         step_3_layout.setVisibility(View.GONE);
 
-        String[] timings = getResources().getStringArray(R.array.general_timings);
-        list_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, timings);
-        final ListView timing_list = (ListView) findViewById(R.id.timing_list);
-        timing_list.setAdapter(list_adapter);
-        timing_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                timing = timing_list.getItemAtPosition(position).toString().toLowerCase();
-                routine = position;
-                goToStepOne(position);
-            }
-        });
-    }
-
-*/
-
-    private void goToStepOne(int time_mode) {
-        step = 1;
-
-        intro_layout.setVisibility(View.GONE);
-        //step_1_layout.setVisibility(View.GONE);
-        step_2_layout.setVisibility(View.VISIBLE);
-        step_3_layout.setVisibility(View.GONE);
         switch (time_mode) {
             case 0:
                 routines = getResources().getStringArray(R.array.morning_routines);
@@ -197,6 +158,7 @@ public class PlanActivity extends AppCompatActivity {
                 break;
 
         }
+
         list_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, routines);
         final ListView routine_list = (ListView) findViewById(R.id.routine_list);
         routine_list.setAdapter(list_adapter);
@@ -208,69 +170,111 @@ public class PlanActivity extends AppCompatActivity {
         });
     }
 
-    private void goToStepTwo(String item) {
+    private void goToStepTwo(final String routine) {
+        this.routine = routine;
         step = 2;
 
         intro_layout.setVisibility(View.GONE);
-        //step_1_layout.setVisibility(View.GONE);
-        step_2_layout.setVisibility(View.GONE);
-        step_3_layout.setVisibility(View.VISIBLE);
+        step_1_layout.setVisibility(View.GONE);
+        step_2_layout.setVisibility(View.VISIBLE);
+        step_3_layout.setVisibility(View.GONE);
 
-        routine_desc = item;
+        detailed_plan_tv = (TextView) findViewById(R.id.step_2_plan_tv);
+        final String plan = getResources().getString(R.string.detailed_plan, routine);
 
-        time_message = (TextView) findViewById(R.id.message);
-        String msg = getResources().getString(R.string.create_plan_step_3_message, item);
-        time_message.setText(msg);
+        SpannableStringBuilder spannable = new SpannableStringBuilder(plan);
 
-        String timeString;
-        switch (routine) {
-            case 0:
-                hour = 8;
-                minutes = 0;
-                timeString = "8:00";
-                break;
-            case 1:
-                hour = 12;
-                minutes = 0;
-                timeString = "12:00";
-                break;
-            case 2:
-                hour = 18;
-                minutes = 0;
-                timeString = "18:00";
-                break;
-            default:
-                hour = 0;
-                minutes = 0;
-                timeString = "00:00";
-                break;
+        spannable.setSpan(
+                new BackgroundColorSpan(0x223CB371),
+                plan.indexOf(routine),
+                plan.indexOf(routine)+String.valueOf(routine).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
 
-        }
+        spannable.setSpan(
+                new StyleSpan(Typeface.BOLD),
+                plan.indexOf(routine),
+                plan.indexOf(routine)+String.valueOf(routine).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
 
-        time_tv = (TextView) findViewById(R.id.time_tv);
-        time_tv.setText(timeString);
+        spannable.setSpan(
+                new BackgroundColorSpan(0x223CB371),
+                plan.indexOf("track my mood"),
+                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
 
-        change_time = (Button) findViewById(R.id.change_time);
-        change_time.setOnClickListener(new View.OnClickListener() {
+        spannable.setSpan(
+                new StyleSpan(Typeface.BOLD),
+                plan.indexOf("track my mood"),
+                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        detailed_plan_tv.setText(spannable);
+
+        Button buttonContinue = (Button) findViewById(R.id.step_2_btn);
+        buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment fragment = new TimePickerFragment();
-                fragment.show(getFragmentManager(), "timePicker");
+                goToStepThree(routine);
             }
         });
 
-        Button submit = (Button) findViewById(R.id.submit);
-        submit.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void goToStepThree(final String routine) {
+        step = 3;
+
+        intro_layout.setVisibility(View.GONE);
+        step_1_layout.setVisibility(View.GONE);
+        step_2_layout.setVisibility(View.GONE);
+        step_3_layout.setVisibility(View.VISIBLE);
+
+        detailed_plan_tv = (TextView) findViewById(R.id.step_3_plan_tv);
+        final String plan = getResources().getString(R.string.detailed_plan, routine);
+
+        SpannableStringBuilder spannable = new SpannableStringBuilder(plan);
+
+        spannable.setSpan(
+                new BackgroundColorSpan(0x223CB371),
+                plan.indexOf(routine),
+                plan.indexOf(routine)+String.valueOf(routine).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        spannable.setSpan(
+                new StyleSpan(Typeface.BOLD),
+                plan.indexOf(routine),
+                plan.indexOf(routine)+String.valueOf(routine).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        spannable.setSpan(
+                new BackgroundColorSpan(0x223CB371),
+                plan.indexOf("track my mood"),
+                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        spannable.setSpan(
+                new StyleSpan(Typeface.BOLD),
+                plan.indexOf("track my mood"),
+                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        detailed_plan_tv.setText(spannable);
+
+        Button buttonContinue = (Button) findViewById(R.id.step_3_btn);
+        buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlanData data = new PlanData(new UserData(getApplicationContext()).getUuid(), timing, routine_desc, hour, minutes);
-
+                PlanData data = new PlanData(new UserData(getApplicationContext()).getUuid(), routine);
                 PlanMgr planMgr = new PlanMgr(getApplicationContext());
-                planMgr.setPlanHour(hour);
-                planMgr.setPlanMinute(minutes);
                 planMgr.setPlanGiven();
-                planMgr.setPlanRoutineDesc(routine_desc);
-                planMgr.setPlanTiming(timing);
+                planMgr.setPlanRoutineDesc(routine);
                 try {
                     planMgr.setPlanDataString(data.toJSONString());
                 } catch (JSONException e) {
@@ -286,49 +290,6 @@ public class PlanActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    @SuppressLint("ValidFragment")
-    public class TimePickerFragment extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // Do something with the time chosen by the user
-            hour = hourOfDay;
-            minutes = minute;
-
-            new Log().e("Hour of day"+hour);
-
-            String mins;
-            if (minute < 10) {
-                mins = "0" + String.valueOf(minute);
-            } else {
-                mins = String.valueOf(minute);
-            }
-
-            time_tv.setText(String.valueOf(hourOfDay) + ":" + mins);
-
-        }
-    }
-
-    private void showReherseal() {
-        String message =
-                "Now imagine this situation: you are "+routine_desc+" in the evening."
-                    +"Right after that routine happens, report your mood immediately.";
-
-        new Popup().showPopup(PlanActivity.this, "", message);
     }
 
 }

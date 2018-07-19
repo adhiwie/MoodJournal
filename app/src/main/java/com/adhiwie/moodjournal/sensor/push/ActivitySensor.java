@@ -3,6 +3,7 @@ package com.adhiwie.moodjournal.sensor.push;
 import android.app.IntentService;
 import android.content.Intent;
 
+import com.adhiwie.moodjournal.LinkedTasks;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
@@ -34,6 +35,8 @@ public class ActivitySensor extends IntentService
 		try 
 		{
 			log.v("New Activity");
+			new LinkedTasks(getApplicationContext()).checkQuestionnaires();
+
 			if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) ) 
 				Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
 

@@ -49,38 +49,38 @@ public class AdaptiveSensingManager
 
 		addNewActivity(ad.getActivity());
 
-		if(!isLocationSubscribedToday())
-		{
-			new LocationManager(context).requestLocationUpdates(LOCATION_FREQUENCY_SLOW);
-			setLocationSubscribedToday();
-			setLastSubscriptionTime(Calendar.getInstance().getTimeInMillis());
-			return;
-		}
-		
-		LocationManager lm = new LocationManager(context);
-		
-		if(isLocationSensingRequired())
-		{
-			lm.requestLocationUpdates(LOCATION_FREQUENCY_FAST);
-		}
-		else if(shouldLocationSensingBeRemoved() || new Time(Calendar.getInstance()).get(Time.HOURS) < 6)
-		{
-			lm.removeContinuousUpdates();
-		}
-		else 
-		{
-			LocationData ld = lm.getCurrentLocation();
-			long time_since_last_location_registered = Calendar.getInstance().getTimeInMillis();
-			if(ld != null)
-				time_since_last_location_registered -= ld.getTime();
-			
-			
-			if(timeSinceLastSubscription() > LOCATION_FREQUENCY_FAST && (time_since_last_location_registered > LOCATION_FREQUENCY_SLOW))
-			{
-				lm.requestLocationUpdates(LOCATION_FREQUENCY_SLOW);
-				setLastSubscriptionTime(Calendar.getInstance().getTimeInMillis());
-			}
-		}
+//		if(!isLocationSubscribedToday())
+//		{
+//			new LocationManager(context).requestLocationUpdates(LOCATION_FREQUENCY_SLOW);
+//			setLocationSubscribedToday();
+//			setLastSubscriptionTime(Calendar.getInstance().getTimeInMillis());
+//			return;
+//		}
+//
+//		LocationManager lm = new LocationManager(context);
+//
+//		if(isLocationSensingRequired())
+//		{
+//			lm.requestLocationUpdates(LOCATION_FREQUENCY_FAST);
+//		}
+//		else if(shouldLocationSensingBeRemoved() || new Time(Calendar.getInstance()).get(Time.HOURS) < 6)
+//		{
+//			lm.removeContinuousUpdates();
+//		}
+//		else
+//		{
+//			LocationData ld = lm.getCurrentLocation();
+//			long time_since_last_location_registered = Calendar.getInstance().getTimeInMillis();
+//			if(ld != null)
+//				time_since_last_location_registered -= ld.getTime();
+//
+//
+//			if(timeSinceLastSubscription() > LOCATION_FREQUENCY_FAST && (time_since_last_location_registered > LOCATION_FREQUENCY_SLOW))
+//			{
+//				lm.requestLocationUpdates(LOCATION_FREQUENCY_SLOW);
+//				setLastSubscriptionTime(Calendar.getInstance().getTimeInMillis());
+//			}
+//		}
 	}
 
 

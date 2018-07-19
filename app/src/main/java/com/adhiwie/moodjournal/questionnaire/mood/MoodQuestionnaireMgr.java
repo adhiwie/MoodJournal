@@ -15,8 +15,6 @@ import com.adhiwie.moodjournal.utils.NotificationMgr;
 import com.adhiwie.moodjournal.utils.SharedPref;
 import com.adhiwie.moodjournal.utils.Time;
 
-import org.json.JSONException;
-
 public class MoodQuestionnaireMgr {
 
 	private final String MOOD_REPORT_DATA = "mood_report_data";
@@ -32,6 +30,10 @@ public class MoodQuestionnaireMgr {
 	
 	public void notifyUserIfRequired()
 	{
+		new Log().e(String.valueOf("REMINDER IS OPENED FOR TODAY? " +checkIfReminderIsOpenedForToday()));
+		if(checkIfReminderIsOpenedForToday())
+			return;
+
 		if(getMoodQuestionnaireCountForToday() > 0)
 			return;
 
@@ -48,7 +50,7 @@ public class MoodQuestionnaireMgr {
 		*/
 
 		int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-		if(hour < 12 || hour > 14)
+		if(hour < 10 || hour > 22)
 			return;
 
 //		PlanMgr planMgr = new PlanMgr(context);
@@ -59,7 +61,7 @@ public class MoodQuestionnaireMgr {
 //		new Log().e("current_time: "+current_time);
 
 //		if (trigger_time - current_time == 1) {
-			Intent i = new Intent(context, MoodQuestionnaireActivity.class);
+			Intent i = new Intent(context, ReminderActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
@@ -67,11 +69,8 @@ public class MoodQuestionnaireMgr {
 			String message;
 
 			PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
-			if (routine_desc.equals("going to bed")) {
-				message = "Remember to report your mood before "+routine_desc+" in the evening!";
-			} else {
-				message = "Remember to report your mood after "+routine_desc+" in the evening!";
-			}
+			message = "Remember: if I "+routine_desc+", then I will track my mood!";
+
 			new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Journal", message);
 
 			updateLastMoodQuestionnaireTriggerTime();
@@ -91,8 +90,8 @@ public class MoodQuestionnaireMgr {
 	public void updateLastMoodQuestionnaireTime()
 	{
 		sp.add(Mood_Notification_Time, Calendar.getInstance().getTimeInMillis());
-		updateMoodNotifcationCount();
-		updateMoodNotifcationCountForToday();
+		updateMoodNotificationCount();
+		updateMoodNotificationCountForToday();
 	}
 	
 	public long getLastMoodQuestionnaireTime()
@@ -115,7 +114,7 @@ public class MoodQuestionnaireMgr {
 	
 	
 	private final String Mood_Notification_Count = "Mood_Notification_Count";
-	private void updateMoodNotifcationCount()
+	private void updateMoodNotificationCount()
 	{
 		if(getMoodQuestionnaireCount() == 0)
 			sp.add(Mood_Notification_Count, 0);
@@ -126,12 +125,10 @@ public class MoodQuestionnaireMgr {
 	{
 		return sp.getInt(Mood_Notification_Count);
 	}
-	
-	
 
 	private final String Mood_Notification_Count_For_Today = "Mood_Notification_Count_For_Today";
 	private final String Mood_Notification_Date_For_Today = "Mood_Notification_Date_For_Today";
-	private void updateMoodNotifcationCountForToday()
+	private void updateMoodNotificationCountForToday()
 	{
 		int current_date = new Time(Calendar.getInstance()).getEpochDays();
 		int last_date = sp.getInt(Mood_Notification_Date_For_Today);
@@ -164,4 +161,25 @@ public class MoodQuestionnaireMgr {
 		new Log().d("Daily mood report");
 		new Log().d(map.toString());
 	}
+
+	private final String REMINDER_OPENED_FOR_TODAY = "REMINDER_OPENED_FOR_TODAY";
+	private final String REMINDER_DATE_FOR_TODAY = "REMINDER_DATE_FOR_TODAY";
+	public boolean checkIfReminderIsOpenedForToday() {
+		int current_date = new Time(Calendar.getInstance()).getEpochDays();
+		int last_date = sp.getInt(REMINDER_DATE_FOR_TODAY);
+
+//		new Log().e(String.valueOf("LAST DATE="+last_date));
+//		new Log().e(String.valueOf("CURRENT DATE="+current_date));
+//		new Log().e(String.valueOf(sp.getBoolean(REMINDER_OPENED_FOR_TODAY)));
+
+		return sp.getBoolean(REMINDER_OPENED_FOR_TODAY);
+
+//		if(last_date == current_date) {
+//			return true;
+//		} else {
+//			return sp.getBoolean(REMINDER_OPENED_FOR_TODAY);
+//		}
+	}
+
+
 }

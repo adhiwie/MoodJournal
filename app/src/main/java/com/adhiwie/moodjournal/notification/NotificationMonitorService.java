@@ -39,10 +39,10 @@ public class NotificationMonitorService extends NotificationListenerService
 		thread.start();
 
 		// check all linked tasks
-//		try{ 
-//			new LinkedTasks(getApplicationContext()).checkAllExceptPermission(); 
-//		} 
-//		catch(Exception e){}
+		try{
+			new LinkedTasks(getApplicationContext()).checkAllExceptPermission();
+		}
+		catch(Exception e){}
 	}
 
 	

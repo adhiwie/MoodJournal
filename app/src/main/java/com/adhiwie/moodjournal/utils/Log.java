@@ -4,7 +4,7 @@ package com.adhiwie.moodjournal.utils;
 public class Log 
 {
 
-	private final String TAG = "MY_TRACES";
+	private final String TAG = "MOOD_JOURNAL";
 	private final boolean debug = true;
 
 	public void d(String message)

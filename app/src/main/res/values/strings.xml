@@ -34,13 +34,10 @@
     <string name="nsl_permission_revoked_message_part3">Click the button below to open your notification settings page. 
         Once you\'re there, enable/reset the app permission and click back button.</string>
     <string name="consent_statement">
-        Mood Journal app logs your mobility, mood, and phone usage information. Mobility and phone interaction
-        traces are collected in the background. The app samples your contextual information such as location, 
-        WiFi connectivity, current physical activity and notification details including arrival time, 
-        response time, seen time, sender app name and title. However, to collect your mood logs the 
-        app will trigger one mood related questionnaire in a day. All the personal information will be anonymised, and securely transmitted and stored on the server. No additional information related to
+        Mood Journal app logs your daily mood data. The app will trigger one mood related questionnaire every day.
+        All the personal information will be anonymised, and securely transmitted and stored on the server. No additional information related to
         contacts \(telephone numbers, email addresses etc.\) on your device or history of communication made with the 
-        contact made would be collected by the application. 
+        contact would be collected by the application.
         
         \n\n 
         
@@ -50,7 +47,7 @@
         \n\n
         
         By clicking \"I Agree\" below, I confirm that I am over 18 years of age and allow the app to collect 
-        your data. I also confirm that I am the sole prominent user of this device. I understand that 
+        my data. I also confirm that I am the sole prominent user of this device. I understand that
         access to any data collected will only be allowed to me and the researchers team at University of Birmingham \(UoB\).
         Any published results of this study will only refer to anonymised and obfuscated data, and 
         aggregated statistics that do not reveal the identities of the participants. As a participant, 
@@ -58,12 +55,12 @@
         the application. Moreover, I have the right to access any information in the data set related 
         to me, and request for any part of that data to be removed.</string>
     <string name="consent_id_label">Email address</string>
-    <string name="consent_id_hint">Enter your MTurk ID. This is used to label the data.</string>
+    <string name="consent_id_hint">Enter your email address, this will be used to send additional information regarding this experiment.</string>
     <string name="consent_button_label">I Agree</string>
     <string name="ok_string">OK</string>
 
     <string name="todays_mood_q_stats_label">Today\'s Mood Questionnaire</string>
-    <string name="answer_mood_q_btn_label">Report Mood</string>
+    <string name="answer_mood_q_btn_label">Track My Mood</string>
     <string name="participation_status_label">Participation Status</string>
     <string name="days_count">Days</string>
     <string name="mood_q_count">Mood questionnaires</string>
@@ -185,26 +182,26 @@
     <string name="mood_test_question3_option5">Very Happy</string>
     <string name="mood_test_question3_option5_tv">Very\nHappy</string>
     <string name="create_plan_introduction">
-        Do you know that mood &amp; emotion really affect the decisions you make every day? In fact, being emotionally aware
-        is really important. We want to help you be more aware of your mood &amp; emotion by creating daily mood reporting
-        as new habit.
+        Do you know that tracking your mood could help maintaining your well-being? Another benefit is
+        you can become more aware of your feelings, and the things that cause them. With this app,
+        we want to help you form a good habit of tracking mood every day.
 
-        \n\nResearch has shown that forming new habits is easier when you create a strategic plan called implementation
-        intention, by specifying when, where, and how you will execute your goal: \"If Y happens, I will do Z!\".
-        And this app will guide you setup an implementation intention.
 
-        \n\nWe will start by identifying your existing routine which you will be used as a trigger.
-        Remember that just after the routine occurs, make sure to report your mood immediately. Repeat this process every day.
+        \n\nResearch has shown that forming new habits is easier when you create an "if-then plan" called implementation
+        intention:  \"If X occurs, then I will do Y!\", note that X can be either a specific time and place, or a particular
+        situation or event, such as arriving at home. Whereas Y is the behaviour you will do whenever Y occurs.
+        For example: \"If I arrive at home, then I will track my mood\".
 
-        \n\nIf you ready to begin, press the button below.
+        \n\nThis app helps you choose your existing routine as a trigger to track your mood.
+        If you are ready to begin, press the button below.
     </string>
-    <string name="create_plan_step_1_message">When do you want to report your mood?</string>
+    <string name="create_plan_step_0_message">When do you want to track your mood?</string>
     <string-array name="general_timings">
         <item>Morning</item>
         <item>Lunchtime</item>
         <item>Evening</item>
     </string-array>
-    <string name="create_plan_step_2_message">After which routine event do you want to report your mood?</string>
+    <string name="create_plan_step_1_message">After which routine do you want to track your mood?</string>
     <string-array name="morning_routines">
         <item>Waking up</item>
         <item>Taking a shower</item>
@@ -220,19 +217,19 @@
         <item>Going to the gym</item>
     </string-array>
     <string-array name="evening_routines">
-        <item>Commuting</item>
-        <item>Arriving at home</item>
-        <item>Going to the gym</item>
-        <item>Taking a shower</item>
-        <item>Eating dinner</item>
-        <item>Going to bed</item>
-        <item>Brushing teeth</item>
+        <item>Arrive at home</item>
+        <item>Go to bed</item>
+        <item>Finish dinner</item>
+        <item>Travel with the train to go home</item>
     </string-array>
-    <string name="create_plan_step_3_message">What time do you usually %1$s?</string>
-    <string name="plan_reminder_title">Plan Reminder</string>
-    <string name="plan_reminder_content">Every %1$s, %2$s %3$s, I will report my mood</string>
+    <string name="create_plan_step_2_message">Your if-then plan</string>
+    <string name="create_plan_step_3_message">Imagine you are in this situation and slowly repeat this plan in your head</string>
+    <string name="reminder_message">Imagine you are in this situation and slowly repeat this plan in your head.
+        Remember when this situation happens, track your mood immediately.</string>
+    <string name="detailed_plan">If I %1$s, then I will track my mood</string>
+    <string name="plan_reminder_title">My Plan</string>
+    <string name="plan_reminder_content">Every %1$s, %2$s %3$s, then I will track my mood</string>
     <string name="plan_reminder_change_button_label">Change plan</string>
-    <string name="activity_create_plan_intro_button_label">Let\'s begin</string>
     <string name="date_range">"%1$s - %2$s %3$s</string>
 
     <string name="gcs_header">Question 1 of 5</string>
@@ -290,4 +287,8 @@
     <string name="seven_scale_option_somewhat_agree">Somewhat agree</string>
     <string name="seven_scale_option_agree">Agree</string>
     <string name="seven_scale_option_strongly_agree">Strongly agree</string>
+
+    <string name="label_continue">Continue</string>
+    <string name="label_done">Done</string>
+    <string name="label_ok_understand">OK, I understand</string>
 </resources>

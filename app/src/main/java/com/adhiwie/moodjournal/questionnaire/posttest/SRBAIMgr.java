@@ -4,10 +4,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.adhiwie.moodjournal.file.FileMgr;
-import com.adhiwie.moodjournal.plan.PlanMgr;
-import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireActivity;
-import com.adhiwie.moodjournal.questionnaire.mood.ReminderData;
 import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.utils.NotificationMgr;
 import com.adhiwie.moodjournal.utils.SharedPref;
@@ -62,13 +58,13 @@ public class SRBAIMgr {
 		int current_date = new Time(Calendar.getInstance()).getEpochDays();
 		int participation_days = 1 + current_date - start_date;
 
-		if(!new SRBAIMgr(context).getSRBAIStatus() && participation_days == 28) {
+		if((!new SRBAIMgr(context).getSRBAIStatus() && participation_days == 14) || participation_days == 28) {
 			Intent i = new Intent(context, SRBAIActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
 			PendingIntent pi = PendingIntent.getActivity(context, 901, i, PendingIntent.FLAG_CANCEL_CURRENT);
-			new NotificationMgr().triggerPriorityNotification(context, pi, 9011, "SRBAI Test", "Your response needed");
+			new NotificationMgr().triggerPriorityNotification(context, pi, 9011, "Mood Journal", "Your response needed");
 		}
 
 	}

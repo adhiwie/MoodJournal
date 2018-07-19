@@ -2,6 +2,7 @@ package com.adhiwie.moodjournal.questionnaire.pretest;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -16,6 +17,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adhiwie.moodjournal.MainActivity;
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.communication.helper.GCSDataTransmission;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
@@ -306,6 +308,7 @@ public class GCSActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0)
             {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             }
         });

@@ -10,7 +10,7 @@ import android.content.SharedPreferences.Editor;
 public class SharedPref {
 
 	private final SharedPreferences sp;
-	private final String sp_name = "MY_TRACES";
+	private final String sp_name = "MOOD_JOURNAL";
 
 	
 	

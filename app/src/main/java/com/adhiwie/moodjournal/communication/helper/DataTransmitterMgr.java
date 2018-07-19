@@ -58,7 +58,7 @@ public class DataTransmitterMgr
 			public void run()
 			{
 				new Log().v("Thread created.");
-				//transmitPushSensorData();
+				transmitPushSensorData();
 				//transmitPullSensorData();
 				transmitQuestionnaireData();
 				transmitPendingDataIfAny();
@@ -70,9 +70,9 @@ public class DataTransmitterMgr
 
 	private void transmitPushSensorData()
 	{
-		transmitData(new DataTypes().ACCESSIBILITY_EVENT);
+		//transmitData(new DataTypes().ACCESSIBILITY_EVENT);
 		transmitData(new DataTypes().ACTIVITY);
-		transmitData(new DataTypes().LOCATION);
+		//transmitData(new DataTypes().LOCATION);
 		transmitData(new DataTypes().NOTIFICATION);
 		transmitData(new DataTypes().NETWORK);
 		transmitData(new DataTypes().POWER_CONNECTIVITY);

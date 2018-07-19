@@ -5,11 +5,16 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,8 +62,8 @@ public class MainActivity extends AppCompatActivity
 
 	private final String[] required_permissions = new String[] 
 			{
-			Manifest.permission.ACCESS_FINE_LOCATION,
-			Manifest.permission.WRITE_EXTERNAL_STORAGE};
+					Manifest.permission.WRITE_EXTERNAL_STORAGE
+			};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -161,22 +166,22 @@ public class MainActivity extends AppCompatActivity
 */
 
 		// set participation status
-		ProgressBar pb_days = (ProgressBar) findViewById(R.id.participation_days_progressbar);
-		ProgressBar pb_mood = (ProgressBar) findViewById(R.id.mood_questionnaires_progressbar);
-		//ProgressBar pb_daily = (ProgressBar) findViewById(R.id.daily_questionnaires_progressbar);
-		TextView tv_days = (TextView) findViewById(R.id.participation_days_tv);
-		TextView tv_mood = (TextView) findViewById(R.id.mood_questionnaires_tv);
-		//TextView tv_daily = (TextView) findViewById(R.id.daily_questionnaires_tv);
-
-		int start_date = new UserData(getApplicationContext()).getStartDate(); 
-		int current_date = new Time(Calendar.getInstance()).getEpochDays();
-		int participation_days = 1 + current_date - start_date;
-		pb_days.setProgress(participation_days);
-		pb_mood.setProgress(mood_mgr.getMoodQuestionnaireCount());
-		//pb_daily.setProgress(daily_mgr.getDailyQuestionnaireCount());
-		tv_days.setText(participation_days + "/30");
-		tv_mood.setText(mood_mgr.getMoodQuestionnaireCount() + "/30");
-		//tv_daily.setText(daily_mgr.getDailyQuestionnaireCount() + "/50");
+//		ProgressBar pb_days = (ProgressBar) findViewById(R.id.participation_days_progressbar);
+//		ProgressBar pb_mood = (ProgressBar) findViewById(R.id.mood_questionnaires_progressbar);
+//		//ProgressBar pb_daily = (ProgressBar) findViewById(R.id.daily_questionnaires_progressbar);
+//		TextView tv_days = (TextView) findViewById(R.id.participation_days_tv);
+//		TextView tv_mood = (TextView) findViewById(R.id.mood_questionnaires_tv);
+//		//TextView tv_daily = (TextView) findViewById(R.id.daily_questionnaires_tv);
+//
+//		int start_date = new UserData(getApplicationContext()).getStartDate();
+//		int current_date = new Time(Calendar.getInstance()).getEpochDays();
+//		int participation_days = 1 + current_date - start_date;
+//		pb_days.setProgress(participation_days);
+//		pb_mood.setProgress(mood_mgr.getMoodQuestionnaireCount());
+//		//pb_daily.setProgress(daily_mgr.getDailyQuestionnaireCount());
+//		tv_days.setText(participation_days + "/30");
+//		tv_mood.setText(mood_mgr.getMoodQuestionnaireCount() + "/30");
+//		//tv_daily.setText(daily_mgr.getDailyQuestionnaireCount() + "/50");
 	}
 
 
@@ -277,27 +282,26 @@ public class MainActivity extends AppCompatActivity
 			return;
 		}
 
-		/*
+
 		Permission p = new Permission(getApplicationContext());
-		if(!p.isAccessibilityPermitted())
-		{
-			p.startAccessibilityServicePermissionActivityIfRequired();
-			this.finish();
-			return;
-		}
-		if(!p.isAppAccessPermitted())
-		{
-			p.startAppUsagePermissionActivityIfRequired();
-			this.finish();
-			return;
-		}
+//		if(!p.isAccessibilityPermitted())
+//		{
+//			p.startAccessibilityServicePermissionActivityIfRequired();
+//			this.finish();
+//			return;
+//		}
+//		if(!p.isAppAccessPermitted())
+//		{
+//			p.startAppUsagePermissionActivityIfRequired();
+//			this.finish();
+//			return;
+//		}
 		if(!p.isNSLPermitted())
 		{
 			p.startNSLPermissionActivityIfRequired();
 			this.finish();
 			return;
 		}
-		*/
 
 		if(!new PlanMgr(getApplicationContext()).isPlanGiven())
 		{
@@ -396,26 +400,48 @@ public class MainActivity extends AppCompatActivity
 	private void planSetup()
 	{
 		TextView plan_label = (TextView) findViewById(R.id.plan_label);
-		String plan;
 		String routine = new PlanMgr(getApplicationContext()).getPlanRoutineDesc();
+		String plan;
+		SpannableStringBuilder spannable;
 
 		if (routine != null) {
-			if (routine.equals("going to bed")) {
-				plan = getResources().getString(R.string.plan_reminder_content,
-						new PlanMgr(getApplicationContext()).getPlanTiming(),
-						"before",
-						routine);
-			} else {
-				plan = getResources().getString(R.string.plan_reminder_content,
-						new PlanMgr(getApplicationContext()).getPlanTiming(),
-						"after",
-						routine);
-			}
+			plan = getResources().getString(R.string.detailed_plan, routine);
+			spannable = new SpannableStringBuilder(plan);
+
+			spannable.setSpan(
+					new BackgroundColorSpan(0x223CB371),
+					plan.indexOf(routine),
+					plan.indexOf(routine)+String.valueOf(routine).length(),
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+			);
+
+			spannable.setSpan(
+					new StyleSpan(Typeface.BOLD),
+					plan.indexOf(routine),
+					plan.indexOf(routine)+String.valueOf(routine).length(),
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+			);
+
+			spannable.setSpan(
+					new BackgroundColorSpan(0x223CB371),
+					plan.indexOf("track my mood"),
+					plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+			);
+
+			spannable.setSpan(
+					new StyleSpan(Typeface.BOLD),
+					plan.indexOf("track my mood"),
+					plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+			);
+
+			plan_label.setText(spannable);
+
 		} else {
 			plan = "No plan created";
+			plan_label.setText(plan);
 		}
-
-		plan_label.setText(plan);
 	}
 
 	public void changePlan(View v)
@@ -463,28 +489,28 @@ public class MainActivity extends AppCompatActivity
 	}
 
 
-	public void dailyTest(View v) 
-	{
-		if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 16)
-		{
-			Toast.makeText(getApplicationContext(), "Today's daily questionnaire will be available after 4pm.", Toast.LENGTH_SHORT).show();
-			return;
-		}
-
-		WellBeingQuestionnaireMgr mgr = new WellBeingQuestionnaireMgr(getApplicationContext());
-		if(mgr.getDailyQuestionnaireCountForToday() > 0)
-		{
-			Toast.makeText(getApplicationContext(), "Today's daily questionnaire is already completed.", Toast.LENGTH_SHORT).show();
-			return;
-		}
-
-		startActivity(new Intent(this, WellBeingQuestionnaireActivity.class));
-	}
-
-	//	public void exit(View v) throws JSONException
-	//	{
-	//		this.finish();
-	//	}
+//	public void dailyTest(View v)
+//	{
+//		if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 16)
+//		{
+//			Toast.makeText(getApplicationContext(), "Today's daily questionnaire will be available after 4pm.", Toast.LENGTH_SHORT).show();
+//			return;
+//		}
+//
+//		WellBeingQuestionnaireMgr mgr = new WellBeingQuestionnaireMgr(getApplicationContext());
+//		if(mgr.getDailyQuestionnaireCountForToday() > 0)
+//		{
+//			Toast.makeText(getApplicationContext(), "Today's daily questionnaire is already completed.", Toast.LENGTH_SHORT).show();
+//			return;
+//		}
+//
+//		startActivity(new Intent(this, WellBeingQuestionnaireActivity.class));
+//	}
+//
+//	//	public void exit(View v) throws JSONException
+//	//	{
+//	//		this.finish();
+//	//	}
 
 
 

@@ -23,7 +23,8 @@ public class DataFormatter {
 		json.put("uuid", uuid);
 		json.put("version", version);
 		json.put("data_type", data_type);
-		json.put("data", data);
+		JSONObject dataObj = new JSONObject(data);
+		json.put("data", dataObj);
 		return json;
 	}
 }

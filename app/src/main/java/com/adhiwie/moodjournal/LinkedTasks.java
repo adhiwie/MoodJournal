@@ -45,13 +45,13 @@ public class LinkedTasks {
 		//check for sensor sampling 
 		SensorSubscriptionManager ss = new SensorSubscriptionManager(context);
 		ss.startActivitySensingIfNotWorking();
-		ss.startLocationSensingIfWorking();
+		//ss.startLocationSensingIfWorking();
 
 		//check for permissions
 		Permission p = new Permission(context);
 		//p.notifyUserIfAccessibilityPermissionRevoked();
 		//p.notifyUserIfAppUsagePermissionRevoked();
-		//p.notifyUserIfNSLPermissionRevoked();
+		p.notifyUserIfNSLPermissionRevoked();
 
 		// check for SRBAI questionnaire
 		new SRBAIMgr(context).notifyUserIfRequired();
@@ -71,7 +71,7 @@ public class LinkedTasks {
 		//check for sensor sampling 
 		SensorSubscriptionManager ss = new SensorSubscriptionManager(context);
 		ss.startActivitySensingIfNotWorking();
-		ss.startLocationSensingIfWorking();
+		//ss.startLocationSensingIfWorking();
 
 		// check for SRBAI questionnaire
 		new SRBAIMgr(context).notifyUserIfRequired();
