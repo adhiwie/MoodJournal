@@ -2,6 +2,7 @@ package com.adhiwie.moodjournal;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,10 +51,13 @@ public class MainActivity extends AppCompatActivity
 
 	private Log log = new Log();
 	private Toolbar mTopToolbar;
+	private RelativeLayout runtimePermissionLayout;
 
 	private final String[] required_permissions = new String[] 
 			{
-					Manifest.permission.WRITE_EXTERNAL_STORAGE
+					Manifest.permission.WRITE_EXTERNAL_STORAGE,
+					Manifest.permission.ACCESS_COARSE_LOCATION,
+					Manifest.permission.ACCESS_FINE_LOCATION
 			};
 
 	@Override
@@ -78,14 +83,23 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onStart();
 		setLayout();
-		new GooglePlayServices().isGoogplePlayServiceAvailable(MainActivity.this);
-		if(getMissingPermissions().size() > 0)
+
+		if(!new ConsentMgr(getApplicationContext()).isConsentGiven())
 		{
-			askMissingPermissions();
+			startActivity(new Intent(this, ConsentActivity.class));
+			this.finish();
 			return;
 		}
 
-		check_Consent_GooglePlayService_Permissions_LinkedTask();
+		new GooglePlayServices().isGoogplePlayServiceAvailable(MainActivity.this);
+		runtimePermissionLayout = (RelativeLayout) findViewById(R.id.runtime_permission_layout);
+
+		if(getMissingPermissions().size() > 0) {
+			runtimePermissionLayout.setVisibility(View.VISIBLE);
+		} else {
+			runtimePermissionLayout.setVisibility(View.GONE);
+			check_Consent_GooglePlayService_Permissions_LinkedTask();
+		}
 
 	}
 
@@ -161,7 +175,9 @@ public class MainActivity extends AppCompatActivity
 			RuntimePermission rp = new RuntimePermission(getApplicationContext());
 			missing_permissions = rp.getMissingPermissions(required_permissions);
 		} 
-		catch (IncompatibleAPIException e) {		}
+		catch (IncompatibleAPIException e) {}
+
+		new Log().e("Missing permissions : "+missing_permissions.size());
 		return missing_permissions;
 	}
 
@@ -227,6 +243,8 @@ public class MainActivity extends AppCompatActivity
 		}
 		else
 		{
+			new Log().e("check_Consent_GooglePlayService_Permissions_LinkedTask is called from onRequestPermissionsResult");
+			runtimePermissionLayout.setVisibility(View.GONE);
 			check_Consent_GooglePlayService_Permissions_LinkedTask();
 		}
 	}
@@ -236,12 +254,8 @@ public class MainActivity extends AppCompatActivity
 
 	private void check_Consent_GooglePlayService_Permissions_LinkedTask()
 	{
-		if(!new ConsentMgr(getApplicationContext()).isConsentGiven())
-		{
-			startActivity(new Intent(this, ConsentActivity.class));
-			this.finish();
-			return;
-		}
+
+		new Log().e("check_Consent_GooglePlayService_Permissions_LinkedTask is called");
 
 		if(!new GooglePlayServices().isGoogplePlayServiceAvailable(MainActivity.this))
 		{
@@ -453,6 +467,11 @@ public class MainActivity extends AppCompatActivity
 	public void moodReport(View v)
 	{
 		startActivity(new Intent(this, MoodReportActivity.class));
+	}
+
+	public void askRuntimePermissions(View view)
+	{
+		askMissingPermissions();
 	}
 
 

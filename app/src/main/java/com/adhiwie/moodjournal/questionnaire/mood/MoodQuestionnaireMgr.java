@@ -39,10 +39,13 @@ public class MoodQuestionnaireMgr {
 		long currentTimeInMillis = Calendar.getInstance().getTimeInMillis();
 		long lastTriggerTimeInMillis = getLastMoodQuestionnaireTriggerTime();
 
+		new Log().e("=======================");
 		new Log().e("Mood notification is triggered");
 		new Log().e("Current time - last trigger time: "+lastTriggerTimeInMillis);
 		new Log().e("Mood Questionnaire count for today: "+getMoodQuestionnaireCountForToday());
 		new Log().e("Mood Notification trigger count for today: "+getMoodNotificationTriggerCountForToday());
+		new Log().e("Hour of day: "+hour);
+		new Log().e("=======================");
 
 		if(!(currentTimeInMillis - lastTriggerTimeInMillis < 1000) &&
 				(getMoodQuestionnaireCountForToday() == 0) &&

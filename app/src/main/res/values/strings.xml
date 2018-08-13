@@ -22,6 +22,7 @@
     <string name="open_accessibility_settings">Allow Accessibility Access</string>
     <string name="open_app_settings">Allow App Usage Access</string>
     <string name="open_nls_settings">Allow Notification Access</string>
+    <string name="open_ask_runtime_permissions">Allow Permissions</string>
     <string name="accessibility_permission_revoked_message_part1">Permission required to access interaction with phone.</string>
     <string name="accessibility_permission_revoked_message_part2">Just to confirm, we do not collect any sensitive data. We just use this to infer interaction with phone.</string>
     <string name="accessibility_permission_revoked_message_part3">Click the button below to open your accessibility settings page. 

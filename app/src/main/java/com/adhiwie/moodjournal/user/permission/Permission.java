@@ -57,7 +57,7 @@ public class Permission
 				(current_time - (24 * 60 * 60 * 1000)), current_time);
 
 		for(UsageStats stat : u_list)
-			if(stat.getPackageName().equalsIgnoreCase("com.nsds.prefminer") == false)
+			if(stat.getPackageName().equalsIgnoreCase("com.adhiwie.moodjournal") == false)
 				return true;
 		return false;
 	}

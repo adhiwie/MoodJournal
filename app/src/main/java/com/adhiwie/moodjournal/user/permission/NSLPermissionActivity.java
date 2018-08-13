@@ -26,26 +26,6 @@ public class NSLPermissionActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_nsl_permission);
-//
-//		Drawable background;
-//
-//		if(Build.VERSION.SDK_INT >= 21)
-//			background = getResources().getDrawable(R.drawable.blue_background, null);
-//		else
-//			background = getResources().getDrawable(R.drawable.blue_background);
-//
-//
-//		ActionBar actionBar = getActionBar();
-//		actionBar.setBackgroundDrawable(background);
-//		actionBar.setCustomView(R.layout.actionbar_layout);
-//		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-//		actionBar.setDisplayHomeAsUpEnabled(false);
-//		actionBar.setDisplayUseLogoEnabled(true);
-//
-//		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-//		actionbar_title.setText(getResources().getString(R.string.title_activity_nsl_permission));
-//
-//		setContentView(R.layout.activity_nsl_permission);
 		
 		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) ) 
 		{
@@ -72,7 +52,7 @@ public class NSLPermissionActivity extends AppCompatActivity {
 			new Popup().showPopup(NSLPermissionActivity.this, "Permission Required", 
 					"Provide the permission to keep the app running. "
 					+ "\n\n"
-					+ "If you have previously given this permission, please reset it by diabling and enabling it again.");
+					+ "If you have previously given this permission, please reset it by disabling and enabling it again.");
 		}
 	}
 
