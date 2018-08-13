@@ -15,6 +15,7 @@ import com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireMgr
 import com.adhiwie.moodjournal.sensor.manager.SensorSubscriptionManager;
 import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.user.permission.Permission;
+import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.Time;
 
 import java.io.IOException;
@@ -95,25 +96,25 @@ public class LinkedTasks {
 
 		// check for SRBAI questionnaire
 		new SRBAIMgr(context).notifyUserIfRequired();
-
-		try {
-			new UserData(context).updateGroupId(new UserData(context).getUuid());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private void checkUserGroup() {
-		int start_date = new UserData(context).getStartDate();
+		UserData userData = new UserData(context);
+
+		int start_date = userData.getStartDate();
 		int current_date = new Time(Calendar.getInstance()).getEpochDays();
 		int participation_days = 1 + current_date - start_date;
 
-		if (participation_days < 7){
-			try {
-				new UserData(context).updateGroupId(new UserData(context).getUuid());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		if(participation_days > 7)
+			return;
+
+		if(userData.getGroupChangedDate() == current_date)
+			return;
+
+		try {
+			userData.updateGroupId(userData.getUuid());
+		} catch (IOException e) {
+			new Log().e(e.getMessage());
 		}
 
 	}

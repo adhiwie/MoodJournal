@@ -191,7 +191,8 @@ public class UserData
 		sp.add(USER_GROUP_ID, groupId);
 	}
 
-	public void updateGroupId(String uuid) throws IOException {
+	public void updateGroupId(String uuid) throws IOException
+	{
 		new DataGetter(this.context, uuid)
 		{
 			@Override
@@ -199,8 +200,26 @@ public class UserData
 			{
 				if (result != "")
 					setGroupId(Integer.valueOf(result));
+					updateGroupChangedDate();
 				new Log().e("Group id : "+result);
 			};
 		}.execute();
+	}
+
+	private final String USER_GROUP_CHANGED_DATE = "USER_GROUP_CHANGED_DATE";
+	public void updateGroupChangedDate()
+	{
+		int current_date = new Time(Calendar.getInstance()).getEpochDays();
+		int last_date = sp.getInt(USER_GROUP_CHANGED_DATE);
+
+		if(last_date != current_date)
+		{
+			sp.add(USER_GROUP_CHANGED_DATE, current_date);
+		}
+	}
+
+	public int getGroupChangedDate()
+	{
+		return sp.getInt(USER_GROUP_CHANGED_DATE);
 	}
 }

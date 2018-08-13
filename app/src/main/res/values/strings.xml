@@ -61,8 +61,8 @@
     <string name="ok_string">OK</string>
 
     <string name="todays_mood_q_stats_label">Today\'s Mood</string>
-    <string name="todays_mood_q_stats_empty_state">You have not tracked your mood for today</string>
-    <string name="todays_mood_q_stats_tracked">Awesome! You have  tracked your mood for today. Tap the button below to see how your mood changes</string>
+    <string name="todays_mood_q_stats_empty_state">You have not tracked your mood for today.</string>
+    <string name="todays_mood_q_stats_tracked">Awesome! You have  tracked your mood for today. Mood tracking will be available again tomorrow.</string>
     <string name="answer_mood_q_btn_label">Track my mood</string>
     <string name="participation_status_label">Participation Status</string>
     <string name="days_count">Days</string>

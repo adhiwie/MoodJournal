@@ -39,10 +39,10 @@ public class MoodQuestionnaireMgr {
 		long currentTimeInMillis = Calendar.getInstance().getTimeInMillis();
 		long lastTriggerTimeInMillis = getLastMoodQuestionnaireTriggerTime();
 
-//		new Log().e("Mood notification is triggered");
-//		new Log().e("Current time - last trigger time: "+lastTriggerTimeInMillis);
-//		new Log().e("Mood Questionnaire count for today: "+getMoodQuestionnaireCountForToday());
-//		new Log().e("Mood Notification trigger count for today: "+getMoodNotificationTriggerCountForToday());
+		new Log().e("Mood notification is triggered");
+		new Log().e("Current time - last trigger time: "+lastTriggerTimeInMillis);
+		new Log().e("Mood Questionnaire count for today: "+getMoodQuestionnaireCountForToday());
+		new Log().e("Mood Notification trigger count for today: "+getMoodNotificationTriggerCountForToday());
 
 		if(!(currentTimeInMillis - lastTriggerTimeInMillis < 1000) &&
 				(getMoodQuestionnaireCountForToday() == 0) &&
@@ -50,6 +50,9 @@ public class MoodQuestionnaireMgr {
 				(hour >= 12 && hour <= 14) &&
 				(new UserData(context).getGroupId() == 1))
 		{
+
+			new Log().e("Notification is sent");
+
 			Intent i = new Intent(context, ReminderActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -72,7 +75,13 @@ public class MoodQuestionnaireMgr {
 			FileMgr fm = new FileMgr(context);
 			fm.addData(data);
 		} else {
-			resetMoodNotificationTriggerCountForToday();
+			new Log().e("Mood notification trigger is resetted for today");
+
+			int current_date = new Time(Calendar.getInstance()).getEpochDays();
+			int last_date = sp.getInt(Mood_Notification_Trigger_Date_For_Today);
+
+			if (current_date != last_date)
+				resetMoodNotificationTriggerCountForToday();
 		}
 
 	}
