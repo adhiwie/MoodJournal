@@ -66,13 +66,17 @@
         <activity
             android:name=".plan.PlanActivity"
             android:label="@string/title_activity_create_plan" />
-        <activity android:name=".report.MoodReportActivity" />
+        <activity
+            android:name=".report.MoodReportActivity"
+            android:label="@string/title_activity_mood_data"/>
         <activity
             android:name=".questionnaire.pretest.GCSActivity"
             android:label="@string/title_activity_gcs_test" />
         <activity
             android:name=".questionnaire.posttest.SRBAIActivity"
             android:label="@string/title_activity_srbai_test" />
+
+        <activity android:name=".questionnaire.mood.ReminderActivity" />
 
         <service
             android:name=".sensor.push.AccessibilitySensor"
@@ -119,7 +123,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".questionnaire.mood.ReminderActivity"></activity>
     </application>
 
 </manifest>

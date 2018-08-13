@@ -47,17 +47,12 @@ public class GCSDataTransmission {
 	public void transmitData()  
 	{
 		sp.add(GCS_RESULT_AVAILABLE, true);
-		JSONArray data = new JSONArray();
+		JSONObject json = new JSONObject();
 		try
 		{
-			JSONObject uuid = new JSONObject();
-			uuid.put("uuid", new UserData(context).getUuid());
-			data.put(uuid);
-
 			int total_scores = sp.getInt(GCS_RESULT);
-			JSONObject jo_total = new JSONObject();
-			jo_total.put("goal_commitment_score", total_scores);
-			data.put(jo_total);
+
+			JSONArray data = new JSONArray();
 
 			GCSMgr gm = new GCSMgr(context);
 			for(int i = 1; i <= 5; i++)
@@ -74,7 +69,11 @@ public class GCSDataTransmission {
 				}
 			}
 
-			new DataTransmitter(this.context, new DataTypes().GOAL_COMMITMENT_SCALE, data.toString())
+			json.put("uuid", new UserData(context).getUuid());
+			json.put("goal_commitment_score", total_scores);
+			json.put("answers", data);
+
+			new DataTransmitter(this.context, new DataTypes().GOAL_COMMITMENT_SCALE, json.toString())
 			{
 				@Override
 				protected void onPostExecute(Boolean result) 

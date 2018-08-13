@@ -8,24 +8,24 @@ import com.adhiwie.moodjournal.utils.DataTypes;
 
 public class ReminderData implements DataInterface
 {
-    private String uuid;
-    private long sent_at;
-    private String routine_desc;
+    private long sent_at_millis;
+    private String sent_at_time;
+    private String message;
 
-    public ReminderData(String uuid, long sent_at, String routine_desc)
+    public ReminderData(long sent_at_millis, String sent_at_time, String message)
     {
-        this.uuid = uuid;
-        this.sent_at = sent_at;
-        this.routine_desc = routine_desc;
+        this.sent_at_millis = sent_at_millis;
+        this.sent_at_time = sent_at_time;
+        this.message = message;
     }
 
 
     public String toJSONString() throws JSONException
     {
         JSONObject json = new JSONObject();
-        json.put("uuid", uuid);
-        json.put("sent_at", sent_at);
-        json.put("routine_desc", routine_desc);
+        json.put("sent_at_millis", sent_at_millis);
+        json.put("sent_at_time", sent_at_time);
+        json.put("message", message);
         return json.toString();
     }
 

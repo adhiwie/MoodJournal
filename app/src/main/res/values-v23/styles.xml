@@ -1,15 +1,15 @@
 <resources>
 
     <!--
-        Base application theme for API 21+. This theme completely replaces
+        Base application theme for API 23+. This theme completely replaces
         AppBaseTheme from BOTH res/values/styles.xml and
-        res/values-v21/styles.xml on API 21+ devices.
+        res/values-v23/styles.xml on API 23+ devices.
     -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- API 21 theme customizations can go here. -->
         <item name="android:colorPrimary">@color/White</item>
         <!--   darker variant for the status bar and contextual app bars -->
-        <item name="android:colorPrimaryDark">@color/Gray</item>
+        <item name="android:colorPrimaryDark">@color/WhiteSmoke</item>
         <!--   theme UI controls like checkboxes and text fields -->
         <item name="android:colorAccent">@color/MediumSeaGreen</item>
         <item name="android:textViewStyle">@style/TextViewStyle</item>
@@ -17,6 +17,7 @@
         <item name="android:radioButtonStyle">@style/RadioButtonStyle</item>
         <!--<item name="windowActionBar">false</item>-->
         <!--<item name="windowNoTitle">true</item>-->
+        <item name="android:windowLightStatusBar">true</item>
 
     </style>
 

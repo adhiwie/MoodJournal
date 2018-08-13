@@ -51,7 +51,7 @@
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/settings"
+            android:id="@+id/track_mood_btn"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="bottom"

@@ -4,6 +4,7 @@
     <color name="LightGray">#EAEAEA</color>
     <color name="White">#FFFFFF</color>
     <color name="WhiteSmoke">#F5F5F5</color>
+    <color name="Gray">#666666</color>
     <color name="Red">#FF0000</color>
     <color name="DarkerRed">#CC0000</color>
     <color name="MediumSeaGreen">#3CB371</color>

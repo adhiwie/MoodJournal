@@ -10,7 +10,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
-
+import com.adhiwie.moodjournal.utils.Log;
 
 
 public class DataTransmitter extends AsyncTask<Void, Void, Boolean>
@@ -35,7 +35,7 @@ public class DataTransmitter extends AsyncTask<Void, Void, Boolean>
 
 
 
-	protected Boolean doInBackground(Void... params) 
+	protected Boolean doInBackground(Void... params)
 	{
 		return new HttpHelper(url).sendData(data);
 	}

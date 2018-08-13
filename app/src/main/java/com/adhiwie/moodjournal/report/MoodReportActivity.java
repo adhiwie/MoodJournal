@@ -58,24 +58,8 @@ public class MoodReportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Drawable background;
-//
-//        if(Build.VERSION.SDK_INT >= 21)
-//            background = getResources().getDrawable(R.drawable.blue_background, null);
-//        else
-//            background = getResources().getDrawable(R.drawable.blue_background);
-//
-//
-//        ActionBar actionBar = getActionBar();
-//        actionBar.setBackgroundDrawable(background);
-//        actionBar.setCustomView(R.layout.actionbar_layout);
-//        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.setDisplayUseLogoEnabled(true);
-//
-//        TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-//        actionbar_title.setText("Mood Data");
         setContentView(R.layout.activity_mood_report);
+
         mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mTopToolbar);
 
@@ -96,7 +80,7 @@ public class MoodReportActivity extends AppCompatActivity {
 
     private void initialiseData() throws JSONException {
         SharedPref sharedPref = new SharedPref(getApplicationContext());
-        String moodData = sharedPref.getString("DAILY_MOOD_REPORT");
+        String moodData = sharedPref.getString("DAILY_MOOD_REPORT_DATA");
 
         JSONArray jsonArray;
 
@@ -334,7 +318,7 @@ public class MoodReportActivity extends AppCompatActivity {
         Legend legend = stressChart.getLegend();
         legend.setEnabled(false);
 
-        final String[] days = new String[] {"S", "M", "T", "W", "T", "F", "S"};
+        final String[] days = new String[] {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
         IAxisValueFormatter formatter = new IAxisValueFormatter() {
             @Override
@@ -414,7 +398,7 @@ public class MoodReportActivity extends AppCompatActivity {
         Legend legend = activenessChart.getLegend();
         legend.setEnabled(false);
 
-        final String[] days = new String[] {"S", "M", "T", "W", "T", "F", "S"};
+        final String[] days = new String[] {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
         IAxisValueFormatter formatter = new IAxisValueFormatter() {
             @Override
@@ -494,7 +478,7 @@ public class MoodReportActivity extends AppCompatActivity {
         Legend legend = happinessChart.getLegend();
         legend.setEnabled(false);
 
-        final String[] days = new String[] {"S", "M", "T", "W", "T", "F", "S"};
+        final String[] days = new String[] {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
         IAxisValueFormatter formatter = new IAxisValueFormatter() {
             @Override

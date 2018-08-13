@@ -17,6 +17,7 @@
     <string name="title_activity_create_plan">Setting a Plan</string>
     <string name="title_activity_gcs_test">Goal Commitment Scale Test</string>
     <string name="title_activity_srbai_test">SRBAI Test</string>
+    <string name="title_activity_mood_data">Mood Data</string>
 
     <string name="open_accessibility_settings">Allow Accessibility Access</string>
     <string name="open_app_settings">Allow App Usage Access</string>
@@ -35,14 +36,14 @@
         Once you\'re there, enable/reset the app permission and click back button.</string>
     <string name="consent_statement">
         Mood Journal app logs your daily mood data. The app will trigger one mood related questionnaire every day.
-        All the personal information will be anonymised, and securely transmitted and stored on the server. No additional information related to
-        contacts \(telephone numbers, email addresses etc.\) on your device or history of communication made with the 
-        contact would be collected by the application.
+        All the personal information will be anonymised, securely transmitted and stored on the server.
+        No additional information related to contacts \(telephone numbers, email addresses etc.\) on your device
+        or history of communication made with the contact would be collected by the application.
         
         \n\n 
         
-        The app is developed to collect data for research at University of Birmingham. In order to get your data please enter
-        a valid email address because we will send your data file to the same email address.
+        The app is developed to collect data for research at University of Birmingham. Please enter
+        a valid email address because we will send additional information regarding this study in the future.
         
         \n\n
         
@@ -59,8 +60,10 @@
     <string name="consent_button_label">I Agree</string>
     <string name="ok_string">OK</string>
 
-    <string name="todays_mood_q_stats_label">Today\'s Mood Questionnaire</string>
-    <string name="answer_mood_q_btn_label">Track My Mood</string>
+    <string name="todays_mood_q_stats_label">Today\'s Mood</string>
+    <string name="todays_mood_q_stats_empty_state">You have not tracked your mood for today</string>
+    <string name="todays_mood_q_stats_tracked">Awesome! You have  tracked your mood for today. Tap the button below to see how your mood changes</string>
+    <string name="answer_mood_q_btn_label">Track my mood</string>
     <string name="participation_status_label">Participation Status</string>
     <string name="days_count">Days</string>
     <string name="mood_q_count">Mood questionnaires</string>
@@ -220,7 +223,7 @@
         <item>Arrive at home</item>
         <item>Go to bed</item>
         <item>Finish dinner</item>
-        <item>Travel with the train to go home</item>
+        <item>On the train to go home</item>
     </string-array>
     <string name="create_plan_step_2_message">Your if-then plan</string>
     <string name="create_plan_step_3_message">Imagine you are in this situation and slowly repeat this plan in your head</string>
@@ -236,7 +239,8 @@
     <string name="gcs_instruction">Please indicate how do you feel about tracking your mood every day. Choose the appropriate response for each item.</string>
     <string name="gcs_results_header">Your Goal Commitment Test Results</string>
     <string name="gcs_results_info">Goal Commitment Scale</string>
-    <string name="gcs_results_explained">You have scored %1$d out of 25</string>
+    <string name="gcs_results_explained">You have scored %1$d out of 25.</string>
+    <string name="gcs_results_plan">Brilliant! Now, you are all set up. Don\'t forget your plan: If I %1$s, then I will track my mood.</string>
     <string name="gcs_info_string">You cannot go back to change your answer. It is mandatory to complete the test in one go.
         So, take your time and try to answer the questions as accurate as possible.
 
@@ -291,4 +295,7 @@
     <string name="label_continue">Continue</string>
     <string name="label_done">Done</string>
     <string name="label_ok_understand">OK, I understand</string>
+
+    <string name="channel_name">reinforcement</string>
+    <string name="channel_description">channel for sending reinforcement</string>
 </resources>

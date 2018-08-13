@@ -17,6 +17,7 @@ import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.user.permission.Permission;
 import com.adhiwie.moodjournal.utils.Time;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 public class LinkedTasks {
@@ -55,6 +56,8 @@ public class LinkedTasks {
 
 		// check for SRBAI questionnaire
 		new SRBAIMgr(context).notifyUserIfRequired();
+
+		checkUserGroup();
 	}
 	
 	public void checkAllExceptPermission()
@@ -75,6 +78,8 @@ public class LinkedTasks {
 
 		// check for SRBAI questionnaire
 		new SRBAIMgr(context).notifyUserIfRequired();
+
+		checkUserGroup();
 	}
 
 
@@ -90,6 +95,27 @@ public class LinkedTasks {
 
 		// check for SRBAI questionnaire
 		new SRBAIMgr(context).notifyUserIfRequired();
+
+		try {
+			new UserData(context).updateGroupId(new UserData(context).getUuid());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void checkUserGroup() {
+		int start_date = new UserData(context).getStartDate();
+		int current_date = new Time(Calendar.getInstance()).getEpochDays();
+		int participation_days = 1 + current_date - start_date;
+
+		if (participation_days < 7){
+			try {
+				new UserData(context).updateGroupId(new UserData(context).getUuid());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 //	public void checkPermission()

@@ -1,10 +1,6 @@
 package com.adhiwie.moodjournal.questionnaire.posttest;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,10 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adhiwie.moodjournal.R;
-import com.adhiwie.moodjournal.communication.helper.GCSDataTransmission;
 import com.adhiwie.moodjournal.communication.helper.SRBAIDataTransmission;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
-import com.adhiwie.moodjournal.questionnaire.pretest.GCSMgr;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.Popup;
 import com.adhiwie.moodjournal.utils.SharedPref;
@@ -44,6 +38,7 @@ public class SRBAIActivity extends AppCompatActivity {
     private Button control_btn;
     private String response = null;
     private int total_questions = 4;
+    private SRBAIMgr srbaiMgr;
 
     private Toolbar mTopToolbar;
 
@@ -51,28 +46,10 @@ public class SRBAIActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Drawable background;
-//
-//        if(Build.VERSION.SDK_INT >= 21)
-//            background = getResources().getDrawable(R.drawable.blue_background, null);
-//        else
-//            background = getResources().getDrawable(R.drawable.blue_background);
-//
-//
-//        ActionBar actionBar = getActionBar();
-//        actionBar.setBackgroundDrawable(background);
-//        actionBar.setCustomView(R.layout.actionbar_layout);
-//        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.setDisplayUseLogoEnabled(true);
-//        if(Build.VERSION.SDK_INT >= 18)
-//            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
-//
-//        TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-//        actionbar_title.setText(getResources().getString(R.string.title_activity_srbai_test));
-
         sp = new SharedPref(getApplicationContext());
-        if(new SRBAIMgr(getApplicationContext()).getSRBAIStatus() == false)
+        srbaiMgr = new SRBAIMgr(getApplicationContext());
+
+        if(!srbaiMgr.isSRBAIDone())
             setContentView(R.layout.activity_srbai);
         else
             setContentView(R.layout.activity_srbai_results);
@@ -96,7 +73,10 @@ public class SRBAIActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                if (new SRBAIMgr(getApplicationContext()).isSRBAIDone())
+                    this.finish();
+                else
+                    android.widget.Toast.makeText(getApplicationContext(), "You need to complete SRBAI questionnaire to continue using this app!", android.widget.Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -108,7 +88,7 @@ public class SRBAIActivity extends AppCompatActivity {
         super.onStart();
 
         sp = new SharedPref(getApplicationContext());
-        if(new SRBAIMgr(getApplicationContext()).getSRBAIStatus() == false)
+        if(!srbaiMgr.isSRBAIDone())
         {
             tv_questionnaire_header = (TextView) findViewById(R.id.tv_questionnaire_header);
             control_btn = (Button) findViewById(R.id.control_btn_test);
@@ -195,7 +175,7 @@ public class SRBAIActivity extends AppCompatActivity {
         else {
             computeAndSaveResult();
             setCurrentQuestionNumber(0);
-            new SRBAIMgr(getApplicationContext()).srbaiCompleted();
+            srbaiMgr.completeSRBAI();
 
             setContentView(R.layout.activity_srbai_results);
             showResults();
@@ -210,7 +190,7 @@ public class SRBAIActivity extends AppCompatActivity {
             jo.put("score", getScore(q_num, response));
             jo.put("time_taken", current_time - start_time);
 
-            new SRBAIMgr(getApplicationContext()).storeSRBAIResponse(q_num, jo.toString());
+            srbaiMgr.storeSRBAIResponse(q_num, jo.toString());
             new Log().e("q num: " + q_num + ", response data: " + jo.toString());
         }
         catch(JSONException e) {
@@ -247,10 +227,9 @@ public class SRBAIActivity extends AppCompatActivity {
 
     private void computeAndSaveResult() {
         int total_score = 0;
-        SRBAIMgr gm = new SRBAIMgr(getApplicationContext());
         for(int i = 1; i <= 4; i++) {
             try {
-                String s = gm.getSRBAIResponse(i);
+                String s = srbaiMgr.getSRBAIResponse(i);
                 JSONObject jo = new JSONObject(s);
                 int score = jo.getInt("score");
                 total_score += score;

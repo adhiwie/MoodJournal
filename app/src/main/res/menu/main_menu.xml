@@ -18,14 +18,5 @@
         android:icon="@drawable/ic_action_info"
         android:title="@string/menu_info"
         app:showAsAction="ifRoom" />
-    
-    
-<!--        <item -->
-<!--         android:id="@+id/menu_error" -->
-<!--         android:orderInCategory="100" -->
-<!--         android:showAsAction="never" -->
-<!--         android:icon="@drawable/ic_action_error" -->
-<!--         android:title="@string/menu_error"/> -->
-    
 
 </menu>

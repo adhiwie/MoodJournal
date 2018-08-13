@@ -1,5 +1,6 @@
 package com.adhiwie.moodjournal.user.data;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Calendar;
 import java.util.List;
@@ -18,8 +19,11 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 
+import com.adhiwie.moodjournal.communication.DataGetter;
+import com.adhiwie.moodjournal.communication.DataTransmitter;
 import com.adhiwie.moodjournal.system.APILevel;
 import com.adhiwie.moodjournal.utils.Base64;
+import com.adhiwie.moodjournal.utils.DataTypes;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.SharedPref;
 import com.adhiwie.moodjournal.utils.Time;
@@ -29,6 +33,7 @@ public class UserData
 
 	private final Context context;
 	private final SharedPref sp;
+	private final String USER_GROUP_ID = "USER_GROUP_ID";
 
 	public UserData(Context context)
 	{
@@ -46,8 +51,9 @@ public class UserData
 		json.put("reg_time_millis", getRegTimeMillis());
 		json.put("reg_timezone", getRegTimezone());
 		json.put("device_api_level", getDeviceApiLevel());
+		json.put("group_id", getGroupId());
 		//json.put("contact_list", getContactList());
-		json.put("app_list", getAppList());
+		//json.put("app_list", getAppList());
 		return json.toString();
 	}
 
@@ -175,5 +181,26 @@ public class UserData
 	
 	private boolean isSystemPackage(ResolveInfo resolveInfo) {
 	    return ((resolveInfo.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+	}
+
+	public int getGroupId() {
+		return sp.getInt(USER_GROUP_ID);
+	}
+
+	public void setGroupId(int groupId) {
+		sp.add(USER_GROUP_ID, groupId);
+	}
+
+	public void updateGroupId(String uuid) throws IOException {
+		new DataGetter(this.context, uuid)
+		{
+			@Override
+			protected void onPostExecute(String result)
+			{
+				if (result != "")
+					setGroupId(Integer.valueOf(result));
+				new Log().e("Group id : "+result);
+			};
+		}.execute();
 	}
 }

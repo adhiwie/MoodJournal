@@ -8,6 +8,35 @@
 
     <include layout="@layout/toolbar"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@drawable/ic_chevron_left"
+            android:onClick="prevWeek"/>
+
+        <TextView
+            android:id="@+id/date_range_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Current date"
+            android:textColor="@color/MediumSeaGreen"
+            android:textStyle="bold"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/ic_chevron_right"
+            android:onClick="nextWeek"/>
+    </FrameLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -16,35 +45,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp">
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:background="@drawable/ic_chevron_left"
-                    android:onClick="prevWeek"/>
-
-                <TextView
-                    android:id="@+id/date_range_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Current date"
-                    android:textColor="@color/MediumSeaGreen"
-                    android:textStyle="bold"/>
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:background="@drawable/ic_chevron_right"
-                    android:onClick="nextWeek"/>
-            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

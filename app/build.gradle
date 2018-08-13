@@ -1,15 +1,22 @@
 apply plugin: 'com.android.application'
 
+ext.versionMajor = 2
+ext.versionMinor = 7
+ext.versionPatch = 0
+ext.versionClassifier = null
+ext.isSnapshot = true
+ext.minimumSdkVersion = 16
+
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.0"
 
     defaultConfig {
         applicationId "com.adhiwie.moodjournal"
-        minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 9
-        versionName "2.6"
+        targetSdkVersion 27
+        minSdkVersion project.ext.minimumSdkVersion
+        versionCode generateVersionCode()
+        versionName generateVersionName()
     }
 
     buildTypes {
@@ -20,10 +27,28 @@ android {
     }
 }
 
+private Integer generateVersionCode() {
+    return ext.minimumSdkVersion * 10000000 + ext.versionMajor * 10000 + ext.versionMinor * 100 + ext.versionPatch
+}
+
+private String generateVersionName() {
+    String versionName = "${ext.versionMajor}.${ext.versionMinor}.${ext.versionPatch}"
+    if (ext.versionClassifier == null && ext.isSnapshot) {
+        ext.versionClassifier = "SNAPSHOT"
+    }
+
+    if (ext.versionClassifier != null) {
+        versionName += "-" + ext.versionClassifier
+    }
+    return versionName;
+}
+
 dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:appcompat-v7:27.1.1'
     compile 'com.google.android.gms:play-services-location:15.0.1'
-    compile "com.android.support:support-core-utils:26.1.0"
+    compile "com.android.support:support-core-utils:27.1.1"
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:animated-vector-drawable:27.1.1'
+    implementation 'com.android.support:support-media-compat:27.1.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }

@@ -60,29 +60,11 @@ public class MoodQuestionnaireActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-//		Drawable background;
-//
-//		if(Build.VERSION.SDK_INT >= 21)
-//			background = getResources().getDrawable(R.drawable.blue_background, null);
-//		else
-//			background = getResources().getDrawable(R.drawable.blue_background);
-//
-//
-//		ActionBar actionBar = getActionBar();
-//		actionBar.setBackgroundDrawable(background);
-//		actionBar.setCustomView(R.layout.actionbar_layout);
-//		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-//		actionBar.setDisplayHomeAsUpEnabled(false);
-//		actionBar.setDisplayUseLogoEnabled(true);
-//
-//		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-//		actionbar_title.setText(getResources().getString(R.string.title_activity_mood_questionnaire));
 		
 		setContentView(R.layout.activity_mood_questionnaire);
 
-		mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(mTopToolbar);
+//		mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
+//		setSupportActionBar(mTopToolbar);
 		
 		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) ) 
 		{
@@ -315,20 +297,6 @@ public class MoodQuestionnaireActivity extends AppCompatActivity {
 		mgr.updateLastMoodQuestionnaireTime();
 		mgr.saveDailyMoodReportData(data.toJSONString());
 
-		SharedPref sharedPref = new SharedPref(getApplicationContext());
-		String moodData = sharedPref.getString("DAILY_MOOD_REPORT");
-
-		JSONArray jsonArray;
-
-		if (moodData == null) {
-			jsonArray = new JSONArray();
-		} else {
-			jsonArray = new JSONArray(moodData);
-		}
-
-		jsonArray.put(data.toJSONString());
-		//sharedPref.add("DAILY_MOOD_REPORT", jsonArray.toString());
-
 		/*for (int i=1; i<=60; i++){
 
 			Calendar start_time_next = Calendar.getInstance();
@@ -345,12 +313,8 @@ public class MoodQuestionnaireActivity extends AppCompatActivity {
 			jsonArray.put(d.toJSONString());
 		}*/
 
-		sharedPref.add("DAILY_MOOD_REPORT", jsonArray.toString());
 
-		new Log().e(sharedPref.getString("DAILY_MOOD_REPORT"));
-
-
-		startActivity(new Intent(this, MainActivity.class));
+		//startActivity(new Intent(this, MainActivity.class));
 		finish();
 	}
 

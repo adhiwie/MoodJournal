@@ -107,6 +107,7 @@ public class ConsentActivity extends AppCompatActivity {
 			
 			UserData ud = new UserData(getApplicationContext());
 			ud.setEmail(email);
+			ud.setGroupId(1);
 //			ud.setReferralCode(r_code);
 
 			RegistrationDataTransmission rdt = new RegistrationDataTransmission(getApplicationContext());

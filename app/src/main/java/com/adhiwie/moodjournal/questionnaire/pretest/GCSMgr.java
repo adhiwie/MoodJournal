@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.adhiwie.moodjournal.questionnaire.personality.PersonalityTestActivity;
 import com.adhiwie.moodjournal.utils.NotificationMgr;
 import com.adhiwie.moodjournal.utils.SharedPref;
 
@@ -21,7 +20,7 @@ public class GCSMgr {
 
 	public void notifyUserIfRequired()
 	{
-		if(getGCSStatus())
+		if(isGCSDone())
 			return;
 
 		Intent i = new Intent(context, GCSActivity.class);
@@ -37,7 +36,7 @@ public class GCSMgr {
 		sp.add(GOAL_COMMITMENT_SCALE_STATUS, true);
 	}
 
-	public boolean getGCSStatus()
+	public boolean isGCSDone()
 	{
 		return sp.getBoolean(GOAL_COMMITMENT_SCALE_STATUS);
 	}

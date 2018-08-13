@@ -47,24 +47,19 @@ public class SRBAIDataTransmission {
 	public void transmitData()  
 	{
 		sp.add(SRBAI_RESULT_AVAILABLE, true);
-		JSONArray data = new JSONArray();
+		JSONObject json = new JSONObject();
 		try
 		{
-			JSONObject uuid = new JSONObject();
-			uuid.put("uuid", new UserData(context).getUuid());
-			data.put(uuid);
-
 			int total_scores = sp.getInt(SRBAI_RESULT);
-			JSONObject jo_total = new JSONObject();
-			jo_total.put("srbai_score", total_scores);
-			data.put(jo_total);
 
-			SRBAIMgr sm = new SRBAIMgr(context);
+			JSONArray data = new JSONArray();
+
+			final SRBAIMgr srbaiMgr = new SRBAIMgr(context);
 			for(int i = 1; i <= 4; i++)
 			{
 				try
 				{
-					String s = sm.getSRBAIResponse(i);
+					String s = srbaiMgr.getSRBAIResponse(i);
 					JSONObject jo = new JSONObject(s);
 					data.put(jo);
 				}
@@ -74,7 +69,11 @@ public class SRBAIDataTransmission {
 				}
 			}
 
-			new DataTransmitter(this.context, new DataTypes().SRBAI_SCORE, data.toString())
+			json.put("uuid", new UserData(context).getUuid());
+			json.put("srbai_score", total_scores);
+			json.put("answers", data);
+
+			new DataTransmitter(this.context, new DataTypes().SRBAI_SCORE, json.toString())
 			{
 				@Override
 				protected void onPostExecute(Boolean result) 
@@ -82,6 +81,7 @@ public class SRBAIDataTransmission {
 					new Log().e("SRBAI data transmission result: " + result);
 					if( result )
 						sp.add(SRBAI_RESULT_TRANSMITTED, true);
+						srbaiMgr.resetData();
 				};
 			}.execute();
 

@@ -1,14 +1,14 @@
 package com.adhiwie.moodjournal.questionnaire.pretest;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,10 +17,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.adhiwie.moodjournal.MainActivity;
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.communication.helper.GCSDataTransmission;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
+import com.adhiwie.moodjournal.plan.PlanMgr;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.Popup;
 import com.adhiwie.moodjournal.utils.SharedPref;
@@ -75,7 +75,7 @@ public class GCSActivity extends AppCompatActivity {
 //        actionbar_title.setText(getResources().getString(R.string.title_activity_gcs_test));
 
         sp = new SharedPref(getApplicationContext());
-        if(new GCSMgr(getApplicationContext()).getGCSStatus() == false)
+        if(new GCSMgr(getApplicationContext()).isGCSDone() == false)
             setContentView(R.layout.activity_gcs);
         else
             setContentView(R.layout.activity_gcs_results);
@@ -99,7 +99,10 @@ public class GCSActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                if( new GCSMgr(getApplicationContext()).isGCSDone())
+                    finish();
+                else
+                    android.widget.Toast.makeText(getApplicationContext(), "You need to complete goal commitment questionnaire to continue using this app!", android.widget.Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -111,7 +114,7 @@ public class GCSActivity extends AppCompatActivity {
         super.onStart();
 
         sp = new SharedPref(getApplicationContext());
-        if(new GCSMgr(getApplicationContext()).getGCSStatus() == false)
+        if(new GCSMgr(getApplicationContext()).isGCSDone() == false)
         {
             tv_questionnaire_header = (TextView) findViewById(R.id.tv_questionnaire_header);
             control_btn = (Button) findViewById(R.id.control_btn_test);
@@ -302,13 +305,51 @@ public class GCSActivity extends AppCompatActivity {
         tv_total_scores.setText(String.format("%s%%", df.format(gcs_percentage)));
         tv_results_explained.setText(template);
 
+        TextView plan_label = (TextView) findViewById(R.id.plan_label);
+        String routine = new PlanMgr(getApplicationContext()).getPlanRoutineDesc();
+        String plan;
+        SpannableStringBuilder spannable;
+
+        plan = getResources().getString(R.string.gcs_results_plan, routine);
+        spannable = new SpannableStringBuilder(plan);
+
+        spannable.setSpan(
+                new BackgroundColorSpan(0x223CB371),
+                plan.indexOf(routine),
+                plan.indexOf(routine)+String.valueOf(routine).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        spannable.setSpan(
+                new StyleSpan(Typeface.BOLD),
+                plan.indexOf(routine),
+                plan.indexOf(routine)+String.valueOf(routine).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        spannable.setSpan(
+                new BackgroundColorSpan(0x223CB371),
+                plan.indexOf("track my mood"),
+                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        spannable.setSpan(
+                new StyleSpan(Typeface.BOLD),
+                plan.indexOf("track my mood"),
+                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        plan_label.setText(spannable);
+
         Button done = (Button) findViewById(R.id.done_btn_results);
         done.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View arg0)
             {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                //startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             }
         });

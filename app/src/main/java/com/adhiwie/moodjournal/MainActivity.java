@@ -2,12 +2,8 @@ package com.adhiwie.moodjournal;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,11 +11,9 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.StyleSpan;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,18 +23,14 @@ import com.adhiwie.moodjournal.plan.PlanActivity;
 import com.adhiwie.moodjournal.plan.PlanMgr;
 import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireActivity;
 import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireMgr;
-import com.adhiwie.moodjournal.questionnaire.personality.PersonalityTestActivity;
 import com.adhiwie.moodjournal.questionnaire.posttest.SRBAIActivity;
 import com.adhiwie.moodjournal.questionnaire.pretest.GCSActivity;
 import com.adhiwie.moodjournal.questionnaire.pretest.GCSMgr;
-import com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireActivity;
-import com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireMgr;
 import com.adhiwie.moodjournal.report.MoodReportActivity;
 import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.user.permission.Permission;
 import com.adhiwie.moodjournal.user.permission.RuntimePermission;
 import com.adhiwie.moodjournal.utils.Log;
-import com.adhiwie.moodjournal.utils.Popup;
 import com.adhiwie.moodjournal.utils.Time;
 
 import java.util.ArrayList;
@@ -70,47 +60,16 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 
-//		Drawable background;
-//
-//		if(Build.VERSION.SDK_INT >= 21)
-//			background = getResources().getDrawable(R.drawable.blue_background, null);
-//		else
-//			background = getResources().getDrawable(R.drawable.blue_background);
-//
-//		ActionBar actionBar = getActionBar();
-//		actionBar.setBackgroundDrawable(background);
-//		actionBar.setCustomView(R.layout.actionbar_layout);
-//		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-//		actionBar.setDisplayHomeAsUpEnabled(false);
-//		actionBar.setDisplayUseLogoEnabled(true);
-//
-//		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-//		actionbar_title.setText(getResources().getString(R.string.title_activity_main));
-
 		setContentView(R.layout.activity_main);
 
-		mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(mTopToolbar);
+//		mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
+//		setSupportActionBar(mTopToolbar);
+//		getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
-		//		ShimmerFrameLayout exit_shimmer = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
-		//		exit_shimmer.setBaseAlpha(0.8f);
-		//		exit_shimmer.setAutoStart(true);
-
-/*
-		ShimmerFrameLayout mood_shimmer = (ShimmerFrameLayout) findViewById(R.id.mood_shimmer);
-		mood_shimmer.setBaseAlpha(0.8f);
-		mood_shimmer.setAutoStart(true);
-
-		ShimmerFrameLayout daily_shimmer = (ShimmerFrameLayout) findViewById(R.id.daily_shimmer);
-		daily_shimmer.setBaseAlpha(0.8f);
-		daily_shimmer.setAutoStart(true);
-*/
 		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) )
 		{
 			Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
 		}
-
 	}
 
 
@@ -127,21 +86,29 @@ public class MainActivity extends AppCompatActivity
 		}
 
 		check_Consent_GooglePlayService_Permissions_LinkedTask();
+
 	}
 
 
 	private void setLayout()
 	{
 		// set today's mood questionnaire status
-		ImageView mood1 = (ImageView) findViewById(R.id.mood_q1);
+		TextView todaysMoodStatus = (TextView) findViewById(R.id.todays_mood_status_tv);
+		Button trackMoodButton = (Button) findViewById(R.id.track_mood_btn);
+		ImageView imageStatus = (ImageView) findViewById(R.id.image_status);
+
 		MoodQuestionnaireMgr mood_mgr = new MoodQuestionnaireMgr(getApplicationContext());
 		int todays_count_mood_q = mood_mgr.getMoodQuestionnaireCountForToday();
 		switch (todays_count_mood_q) {
 		case 0:
-			mood1.setImageResource(R.drawable.ic_check_circle_grey);
+			todaysMoodStatus.setText(getResources().getString(R.string.todays_mood_q_stats_empty_state));
+			trackMoodButton.setVisibility(View.VISIBLE);
+			imageStatus.setImageResource(R.drawable.ic_kitty);
 			break;
 		case 1:
-			mood1.setImageResource(R.drawable.ic_check_circle_green);
+			todaysMoodStatus.setText(getResources().getString(R.string.todays_mood_q_stats_tracked));
+			trackMoodButton.setVisibility(View.GONE);
+			imageStatus.setImageResource(R.drawable.ic_happy);
 			break;
 		default:
 			break;
@@ -310,7 +277,7 @@ public class MainActivity extends AppCompatActivity
 			return;
 		}
 
-		if(!new GCSMgr(getApplicationContext()).getGCSStatus())
+		if(!new GCSMgr(getApplicationContext()).isGCSDone())
 		{
 			startActivity(new Intent(this, GCSActivity.class));
 			this.finish();
@@ -326,39 +293,39 @@ public class MainActivity extends AppCompatActivity
 
 
 	//menu items
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) 
-	{
-		getMenuInflater().inflate(R.menu.main_menu, menu);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu)
+//	{
+//		getMenuInflater().inflate(R.menu.main_menu, menu);
+//		return true;
+//	}
 
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) 
-	{
-		// Handle presses on the action bar items
-		switch (item.getItemId()) 
-		{
-		case R.id.menu_info:
-			String message = 
-					"Your unique id is: " + new UserData(getApplicationContext()).getUuid() 
-					+ "\n\n"
-					+ "Mood Journal app has been developed by researchers at the University "
-					+ "of Birmingham (UoB) to collect data for "
-					+ "research and teaching purposes." 
-					+ "\n\n"
-					+ "We would love to hear your feedback for us and issues with the app. "
-					+ "Please send us an email - axw412@cs.bham.ac.uk."
-					+ "\n\n"
-					+ "Thank You!";
-			
-			new Popup().showPopup(MainActivity.this, getResources().getString(R.string.info_title), message);
-			return true;
-		case R.id.menu_personality_test:
-			startActivity(new Intent(getApplicationContext(), PersonalityTestActivity.class));
-			return true;
-			
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item)
+//	{
+//		// Handle presses on the action bar items
+//		switch (item.getItemId())
+//		{
+//		case R.id.menu_info:
+//			String message =
+//					"Your unique id is: " + new UserData(getApplicationContext()).getUuid()
+//					+ "\n\n"
+//					+ "Mood Journal app has been developed by researchers at the University "
+//					+ "of Birmingham (UoB) to collect data for "
+//					+ "research and teaching purposes."
+//					+ "\n\n"
+//					+ "We would love to hear your feedback for us and issues with the app. "
+//					+ "Please send us an email - axw412@cs.bham.ac.uk."
+//					+ "\n\n"
+//					+ "Thank You!";
+//
+//			new Popup().showPopup(MainActivity.this, getResources().getString(R.string.info_title), message);
+//			return true;
+//		case R.id.menu_personality_test:
+//			startActivity(new Intent(getApplicationContext(), PersonalityTestActivity.class));
+//			return true;
+//
 //		case R.id.menu_error:
 //			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 //			builder.setTitle("Type Your Message");
@@ -391,11 +358,11 @@ public class MainActivity extends AppCompatActivity
 //			    }
 //			});
 //			builder.show();
-			
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
+//
+//		default:
+//			return super.onOptionsItemSelected(item);
+//		}
+//	}
 
 	private void planSetup()
 	{

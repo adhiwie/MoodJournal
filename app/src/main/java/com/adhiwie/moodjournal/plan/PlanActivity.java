@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.adhiwie.moodjournal.MainActivity;
@@ -25,6 +26,7 @@ import com.adhiwie.moodjournal.communication.helper.PlanDataTransmission;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.utils.SharedPref;
+import com.adhiwie.moodjournal.utils.Toast;
 
 import org.json.JSONException;
 
@@ -35,7 +37,7 @@ public class PlanActivity extends AppCompatActivity {
     private String routine;
     private SharedPref sp;
     private Button control_btn;
-    private LinearLayout intro_layout;
+    private ScrollView intro_layout;
     private LinearLayout step_1_layout;
     private RelativeLayout step_2_layout;
     private RelativeLayout step_3_layout;
@@ -47,24 +49,6 @@ public class PlanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        Drawable background;
-//
-//        if(Build.VERSION.SDK_INT >= 21)
-//            background = getResources().getDrawable(R.drawable.blue_background, null);
-//        else
-//            background = getResources().getDrawable(R.drawable.blue_background);
-//
-//
-//        ActionBar actionBar = getActionBar();
-//        actionBar.setBackgroundDrawable(background);
-//        actionBar.setCustomView(R.layout.actionbar_layout);
-//        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.setDisplayUseLogoEnabled(true);
-//
-//        TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-//        actionbar_title.setText(getResources().getString(R.string.title_activity_create_plan));
 
         setContentView(R.layout.activity_create_plan);
 
@@ -97,7 +81,7 @@ public class PlanActivity extends AppCompatActivity {
     private void initLayout(){
         step = 0;
 
-        intro_layout = (LinearLayout) findViewById(R.id.intro_layout);
+        intro_layout = (ScrollView) findViewById(R.id.intro_layout);
         step_1_layout = (LinearLayout) findViewById(R.id.step_1_layout);
         step_2_layout = (RelativeLayout) findViewById(R.id.step_2_layout);
         step_3_layout = (RelativeLayout) findViewById(R.id.step_3_layout);
@@ -115,7 +99,11 @@ public class PlanActivity extends AppCompatActivity {
             case android.R.id.home:
                 switch (step) {
                     case 0:
-                        this.finish();
+                        PlanMgr planMgr = new PlanMgr(getApplicationContext());
+                        if (planMgr.isPlanGiven())
+                            this.finish();
+                        else
+                            android.widget.Toast.makeText(getApplicationContext(), "You need to set a plan to use this app!", android.widget.Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
                         initLayout();

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.adhiwie.moodjournal.user.data.UserData;
+import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.NotificationMgr;
 import com.adhiwie.moodjournal.utils.SharedPref;
 import com.adhiwie.moodjournal.utils.Time;
@@ -23,12 +24,12 @@ public class SRBAIMgr {
 	}
 
 	private final String SRBAI_TEST_STATUS = "SRBAI_TEST_STATUS";
-	public void srbaiCompleted()
+	public void completeSRBAI()
 	{
 		sp.add(SRBAI_TEST_STATUS, true);
 	}
 
-	public boolean getSRBAIStatus()
+	public boolean isSRBAIDone()
 	{
 		return sp.getBoolean(SRBAI_TEST_STATUS);
 	}
@@ -51,21 +52,74 @@ public class SRBAIMgr {
 
 	public void notifyUserIfRequired()
 	{
-		if(getSRBAIStatus())
-			return;
 
 		int start_date = new UserData(context).getStartDate();
 		int current_date = new Time(Calendar.getInstance()).getEpochDays();
 		int participation_days = 1 + current_date - start_date;
 
-		if((!new SRBAIMgr(context).getSRBAIStatus() && participation_days == 14) || participation_days == 28) {
+		//DEBUG
+//		new Log().e("SRBAI questionnaire is triggered");
+//		new Log().e("Count for today: "+sp.getInt(Notification_Trigger_Count_For_Today));
+//		new Log().e("Current date: "+current_date);
+//		new Log().e("Last date: "+sp.getInt(Notification_Trigger_Date_For_Today));
+
+		if(getNotificationTriggerCountForToday() > 0 && isLastNotificationTriggeredToday())
+			return;
+
+		if(participation_days == 7 || participation_days == 14 || participation_days == 21 || participation_days == 28) {
 			Intent i = new Intent(context, SRBAIActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
 			PendingIntent pi = PendingIntent.getActivity(context, 901, i, PendingIntent.FLAG_CANCEL_CURRENT);
 			new NotificationMgr().triggerPriorityNotification(context, pi, 9011, "Mood Journal", "Your response needed");
+
+			updateLastNotificationTriggerCountForToday();
+		} else {
+			resetLastNotificationTriggerCountForToday();
 		}
 
+	}
+
+	private final String Notification_Trigger_Date_For_Today = "Notification_Trigger_Date_For_Today";
+	private final String Notification_Trigger_Count_For_Today = "Notification_Trigger_Count_For_Today";
+	private void updateLastNotificationTriggerCountForToday()
+	{
+		int current_date = new Time(Calendar.getInstance()).getEpochDays();
+		int last_date = sp.getInt(Notification_Trigger_Date_For_Today);
+
+		if(last_date == current_date)
+		{
+			int count = sp.getInt(Notification_Trigger_Count_For_Today);
+			sp.add(Notification_Trigger_Count_For_Today, count+1);
+		}
+		else
+		{
+			sp.add(Notification_Trigger_Date_For_Today, current_date);
+			sp.add(Notification_Trigger_Count_For_Today, 1);
+		}
+	}
+
+	private void resetLastNotificationTriggerCountForToday() {
+		sp.add(Notification_Trigger_Count_For_Today, 0);
+	}
+
+	private int getNotificationTriggerCountForToday()
+	{
+		return sp.getInt(Notification_Trigger_Count_For_Today);
+	}
+
+	private boolean isLastNotificationTriggeredToday()
+	{
+		int current_date = new Time(Calendar.getInstance()).getEpochDays();
+		int last_date = sp.getInt(Notification_Trigger_Date_For_Today);
+
+		return (current_date == last_date);
+	}
+
+	private final String SRBAI_RESULT_TRANSMITTED = "SRBAI_RESULT_TRANSMITTED";
+	public void resetData() {
+		sp.add(SRBAI_TEST_STATUS, false);
+		sp.add(SRBAI_RESULT_TRANSMITTED, false);
 	}
 }
