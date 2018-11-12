@@ -70,7 +70,7 @@
             android:name=".report.MoodReportActivity"
             android:label="@string/title_activity_mood_data" />
         <activity
-            android:name=".questionnaire.pretest.GCSActivity"
+            android:name=".questionnaire.goalcommitment.GCSActivity"
             android:label="@string/title_activity_gcs_test" />
         <activity
             android:name=".questionnaire.posttest.SRBAIActivity"

@@ -41,7 +41,8 @@ public class LargeFileTransmitter extends AsyncTask<Void, Void, Boolean>
 		this.data_type = data_type;
 		//this.url =  new URL("http://www.cs.bham.ac.uk/~axm514/mytraces/data/registrar.php");
 		//this.url = new URL("https://adhiwie-research.herokuapp.com/registrar.php");
-		this.url = new URL("https://adhi-study-2.herokuapp.com/registrar.php");
+		//this.url = new URL("https://adhi-study-2.herokuapp.com/registrar.php");
+		this.url = new URL("");
 	}
 
 

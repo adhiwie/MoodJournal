@@ -1,4 +1,4 @@
-package com.adhiwie.moodjournal.questionnaire.pretest;
+package com.adhiwie.moodjournal.questionnaire.goalcommitment;
 
 import android.content.res.Resources;
 import android.graphics.Typeface;

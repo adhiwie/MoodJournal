@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.adhiwie.moodjournal.user.data.UserData;
-import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.NotificationMgr;
 import com.adhiwie.moodjournal.utils.SharedPref;
 import com.adhiwie.moodjournal.utils.Time;
@@ -59,9 +58,9 @@ public class SRBAIMgr {
 
 		//DEBUG
 //		new Log().e("SRBAI questionnaire is triggered");
-//		new Log().e("Count for today: "+sp.getInt(Notification_Trigger_Count_For_Today));
+//		new Log().e("Count for today: "+sp.getInt(SRBAI_Notification_Trigger_Count_For_Today));
 //		new Log().e("Current date: "+current_date);
-//		new Log().e("Last date: "+sp.getInt(Notification_Trigger_Date_For_Today));
+//		new Log().e("Last date: "+sp.getInt(SRBAI_Notification_Trigger_Date_For_Today));
 
 		if(getNotificationTriggerCountForToday() > 0 && isLastNotificationTriggeredToday())
 			return;
@@ -81,38 +80,38 @@ public class SRBAIMgr {
 
 	}
 
-	private final String Notification_Trigger_Date_For_Today = "Notification_Trigger_Date_For_Today";
-	private final String Notification_Trigger_Count_For_Today = "Notification_Trigger_Count_For_Today";
+	private final String SRBAI_Notification_Trigger_Date_For_Today = "SRBAI_Notification_Trigger_Date_For_Today";
+	private final String SRBAI_Notification_Trigger_Count_For_Today = "SRBAI_Notification_Trigger_Count_For_Today";
 	private void updateLastNotificationTriggerCountForToday()
 	{
 		int current_date = new Time(Calendar.getInstance()).getEpochDays();
-		int last_date = sp.getInt(Notification_Trigger_Date_For_Today);
+		int last_date = sp.getInt(SRBAI_Notification_Trigger_Date_For_Today);
 
 		if(last_date == current_date)
 		{
-			int count = sp.getInt(Notification_Trigger_Count_For_Today);
-			sp.add(Notification_Trigger_Count_For_Today, count+1);
+			int count = sp.getInt(SRBAI_Notification_Trigger_Count_For_Today);
+			sp.add(SRBAI_Notification_Trigger_Count_For_Today, count+1);
 		}
 		else
 		{
-			sp.add(Notification_Trigger_Date_For_Today, current_date);
-			sp.add(Notification_Trigger_Count_For_Today, 1);
+			sp.add(SRBAI_Notification_Trigger_Date_For_Today, current_date);
+			sp.add(SRBAI_Notification_Trigger_Count_For_Today, 1);
 		}
 	}
 
 	private void resetLastNotificationTriggerCountForToday() {
-		sp.add(Notification_Trigger_Count_For_Today, 0);
+		sp.add(SRBAI_Notification_Trigger_Count_For_Today, 0);
 	}
 
 	private int getNotificationTriggerCountForToday()
 	{
-		return sp.getInt(Notification_Trigger_Count_For_Today);
+		return sp.getInt(SRBAI_Notification_Trigger_Count_For_Today);
 	}
 
 	private boolean isLastNotificationTriggeredToday()
 	{
 		int current_date = new Time(Calendar.getInstance()).getEpochDays();
-		int last_date = sp.getInt(Notification_Trigger_Date_For_Today);
+		int last_date = sp.getInt(SRBAI_Notification_Trigger_Date_For_Today);
 
 		return (current_date == last_date);
 	}

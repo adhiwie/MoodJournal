@@ -2,7 +2,6 @@ package com.adhiwie.moodjournal;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -25,15 +24,12 @@ import com.adhiwie.moodjournal.plan.PlanActivity;
 import com.adhiwie.moodjournal.plan.PlanMgr;
 import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireActivity;
 import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireMgr;
-import com.adhiwie.moodjournal.questionnaire.posttest.SRBAIActivity;
-import com.adhiwie.moodjournal.questionnaire.pretest.GCSActivity;
-import com.adhiwie.moodjournal.questionnaire.pretest.GCSMgr;
+import com.adhiwie.moodjournal.questionnaire.goalcommitment.GCSActivity;
+import com.adhiwie.moodjournal.questionnaire.goalcommitment.GCSMgr;
 import com.adhiwie.moodjournal.report.MoodReportActivity;
-import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.user.permission.Permission;
 import com.adhiwie.moodjournal.user.permission.RuntimePermission;
 import com.adhiwie.moodjournal.utils.Log;
-import com.adhiwie.moodjournal.utils.Time;
 
 import java.util.ArrayList;
 import java.util.Calendar;

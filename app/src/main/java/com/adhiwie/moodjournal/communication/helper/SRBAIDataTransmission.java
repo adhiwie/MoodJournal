@@ -5,7 +5,6 @@ import android.content.Context;
 import com.adhiwie.moodjournal.communication.DataTransmitter;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.questionnaire.posttest.SRBAIMgr;
-import com.adhiwie.moodjournal.questionnaire.pretest.GCSMgr;
 import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.utils.DataTypes;
 import com.adhiwie.moodjournal.utils.Log;

@@ -1,4 +1,4 @@
-package com.adhiwie.moodjournal.questionnaire.pretest;
+package com.adhiwie.moodjournal.questionnaire.goalcommitment;
 
 import android.app.PendingIntent;
 import android.content.Context;

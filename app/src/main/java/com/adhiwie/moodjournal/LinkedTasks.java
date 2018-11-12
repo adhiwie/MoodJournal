@@ -1,17 +1,11 @@
 package com.adhiwie.moodjournal;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.adhiwie.moodjournal.communication.helper.CommunicationMgr;
 import com.adhiwie.moodjournal.exception.ConsetMissingException;
-import com.adhiwie.moodjournal.plan.PlanActivity;
 import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireMgr;
-import com.adhiwie.moodjournal.questionnaire.posttest.SRBAIActivity;
 import com.adhiwie.moodjournal.questionnaire.posttest.SRBAIMgr;
-import com.adhiwie.moodjournal.questionnaire.pretest.GCSActivity;
-import com.adhiwie.moodjournal.questionnaire.pretest.GCSMgr;
-import com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireMgr;
 import com.adhiwie.moodjournal.sensor.manager.SensorSubscriptionManager;
 import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.user.permission.Permission;
