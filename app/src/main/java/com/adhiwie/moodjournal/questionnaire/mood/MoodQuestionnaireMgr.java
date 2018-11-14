@@ -21,23 +21,21 @@ import org.json.JSONException;
 
 public class MoodQuestionnaireMgr {
 
-	private final String DAILY_MOOD_REPORT_DATA = "DAILY_MOOD_REPORT_DATA";
+    private final String DAILY_MOOD_REPORT_DATA = "DAILY_MOOD_REPORT_DATA";
 
-	private final Context context;
-	private final SharedPref sp;
-	
-	public MoodQuestionnaireMgr(Context context) 
-	{
-		this.context = context;
-		this.sp = new SharedPref(context);
-	}
-	
-	public void notifyUserIfRequired()
-	{
-		int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+    private final Context context;
+    private final SharedPref sp;
 
-		long currentTimeInMillis = Calendar.getInstance().getTimeInMillis();
-		long lastTriggerTimeInMillis = getLastMoodQuestionnaireTriggerTime();
+    public MoodQuestionnaireMgr(Context context) {
+        this.context = context;
+        this.sp = new SharedPref(context);
+    }
+
+    public void notifyUserIfRequired() {
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+
+        long currentTimeInMillis = Calendar.getInstance().getTimeInMillis();
+        long lastTriggerTimeInMillis = getLastMoodQuestionnaireTriggerTime();
 
 //		new Log().e("=======================");
 //		new Log().e("Mood notification is triggered");
@@ -47,157 +45,144 @@ public class MoodQuestionnaireMgr {
 //		new Log().e("Hour of day: "+hour);
 //		new Log().e("=======================");
 
-		if(!(currentTimeInMillis - lastTriggerTimeInMillis < 1000) &&
-				(getMoodQuestionnaireCountForToday() == 0) &&
-				(getMoodNotificationTriggerCountForToday() == 0) &&
-				(hour >= 12 && hour <= 14) &&
-				(new UserData(context).getGroupId() == 1))
-		{
+        if (!(currentTimeInMillis - lastTriggerTimeInMillis < 1000) &&
+                (getMoodQuestionnaireCountForToday() == 0) &&
+                (getMoodNotificationTriggerCountForToday() == 0) &&
+                (hour >= 12 && hour <= 14) &&
+                (new UserData(context).getGroupId() == 1)) {
 
-			new Log().e("Notification is sent");
+            new Log().e("Notification is sent");
 
-			Intent i = new Intent(context, ReminderActivity.class);
-			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            Intent i = new Intent(context, ReminderActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-			String routine_desc = new PlanMgr(context).getPlanRoutineDesc();
-			String message;
+            String routine_desc = new PlanMgr(context).getPlanRoutineDesc();
+            String message;
 
-			PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
-			message = "Remember: if I "+routine_desc+", then I will track my mood!";
+            PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
+            message = "Remember: if I " + routine_desc + ", then I will track my mood!";
 
-			new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Journal", message);
+            new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Journal", message);
 
-			updateLastMoodQuestionnaireTriggerTime();
+            updateLastMoodQuestionnaireTriggerTime();
 
 		    /* Log reminder and send the data to server */
-			Date currentTime = Calendar.getInstance().getTime();
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-			String currentTimeInString = simpleDateFormat.format(currentTime);
-			ReminderData data = new ReminderData(currentTimeInMillis, currentTimeInString, message);
-			FileMgr fm = new FileMgr(context);
-			fm.addData(data);
-		} else {
-			new Log().e("Mood notification trigger is resetted for today");
+            Date currentTime = Calendar.getInstance().getTime();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+            String currentTimeInString = simpleDateFormat.format(currentTime);
+            ReminderData data = new ReminderData(currentTimeInMillis, currentTimeInString, message);
+            FileMgr fm = new FileMgr(context);
+            fm.addData(data);
+        } else {
+            new Log().e("Mood notification trigger is resetted for today");
 
-			int current_date = new Time(Calendar.getInstance()).getEpochDays();
-			int last_date = sp.getInt(Mood_Notification_Trigger_Date_For_Today);
+            int current_date = new Time(Calendar.getInstance()).getEpochDays();
+            int last_date = sp.getInt(Mood_Notification_Trigger_Date_For_Today);
 
-			if (current_date != last_date)
-				resetMoodNotificationTriggerCountForToday();
-		}
+            if (current_date != last_date)
+                resetMoodNotificationTriggerCountForToday();
+        }
 
-	}
-
-
-	private final String Mood_Notification_Time = "Mood_Notification_Time";
-	public void updateLastMoodQuestionnaireTime()
-	{
-		sp.add(Mood_Notification_Time, Calendar.getInstance().getTimeInMillis());
-		updateMoodNotificationCount();
-		updateMoodNotificationCountForToday();
-	}
-
-	public long getLastMoodQuestionnaireTime()
-	{
-		return sp.getLong(Mood_Notification_Time);
-	}
+    }
 
 
-	private final String Mood_Notification_Trigger_Time = "Mood_Notification_Trigger_Time";
-	private final String Mood_Notification_Trigger_Date_For_Today = "Mood_Notification_Trigger_Date_For_Today";
-	private final String Mood_Notification_Trigger_Count_For_Today = "Mood_Notification_Trigger_Count_For_Today";
-	private void updateLastMoodQuestionnaireTriggerTime()
-	{
-		sp.add(Mood_Notification_Trigger_Time, Calendar.getInstance().getTimeInMillis());
+    private final String Mood_Notification_Time = "Mood_Notification_Time";
 
-		int current_date = new Time(Calendar.getInstance()).getEpochDays();
-		int last_date = sp.getInt(Mood_Notification_Trigger_Date_For_Today);
+    public void updateLastMoodQuestionnaireTime() {
+        sp.add(Mood_Notification_Time, Calendar.getInstance().getTimeInMillis());
+        updateMoodNotificationCount();
+        updateMoodNotificationCountForToday();
+    }
 
-		if(last_date == current_date)
-		{
-			int count = sp.getInt(Mood_Notification_Trigger_Count_For_Today);
-			sp.add(Mood_Notification_Trigger_Count_For_Today, count+1);
-		}
-		else
-		{
-			sp.add(Mood_Notification_Trigger_Date_For_Today, current_date);
-			sp.add(Mood_Notification_Trigger_Count_For_Today, 1);
-		}
-	}
-
-	private void resetMoodNotificationTriggerCountForToday() {
-		sp.add(Mood_Notification_Trigger_Count_For_Today, 0);
-	}
-
-	private int getMoodNotificationTriggerCountForToday()
-	{
-		return sp.getInt(Mood_Notification_Trigger_Count_For_Today);
-	}
-
-	private long getLastMoodQuestionnaireTriggerTime()
-	{
-		return sp.getLong(Mood_Notification_Trigger_Time);
-	}
+    public long getLastMoodQuestionnaireTime() {
+        return sp.getLong(Mood_Notification_Time);
+    }
 
 
-	
-	private final String Mood_Notification_Count = "Mood_Notification_Count";
-	private void updateMoodNotificationCount()
-	{
-		if(getMoodQuestionnaireCount() == 0)
-			sp.add(Mood_Notification_Count, 0);
-		sp.add(Mood_Notification_Count, getMoodQuestionnaireCount()+1);
-	}
-	
-	public int getMoodQuestionnaireCount()
-	{
-		return sp.getInt(Mood_Notification_Count);
-	}
+    private final String Mood_Notification_Trigger_Time = "Mood_Notification_Trigger_Time";
+    private final String Mood_Notification_Trigger_Date_For_Today = "Mood_Notification_Trigger_Date_For_Today";
+    private final String Mood_Notification_Trigger_Count_For_Today = "Mood_Notification_Trigger_Count_For_Today";
 
-	private final String Mood_Notification_Count_For_Today = "Mood_Notification_Count_For_Today";
-	private final String Mood_Notification_Date_For_Today = "Mood_Notification_Date_For_Today";
-	private void updateMoodNotificationCountForToday()
-	{
-		int current_date = new Time(Calendar.getInstance()).getEpochDays();
-		int last_date = sp.getInt(Mood_Notification_Date_For_Today);
+    private void updateLastMoodQuestionnaireTriggerTime() {
+        sp.add(Mood_Notification_Trigger_Time, Calendar.getInstance().getTimeInMillis());
 
-		if(last_date == current_date)
-		{
-			int count = sp.getInt(Mood_Notification_Count_For_Today);
-			sp.add(Mood_Notification_Count_For_Today, count+1);
-		}
-		else
-		{
-			sp.add(Mood_Notification_Date_For_Today, current_date);
-			sp.add(Mood_Notification_Count_For_Today, 1);
-		}
-	}
+        int current_date = new Time(Calendar.getInstance()).getEpochDays();
+        int last_date = sp.getInt(Mood_Notification_Trigger_Date_For_Today);
 
-	public int getMoodQuestionnaireCountForToday()
-	{
-		int current_date = new Time(Calendar.getInstance()).getEpochDays();
-		int last_date = sp.getInt(Mood_Notification_Date_For_Today);
-		if(last_date == current_date)
-			return sp.getInt(Mood_Notification_Count_For_Today);
-		else
-			return 0;
-	}
+        if (last_date == current_date) {
+            int count = sp.getInt(Mood_Notification_Trigger_Count_For_Today);
+            sp.add(Mood_Notification_Trigger_Count_For_Today, count + 1);
+        } else {
+            sp.add(Mood_Notification_Trigger_Date_For_Today, current_date);
+            sp.add(Mood_Notification_Trigger_Count_For_Today, 1);
+        }
+    }
 
-	public void saveDailyMoodReportData(String data) throws JSONException {
-		String moodData = sp.getString(DAILY_MOOD_REPORT_DATA);
+    private void resetMoodNotificationTriggerCountForToday() {
+        sp.add(Mood_Notification_Trigger_Count_For_Today, 0);
+    }
 
-		JSONArray jsonArray;
+    private int getMoodNotificationTriggerCountForToday() {
+        return sp.getInt(Mood_Notification_Trigger_Count_For_Today);
+    }
 
-		if (moodData == null) {
-			jsonArray = new JSONArray();
-		} else {
-			jsonArray = new JSONArray(moodData);
-		}
+    private long getLastMoodQuestionnaireTriggerTime() {
+        return sp.getLong(Mood_Notification_Trigger_Time);
+    }
 
-		jsonArray.put(data);
-		sp.add(DAILY_MOOD_REPORT_DATA, jsonArray.toString());
-	}
+
+    private final String Mood_Notification_Count = "Mood_Notification_Count";
+
+    private void updateMoodNotificationCount() {
+        if (getMoodQuestionnaireCount() == 0)
+            sp.add(Mood_Notification_Count, 0);
+        sp.add(Mood_Notification_Count, getMoodQuestionnaireCount() + 1);
+    }
+
+    public int getMoodQuestionnaireCount() {
+        return sp.getInt(Mood_Notification_Count);
+    }
+
+    private final String Mood_Notification_Count_For_Today = "Mood_Notification_Count_For_Today";
+    private final String Mood_Notification_Date_For_Today = "Mood_Notification_Date_For_Today";
+
+    private void updateMoodNotificationCountForToday() {
+        int current_date = new Time(Calendar.getInstance()).getEpochDays();
+        int last_date = sp.getInt(Mood_Notification_Date_For_Today);
+
+        if (last_date == current_date) {
+            int count = sp.getInt(Mood_Notification_Count_For_Today);
+            sp.add(Mood_Notification_Count_For_Today, count + 1);
+        } else {
+            sp.add(Mood_Notification_Date_For_Today, current_date);
+            sp.add(Mood_Notification_Count_For_Today, 1);
+        }
+    }
+
+    public int getMoodQuestionnaireCountForToday() {
+        int current_date = new Time(Calendar.getInstance()).getEpochDays();
+        int last_date = sp.getInt(Mood_Notification_Date_For_Today);
+        if (last_date == current_date)
+            return sp.getInt(Mood_Notification_Count_For_Today);
+        else
+            return 0;
+    }
+
+    public void saveDailyMoodReportData(String data) throws JSONException {
+        String moodData = sp.getString(DAILY_MOOD_REPORT_DATA);
+
+        JSONArray jsonArray;
+
+        if (moodData == null) {
+            jsonArray = new JSONArray();
+        } else {
+            jsonArray = new JSONArray(moodData);
+        }
+
+        jsonArray.put(data);
+        sp.add(DAILY_MOOD_REPORT_DATA, jsonArray.toString());
+    }
 
 
 }

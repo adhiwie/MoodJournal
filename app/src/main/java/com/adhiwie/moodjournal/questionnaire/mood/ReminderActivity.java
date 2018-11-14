@@ -45,28 +45,28 @@ public class ReminderActivity extends AppCompatActivity {
         spannable.setSpan(
                 new BackgroundColorSpan(0x223CB371),
                 plan.indexOf(routine),
-                plan.indexOf(routine)+String.valueOf(routine).length(),
+                plan.indexOf(routine) + String.valueOf(routine).length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         spannable.setSpan(
                 new StyleSpan(Typeface.BOLD),
                 plan.indexOf(routine),
-                plan.indexOf(routine)+String.valueOf(routine).length(),
+                plan.indexOf(routine) + String.valueOf(routine).length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         spannable.setSpan(
                 new BackgroundColorSpan(0x223CB371),
                 plan.indexOf("track my mood"),
-                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         spannable.setSpan(
                 new StyleSpan(Typeface.BOLD),
                 plan.indexOf("track my mood"),
-                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 

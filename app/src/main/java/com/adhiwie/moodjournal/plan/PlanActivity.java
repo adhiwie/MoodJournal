@@ -56,7 +56,7 @@ public class PlanActivity extends AppCompatActivity {
         setSupportActionBar(mTopToolbar);
 
         // add back arrow to toolbar
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -65,20 +65,18 @@ public class PlanActivity extends AppCompatActivity {
             initLayout();
         }
 
-        if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) )
-        {
-            Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
+        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
         }
 
         sp = new SharedPref(getApplicationContext());
 
-        if(!new PlanMgr(getApplicationContext()).isPlanGiven())
-        {
+        if (!new PlanMgr(getApplicationContext()).isPlanGiven()) {
             initLayout();
         }
     }
 
-    private void initLayout(){
+    private void initLayout() {
         step = 0;
 
         intro_layout = (ScrollView) findViewById(R.id.intro_layout);
@@ -175,28 +173,28 @@ public class PlanActivity extends AppCompatActivity {
         spannable.setSpan(
                 new BackgroundColorSpan(0x223CB371),
                 plan.indexOf(routine),
-                plan.indexOf(routine)+String.valueOf(routine).length(),
+                plan.indexOf(routine) + String.valueOf(routine).length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         spannable.setSpan(
                 new StyleSpan(Typeface.BOLD),
                 plan.indexOf(routine),
-                plan.indexOf(routine)+String.valueOf(routine).length(),
+                plan.indexOf(routine) + String.valueOf(routine).length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         spannable.setSpan(
                 new BackgroundColorSpan(0x223CB371),
                 plan.indexOf("track my mood"),
-                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         spannable.setSpan(
                 new StyleSpan(Typeface.BOLD),
                 plan.indexOf("track my mood"),
-                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
@@ -228,28 +226,28 @@ public class PlanActivity extends AppCompatActivity {
         spannable.setSpan(
                 new BackgroundColorSpan(0x223CB371),
                 plan.indexOf(routine),
-                plan.indexOf(routine)+String.valueOf(routine).length(),
+                plan.indexOf(routine) + String.valueOf(routine).length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         spannable.setSpan(
                 new StyleSpan(Typeface.BOLD),
                 plan.indexOf(routine),
-                plan.indexOf(routine)+String.valueOf(routine).length(),
+                plan.indexOf(routine) + String.valueOf(routine).length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         spannable.setSpan(
                 new BackgroundColorSpan(0x223CB371),
                 plan.indexOf("track my mood"),
-                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         spannable.setSpan(
                 new StyleSpan(Typeface.BOLD),
                 plan.indexOf("track my mood"),
-                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
@@ -270,7 +268,7 @@ public class PlanActivity extends AppCompatActivity {
                 }
 
                 PlanDataTransmission pt = new PlanDataTransmission(getApplicationContext());
-                if(! pt.isDataTransmitted()) {
+                if (!pt.isDataTransmitted()) {
                     pt.transmitData();
                 }
 

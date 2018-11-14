@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 ext.versionMajor = 3
-ext.versionMinor = 0
+ext.versionMinor = 1
 ext.versionPatch = 0
 ext.versionClassifier = null
 ext.isSnapshot = false
@@ -46,7 +46,7 @@ private String generateVersionName() {
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     compile 'com.android.support:appcompat-v7:27.1.1'
-    compile 'com.google.android.gms:play-services-location:15.0.1'
+    compile 'com.google.android.gms:play-services-location:16.0.0'
     compile "com.android.support:support-core-utils:27.1.1"
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:animated-vector-drawable:27.1.1'

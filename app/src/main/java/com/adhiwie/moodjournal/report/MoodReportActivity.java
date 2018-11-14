@@ -64,7 +64,7 @@ public class MoodReportActivity extends AppCompatActivity {
         setSupportActionBar(mTopToolbar);
 
         // add back arrow to toolbar
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -97,7 +97,7 @@ public class MoodReportActivity extends AppCompatActivity {
         } else {
             jsonArray = new JSONArray(moodData);
 
-            for (int i=0; i < jsonArray.length(); i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObj = new JSONObject(jsonArray.getString(i));
                 dataInJsonObject.add(jsonObj);
             }
@@ -161,7 +161,7 @@ public class MoodReportActivity extends AppCompatActivity {
         System.out.println("... in milliseconds:      " + cal.getTimeInMillis());
         long start_of_next_week = cal.getTimeInMillis();
 
-        for (int i=0; i < dataInJsonObject.size(); i++) {
+        for (int i = 0; i < dataInJsonObject.size(); i++) {
             long time = getTime(dataInJsonObject, i);
             if (time >= start_of_this_week && time < start_of_next_week) {
                 Calendar c = Calendar.getInstance();
@@ -169,7 +169,7 @@ public class MoodReportActivity extends AppCompatActivity {
                 int index = c.get(Calendar.DAY_OF_WEEK) - 1;
                 jsonArray.put(index, dataInJsonObject.get(i));
 
-                new Log().e("Day: "+index+" - Date: "+c.getTime()+" - Stress: "+dataInJsonObject.get(i).getInt("q1")+" - Activeness: "+dataInJsonObject.get(i).getInt("q2")+" - Happiness: "+dataInJsonObject.get(i).getInt("q3"));
+                new Log().e("Day: " + index + " - Date: " + c.getTime() + " - Stress: " + dataInJsonObject.get(i).getInt("q1") + " - Activeness: " + dataInJsonObject.get(i).getInt("q2") + " - Happiness: " + dataInJsonObject.get(i).getInt("q3"));
                 //weeklyData.add(dataInJsonObject.get(i));
             }
         }
@@ -223,7 +223,7 @@ public class MoodReportActivity extends AppCompatActivity {
 
         //Update chart data
         Entry entryForStressData;
-        for (int i=0; i<7; i++) {
+        for (int i = 0; i < 7; i++) {
             try {
                 jsonArray.get(i);
                 entryForStressData = new Entry(i, jsonArray.getJSONObject(i).getInt("q1"));
@@ -240,7 +240,7 @@ public class MoodReportActivity extends AppCompatActivity {
 
         //Update chart data
         Entry entryForActivenessData;
-        for (int i=0; i<7; i++) {
+        for (int i = 0; i < 7; i++) {
             try {
                 jsonArray.get(i);
                 entryForActivenessData = new Entry(i, jsonArray.getJSONObject(i).getInt("q2"));
@@ -257,7 +257,7 @@ public class MoodReportActivity extends AppCompatActivity {
 
         //Update chart data
         Entry entryForHappinessData;
-        for (int i=0; i<7; i++) {
+        for (int i = 0; i < 7; i++) {
             try {
                 jsonArray.get(i);
                 entryForHappinessData = new Entry(i, jsonArray.getJSONObject(i).getInt("q3"));
@@ -278,7 +278,7 @@ public class MoodReportActivity extends AppCompatActivity {
 
         Entry entry;
 
-        for (int i=0; i<7; i++) {
+        for (int i = 0; i < 7; i++) {
             try {
                 jsonArray.get(i);
                 entry = new Entry(i, jsonArray.getJSONObject(i).getInt("q1"));
@@ -318,7 +318,7 @@ public class MoodReportActivity extends AppCompatActivity {
         Legend legend = stressChart.getLegend();
         legend.setEnabled(false);
 
-        final String[] days = new String[] {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+        final String[] days = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
         IAxisValueFormatter formatter = new IAxisValueFormatter() {
             @Override
@@ -327,7 +327,7 @@ public class MoodReportActivity extends AppCompatActivity {
             }
         };
 
-        final String[] level = new String[] {"No Data", "Very Stressed", "Stressed", "Neutral", "Relaxed", "Very Relaxed"};
+        final String[] level = new String[]{"No Data", "Very Stressed", "Stressed", "Neutral", "Relaxed", "Very Relaxed"};
 
         IAxisValueFormatter formatter1 = new IAxisValueFormatter() {
             @Override
@@ -358,7 +358,7 @@ public class MoodReportActivity extends AppCompatActivity {
 
         Entry entry;
 
-        for (int i=0; i<7; i++) {
+        for (int i = 0; i < 7; i++) {
             try {
                 jsonArray.get(i);
                 entry = new Entry(i, jsonArray.getJSONObject(i).getInt("q2"));
@@ -398,7 +398,7 @@ public class MoodReportActivity extends AppCompatActivity {
         Legend legend = activenessChart.getLegend();
         legend.setEnabled(false);
 
-        final String[] days = new String[] {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+        final String[] days = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
         IAxisValueFormatter formatter = new IAxisValueFormatter() {
             @Override
@@ -407,7 +407,7 @@ public class MoodReportActivity extends AppCompatActivity {
             }
         };
 
-        final String[] level = new String[] {"No Data", "Very Sleepy", "Sleepy", "Neutral", "Active", "Very Active"};
+        final String[] level = new String[]{"No Data", "Very Sleepy", "Sleepy", "Neutral", "Active", "Very Active"};
 
         IAxisValueFormatter formatter1 = new IAxisValueFormatter() {
             @Override
@@ -438,7 +438,7 @@ public class MoodReportActivity extends AppCompatActivity {
 
         Entry entry;
 
-        for (int i=0; i<7; i++) {
+        for (int i = 0; i < 7; i++) {
             try {
                 jsonArray.get(i);
                 entry = new Entry(i, jsonArray.getJSONObject(i).getInt("q3"));
@@ -478,7 +478,7 @@ public class MoodReportActivity extends AppCompatActivity {
         Legend legend = happinessChart.getLegend();
         legend.setEnabled(false);
 
-        final String[] days = new String[] {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+        final String[] days = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
         IAxisValueFormatter formatter = new IAxisValueFormatter() {
             @Override
@@ -487,7 +487,7 @@ public class MoodReportActivity extends AppCompatActivity {
             }
         };
 
-        final String[] level = new String[] {"No Data", "Very Sad", "Sad", "Neutral", "Happy", "Very Happy"};
+        final String[] level = new String[]{"No Data", "Very Sad", "Sad", "Neutral", "Happy", "Very Happy"};
 
         IAxisValueFormatter formatter1 = new IAxisValueFormatter() {
             @Override

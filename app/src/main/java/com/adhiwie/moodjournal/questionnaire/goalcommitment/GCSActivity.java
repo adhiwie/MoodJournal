@@ -75,7 +75,7 @@ public class GCSActivity extends AppCompatActivity {
 //        actionbar_title.setText(getResources().getString(R.string.title_activity_gcs_test));
 
         sp = new SharedPref(getApplicationContext());
-        if(new GCSMgr(getApplicationContext()).isGCSDone() == false)
+        if (new GCSMgr(getApplicationContext()).isGCSDone() == false)
             setContentView(R.layout.activity_gcs);
         else
             setContentView(R.layout.activity_gcs_results);
@@ -84,14 +84,13 @@ public class GCSActivity extends AppCompatActivity {
         setSupportActionBar(mTopToolbar);
 
         // add back arrow to toolbar
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) )
-        {
-            Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
+        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
         }
     }
 
@@ -99,7 +98,7 @@ public class GCSActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if( new GCSMgr(getApplicationContext()).isGCSDone())
+                if (new GCSMgr(getApplicationContext()).isGCSDone())
                     finish();
                 else
                     android.widget.Toast.makeText(getApplicationContext(), "You need to complete goal commitment questionnaire to continue using this app!", android.widget.Toast.LENGTH_SHORT).show();
@@ -114,22 +113,19 @@ public class GCSActivity extends AppCompatActivity {
         super.onStart();
 
         sp = new SharedPref(getApplicationContext());
-        if(new GCSMgr(getApplicationContext()).isGCSDone() == false)
-        {
+        if (new GCSMgr(getApplicationContext()).isGCSDone() == false) {
             tv_questionnaire_header = (TextView) findViewById(R.id.tv_questionnaire_header);
             control_btn = (Button) findViewById(R.id.control_btn_test);
             questions = getResources().getStringArray(R.array.gcs_questions);
             q_num = getCurrentQuestionNumber();
             setQuestion(q_num);
-        }
-        else
+        } else
             showResults();
     }
 
     private int getCurrentQuestionNumber() {
         int q_num = sp.getInt(GCS_QUESTION_NUMBER);
-        if(q_num == 0)
-        {
+        if (q_num == 0) {
             q_num = 1;
             setCurrentQuestionNumber(q_num);
         }
@@ -146,19 +142,17 @@ public class GCSActivity extends AppCompatActivity {
         start_time = Calendar.getInstance().getTimeInMillis();
         tv_questionnaire_header.setText("Question " + num + " of 5");
         question = (TextView) findViewById(R.id.tv_question);
-        question.setText(questions[num-1]);
+        question.setText(questions[num - 1]);
 
         response = null;
         final RadioGroup rg_options = (RadioGroup) findViewById(R.id.rg_options);
         rg_options.clearCheck();
-        rg_options.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        rg_options.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup arg0, int id)
-            {
+            public void onCheckedChanged(RadioGroup arg0, int id) {
                 int selectedId = rg_options.getCheckedRadioButtonId();
                 RadioButton rb = (RadioButton) findViewById(selectedId);
-                if(rb != null)
+                if (rb != null)
                     response = rb.getText().toString();
                 else
                     response = null;
@@ -168,14 +162,14 @@ public class GCSActivity extends AppCompatActivity {
     }
 
     public void onControlBtnClick(View v) {
-        if(response == null) {
+        if (response == null) {
             Toast.makeText(getApplicationContext(), "Answer the current question to proceed!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         int q_num = getCurrentQuestionNumber();
 
-        if(q_num == 1 && sp.getBoolean(GCS_ALERT_SHOWN) == false) {
+        if (q_num == 1 && sp.getBoolean(GCS_ALERT_SHOWN) == false) {
             String title = "Important";
             String message = getResources().getString(R.string.gcs_info_string);
             Popup popup = new Popup();
@@ -186,19 +180,17 @@ public class GCSActivity extends AppCompatActivity {
 
         saveResponse(q_num, response);
 
-        if(q_num < total_questions - 1) {
+        if (q_num < total_questions - 1) {
             q_num = q_num + 1;
             setCurrentQuestionNumber(q_num);
             setQuestion(q_num);
             control_btn.setText("Next");
-        }
-        else if(q_num == total_questions - 1) {
+        } else if (q_num == total_questions - 1) {
             q_num = q_num + 1;
             setCurrentQuestionNumber(q_num);
             setQuestion(q_num);
             control_btn.setText("See results");
-        }
-        else {
+        } else {
             computeAndSaveResult();
             setCurrentQuestionNumber(0);
             new GCSMgr(getApplicationContext()).gcsCompleted();
@@ -213,53 +205,51 @@ public class GCSActivity extends AppCompatActivity {
         try {
             long current_time = Calendar.getInstance().getTimeInMillis();
             JSONObject jo = new JSONObject();
-            jo.put("question", questions[q_num-1]);
+            jo.put("question", questions[q_num - 1]);
             jo.put("score", getScore(q_num, response));
             jo.put("time_taken", current_time - start_time);
 
             new GCSMgr(getApplicationContext()).storeGCSResponse(q_num, jo.toString());
             new Log().e("q num: " + q_num + ", response data: " + jo.toString());
-        }
-        catch(JSONException e) {
+        } catch (JSONException e) {
             new Log().e(e.toString());
         }
     }
 
     private int getScore(int q_num, String response) {
         new Log().e("Q_num: " + q_num + ", Response: " + response);
-        String code = codes[q_num-1];
+        String code = codes[q_num - 1];
         Resources res = getResources();
 
-        if(code.equals("R")) {
-            if(response.equals(res.getString(R.string.five_scale_option_disagree)))
+        if (code.equals("R")) {
+            if (response.equals(res.getString(R.string.five_scale_option_disagree)))
                 return 5;
 
-            if(response.equals(res.getString(R.string.five_scale_option_somewhat_disagree)))
+            if (response.equals(res.getString(R.string.five_scale_option_somewhat_disagree)))
                 return 4;
 
-            if(response.equals(res.getString(R.string.five_scale_option_neither_agree_nor_disagree)))
+            if (response.equals(res.getString(R.string.five_scale_option_neither_agree_nor_disagree)))
                 return 3;
 
-            if(response.equals(res.getString(R.string.five_scale_option_somewhat_agree)))
+            if (response.equals(res.getString(R.string.five_scale_option_somewhat_agree)))
                 return 2;
 
-            if(response.equals(res.getString(R.string.five_scale_option_agree)))
+            if (response.equals(res.getString(R.string.five_scale_option_agree)))
                 return 1;
-        }
-        else {
-            if(response.equals(res.getString(R.string.five_scale_option_disagree)))
+        } else {
+            if (response.equals(res.getString(R.string.five_scale_option_disagree)))
                 return 1;
 
-            if(response.equals(res.getString(R.string.five_scale_option_somewhat_disagree)))
+            if (response.equals(res.getString(R.string.five_scale_option_somewhat_disagree)))
                 return 2;
 
-            if(response.equals(res.getString(R.string.five_scale_option_neither_agree_nor_disagree)))
+            if (response.equals(res.getString(R.string.five_scale_option_neither_agree_nor_disagree)))
                 return 3;
 
-            if(response.equals(res.getString(R.string.five_scale_option_somewhat_agree)))
+            if (response.equals(res.getString(R.string.five_scale_option_somewhat_agree)))
                 return 4;
 
-            if(response.equals(res.getString(R.string.five_scale_option_agree)))
+            if (response.equals(res.getString(R.string.five_scale_option_agree)))
                 return 5;
         }
         throw new NullPointerException();
@@ -268,14 +258,13 @@ public class GCSActivity extends AppCompatActivity {
     private void computeAndSaveResult() {
         int total_score = 0;
         GCSMgr gm = new GCSMgr(getApplicationContext());
-        for(int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 5; i++) {
             try {
                 String s = gm.getGCSResponse(i);
                 JSONObject jo = new JSONObject(s);
                 int score = jo.getInt("score");
                 total_score += score;
-            }
-            catch(JSONException e) {
+            } catch (JSONException e) {
                 new Log().e(e.toString());
             }
         }
@@ -283,12 +272,10 @@ public class GCSActivity extends AppCompatActivity {
         sp.add(GCS_RESULT, total_score);
     }
 
-    private void showResults()
-    {
+    private void showResults() {
         computeAndSaveResult();
         GCSDataTransmission gt = new GCSDataTransmission(getApplicationContext());
-        if(! gt.isDataTransmitted())
-        {
+        if (!gt.isDataTransmitted()) {
             gt.transmitData();
         }
 
@@ -316,39 +303,37 @@ public class GCSActivity extends AppCompatActivity {
         spannable.setSpan(
                 new BackgroundColorSpan(0x223CB371),
                 plan.indexOf(routine),
-                plan.indexOf(routine)+String.valueOf(routine).length(),
+                plan.indexOf(routine) + String.valueOf(routine).length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         spannable.setSpan(
                 new StyleSpan(Typeface.BOLD),
                 plan.indexOf(routine),
-                plan.indexOf(routine)+String.valueOf(routine).length(),
+                plan.indexOf(routine) + String.valueOf(routine).length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         spannable.setSpan(
                 new BackgroundColorSpan(0x223CB371),
                 plan.indexOf("track my mood"),
-                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         spannable.setSpan(
                 new StyleSpan(Typeface.BOLD),
                 plan.indexOf("track my mood"),
-                plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
+                plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         plan_label.setText(spannable);
 
         Button done = (Button) findViewById(R.id.done_btn_results);
-        done.setOnClickListener(new View.OnClickListener()
-        {
+        done.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View arg0)
-            {
+            public void onClick(View arg0) {
                 //startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             }

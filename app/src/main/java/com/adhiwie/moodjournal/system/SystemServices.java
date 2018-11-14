@@ -16,76 +16,72 @@ import android.widget.Toast;
 public class SystemServices {
 
 
-	public boolean isInternetAvailable(Context context) 
-	{
-		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo ni = cm.getActiveNetworkInfo();
+    public boolean isInternetAvailable(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
 
-		//check for network state 
-		if( ni != null && ni.isConnected() )
-		{
-			// if not connected to wifi
-			if(ni.getType() != ConnectivityManager.TYPE_WIFI)
-				return true;
+        //check for network state
+        if (ni != null && ni.isConnected()) {
+            // if not connected to wifi
+            if (ni.getType() != ConnectivityManager.TYPE_WIFI)
+                return true;
 
-			//if connected to wifi
-			return isOnline(context);
+            //if connected to wifi
+            return isOnline(context);
 
-		}
-		return false;
-	}
+        }
+        return false;
+    }
 
 
-	private boolean isOnline(Context context) 
-	{
-		Toast.makeText(context, "Checking for internet connectivity.", Toast.LENGTH_SHORT).show();
-		
-		Runtime runtime = Runtime.getRuntime();
-		try {
+    private boolean isOnline(Context context) {
+        Toast.makeText(context, "Checking for internet connectivity.", Toast.LENGTH_SHORT).show();
 
-			Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
-			int     exitValue = ipProcess.waitFor();
-			return (exitValue == 0);
+        Runtime runtime = Runtime.getRuntime();
+        try {
 
-		} catch (IOException e)          { e.printStackTrace(); } 
-		catch (InterruptedException e) { e.printStackTrace(); }
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
 
-		return false;
-	}
-	
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-
-	@SuppressLint("NewApi")
-	public boolean isAppStatsAccessEnabled(Context context)
-	{
-		if(new APILevel().isSuitableForAppUsageStats())
-		{
-			try{
-				PackageManager pm = context.getPackageManager();
-				ApplicationInfo ai = pm.getApplicationInfo(context.getPackageName(), 0);
-				AppOpsManager aom = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-				int mode = aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, ai.uid, ai.packageName);
-				if(mode == AppOpsManager.MODE_ALLOWED)
-					return true;
-				else
-					return false;
-			}
-			catch( PackageManager.NameNotFoundException e){
-				return false;
-			}
-		}
-		return true;
-	}
+        return false;
+    }
 
 
-	public boolean isMyServiceRunning(Context context, Class<?> serviceClass) {
-		ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-		for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-			if (serviceClass.getName().equals(service.service.getClassName())) {
-				return true;
-			}
-		}
-		return false;
-	}
+    @SuppressLint("NewApi")
+    public boolean isAppStatsAccessEnabled(Context context) {
+        if (new APILevel().isSuitableForAppUsageStats()) {
+            try {
+                PackageManager pm = context.getPackageManager();
+                ApplicationInfo ai = pm.getApplicationInfo(context.getPackageName(), 0);
+                AppOpsManager aom = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+                int mode = aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, ai.uid, ai.packageName);
+                if (mode == AppOpsManager.MODE_ALLOWED)
+                    return true;
+                else
+                    return false;
+            } catch (PackageManager.NameNotFoundException e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public boolean isMyServiceRunning(Context context, Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

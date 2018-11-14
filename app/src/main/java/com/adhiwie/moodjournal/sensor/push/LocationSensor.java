@@ -13,58 +13,49 @@ import com.adhiwie.moodjournal.sensor.manager.LocationManager;
 import com.adhiwie.moodjournal.utils.Log;
 
 
+public class LocationSensor extends IntentService {
 
-public class LocationSensor extends IntentService
-{
-
-	public LocationSensor()
-	{
-		super("NOTIFICATION_SERVICE");
-	}
+    public LocationSensor() {
+        super("NOTIFICATION_SERVICE");
+    }
 
 
-	/**
-	 * Called when a new location update is available.
-	 */
-	@Override
-	protected void onHandleIntent(Intent intent)
-	{    	
+    /**
+     * Called when a new location update is available.
+     */
+    @Override
+    protected void onHandleIntent(Intent intent) {
 
-		Log log = new Log();
-		try
-		{
-			log.v("New Location");
-			if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) ) 
-				Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
+        Log log = new Log();
+        try {
+            log.v("New Location");
+            if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler))
+                Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
 
-			Bundle b = intent.getExtras();
-			String key = "com.google.android.location.LOCATION";
-			Location loc = (Location) b.get(key);
-			LocationData ld = new LocationData( 
-					loc.getLatitude(), 
-					loc.getLongitude(), 
-					loc.getTime(),
-					loc.getProvider(),
-					loc.getAccuracy());
+            Bundle b = intent.getExtras();
+            String key = "com.google.android.location.LOCATION";
+            Location loc = (Location) b.get(key);
+            LocationData ld = new LocationData(
+                    loc.getLatitude(),
+                    loc.getLongitude(),
+                    loc.getTime(),
+                    loc.getProvider(),
+                    loc.getAccuracy());
 
-			LocationManager lm = new LocationManager(getApplicationContext());
-			lm.setCurrentLocation(ld);
+            LocationManager lm = new LocationManager(getApplicationContext());
+            lm.setCurrentLocation(ld);
 
-			FileMgr fm = new FileMgr(getApplicationContext());
-			fm.addData(ld);
-			log.d("Location Result: " + ld.toJSONString());
-			
-			// check questionnaires
-			new LinkedTasks(getApplicationContext()).checkQuestionnaires();
+            FileMgr fm = new FileMgr(getApplicationContext());
+            fm.addData(ld);
+            log.d("Location Result: " + ld.toJSONString());
 
-		}
-		catch(Exception e)
-		{
-			log.e(e.toString());
-		}
-	}   	
+            // check questionnaires
+            new LinkedTasks(getApplicationContext()).checkQuestionnaires();
 
-
+        } catch (Exception e) {
+            log.e(e.toString());
+        }
+    }
 
 
 }

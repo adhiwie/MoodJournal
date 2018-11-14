@@ -14,30 +14,6 @@ import com.adhiwie.moodjournal.system.APILevel;
 
 public class NotificationMgr 
 {
-
-//	@SuppressWarnings("deprecation")
-//	@SuppressLint("NewApi")
-//	public void triggerNotification(Context context, PendingIntent pi, int id, String title, String message)
-//	{
-//		Notification.Builder b = new Notification.Builder(context)
-//		.setSmallIcon(R.drawable.ic_launcher)
-//		.setContentTitle(title)
-//		.setContentText(message)
-//		.setAutoCancel(true)
-//		.setNumber(0)
-//		.setContentIntent(pi)
-//		.setDefaults(Notification.DEFAULT_ALL);
-//
-//		Notification n;
-//		if(new APILevel().getDeviceAPILevel() < 16)
-//			n = b.getNotification();
-//		else
-//			n = b.build();
-//
-//
-//		NotificationManager n_manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//		n_manager.notify(id, n);
-//	}
 	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")

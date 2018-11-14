@@ -10,47 +10,42 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 public class GooglePlayServices {
 
-	public boolean isGoogplePlayServiceAvailable(final Activity activity)
-	{
-		boolean status = false;
-		int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity);
-		switch (code) 
-		{
-		case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED: 
-			try 
-			{
-				Dialog d = GoogleApiAvailability.getInstance().getErrorDialog(activity, code, 0);
-				d.setOnCancelListener(new OnCancelListener() {
-					@Override
-					public void onCancel(DialogInterface arg0) 
-					{
-						isGoogplePlayServiceAvailable(activity);
-					}
-				});
-				d.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			break;
-		case ConnectionResult.API_UNAVAILABLE: 
-			try 
-			{
-				Dialog d = GoogleApiAvailability.getInstance().getErrorDialog(activity, code, 0);
-				d.setOnCancelListener(new OnCancelListener() {
-					@Override
-					public void onCancel(DialogInterface arg0) {
-						isGoogplePlayServiceAvailable(activity);
-					}
-				});
-				d.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			break;
-		case ConnectionResult.SUCCESS: 
-			status = true;
-			break;
-		}
-		return status;
-	}
+    public boolean isGooglePlayServiceAvailable(final Activity activity) {
+        boolean status = false;
+        int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity);
+        switch (code) {
+            case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
+                try {
+                    Dialog d = GoogleApiAvailability.getInstance().getErrorDialog(activity, code, 0);
+                    d.setOnCancelListener(new OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface arg0) {
+                            isGooglePlayServiceAvailable(activity);
+                        }
+                    });
+                    d.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case ConnectionResult.API_UNAVAILABLE:
+                try {
+                    Dialog d = GoogleApiAvailability.getInstance().getErrorDialog(activity, code, 0);
+                    d.setOnCancelListener(new OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface arg0) {
+                            isGooglePlayServiceAvailable(activity);
+                        }
+                    });
+                    d.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case ConnectionResult.SUCCESS:
+                status = true;
+                break;
+        }
+        return status;
+    }
 }

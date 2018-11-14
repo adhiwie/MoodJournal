@@ -42,92 +42,86 @@ import java.util.Calendar;
 
 @SuppressWarnings("deprecation")
 @SuppressLint("NewApi")
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
 
-	private Log log = new Log();
-	private Toolbar mTopToolbar;
-	private RelativeLayout runtimePermissionLayout;
+    private Log log = new Log();
+    private Toolbar mTopToolbar;
+    private RelativeLayout runtimePermissionLayout;
 
-	private final String[] required_permissions = new String[] 
-			{
-					Manifest.permission.WRITE_EXTERNAL_STORAGE,
-					Manifest.permission.ACCESS_COARSE_LOCATION,
-					Manifest.permission.ACCESS_FINE_LOCATION
-			};
+    private final String[] required_permissions = new String[]
+            {
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            };
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) 
-	{
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
 //		mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
 //		setSupportActionBar(mTopToolbar);
 //		getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-		if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) )
-		{
-			Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
-		}
-	}
+        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
+        }
+    }
 
 
-	@Override
-	protected void onStart() 
-	{
-		super.onStart();
-		setLayout();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setLayout();
 
-		if(!new ConsentMgr(getApplicationContext()).isConsentGiven())
-		{
-			startActivity(new Intent(this, ConsentActivity.class));
-			this.finish();
-			return;
-		}
+        if (!new ConsentMgr(getApplicationContext()).isConsentGiven()) {
+            startActivity(new Intent(this, ConsentActivity.class));
+            this.finish();
+            return;
+        }
 
-		new GooglePlayServices().isGoogplePlayServiceAvailable(MainActivity.this);
-		runtimePermissionLayout = (RelativeLayout) findViewById(R.id.runtime_permission_layout);
+        new GooglePlayServices().isGooglePlayServiceAvailable(MainActivity.this);
+        runtimePermissionLayout = (RelativeLayout) findViewById(R.id.runtime_permission_layout);
 
-		if(getMissingPermissions().size() > 0) {
-			runtimePermissionLayout.setVisibility(View.VISIBLE);
-		} else {
-			runtimePermissionLayout.setVisibility(View.GONE);
-			check_Consent_GooglePlayService_Permissions_LinkedTask();
-		}
+        if (getMissingPermissions().size() > 0) {
+            runtimePermissionLayout.setVisibility(View.VISIBLE);
+        } else {
+            runtimePermissionLayout.setVisibility(View.GONE);
+            check_Consent_GooglePlayService_Permissions_LinkedTask();
+        }
 
-	}
+    }
 
 
-	private void setLayout()
-	{
-		// set today's mood questionnaire status
-		TextView todaysMoodStatus = (TextView) findViewById(R.id.todays_mood_status_tv);
-		Button trackMoodButton = (Button) findViewById(R.id.track_mood_btn);
-		ImageView imageStatus = (ImageView) findViewById(R.id.image_status);
+    private void setLayout() {
+        // set today's mood questionnaire status
+        TextView todaysMoodStatus = (TextView) findViewById(R.id.todays_mood_status_tv);
+        Button trackMoodButton = (Button) findViewById(R.id.track_mood_btn);
+        ImageView imageStatus = (ImageView) findViewById(R.id.image_status);
 
-		MoodQuestionnaireMgr mood_mgr = new MoodQuestionnaireMgr(getApplicationContext());
-		int todays_count_mood_q = mood_mgr.getMoodQuestionnaireCountForToday();
-		switch (todays_count_mood_q) {
-		case 0:
-			todaysMoodStatus.setText(getResources().getString(R.string.todays_mood_q_stats_empty_state));
-			trackMoodButton.setVisibility(View.VISIBLE);
-			imageStatus.setImageResource(R.drawable.ic_kitty);
-			break;
-		case 1:
-			todaysMoodStatus.setText(getResources().getString(R.string.todays_mood_q_stats_tracked));
-			trackMoodButton.setVisibility(View.GONE);
-			imageStatus.setImageResource(R.drawable.ic_happy);
-			break;
-		default:
-			break;
-		}
+        MoodQuestionnaireMgr mood_mgr = new MoodQuestionnaireMgr(getApplicationContext());
+        int todays_count_mood_q = mood_mgr.getMoodQuestionnaireCountForToday();
+        switch (todays_count_mood_q) {
+            case 0:
+                todaysMoodStatus.setText(getResources().getString(R.string.todays_mood_q_stats_empty_state));
+                trackMoodButton.setVisibility(View.VISIBLE);
+                imageStatus.setImageResource(R.drawable.ic_kitty);
+                break;
+            case 1:
+                todaysMoodStatus.setText(getResources().getString(R.string.todays_mood_q_stats_tracked));
+                trackMoodButton.setVisibility(View.GONE);
+                imageStatus.setImageResource(R.drawable.ic_happy);
+                break;
+            default:
+                break;
+        }
 
-		planSetup();
+        planSetup();
 
 /*
-		// set today's daily questionnaire status
+        // set today's daily questionnaire status
 		ImageView daily = (ImageView) findViewById(R.id.daily_q1);
 		WellBeingQuestionnaireMgr daily_mgr = new WellBeingQuestionnaireMgr(getApplicationContext());
 		int todays_count_daily_q = daily_mgr.getDailyQuestionnaireCountForToday();
@@ -142,7 +136,7 @@ public class MainActivity extends AppCompatActivity
 		}
 */
 
-		// set participation status
+        // set participation status
 //		ProgressBar pb_days = (ProgressBar) findViewById(R.id.participation_days_progressbar);
 //		ProgressBar pb_mood = (ProgressBar) findViewById(R.id.mood_questionnaires_progressbar);
 //		//ProgressBar pb_daily = (ProgressBar) findViewById(R.id.daily_questionnaires_progressbar);
@@ -159,108 +153,85 @@ public class MainActivity extends AppCompatActivity
 //		tv_days.setText(participation_days + "/30");
 //		tv_mood.setText(mood_mgr.getMoodQuestionnaireCount() + "/30");
 //		//tv_daily.setText(daily_mgr.getDailyQuestionnaireCount() + "/50");
-	}
+    }
 
 
+    private ArrayList<String> getMissingPermissions() {
+        ArrayList<String> missing_permissions = new ArrayList<String>();
+        try {
+            RuntimePermission rp = new RuntimePermission(getApplicationContext());
+            missing_permissions = rp.getMissingPermissions(required_permissions);
+        } catch (IncompatibleAPIException e) {
+        }
 
-	private ArrayList<String> getMissingPermissions()
-	{
-		ArrayList<String> missing_permissions = new ArrayList<String>();
-		try 
-		{
-			RuntimePermission rp = new RuntimePermission(getApplicationContext());
-			missing_permissions = rp.getMissingPermissions(required_permissions);
-		} 
-		catch (IncompatibleAPIException e) {}
+        new Log().e("Missing permissions : " + missing_permissions.size());
+        return missing_permissions;
+    }
 
-		new Log().e("Missing permissions : "+missing_permissions.size());
-		return missing_permissions;
-	}
+    private void askMissingPermissions() {
+        try {
+            RuntimePermission rp = new RuntimePermission(getApplicationContext());
+            ArrayList<String> missing_permissions = getMissingPermissions();
+            if (missing_permissions.size() > 0) {
+                String[] p = new String[missing_permissions.size()];
+                for (int i = 0; i < missing_permissions.size(); i++)
+                    p[i] = missing_permissions.get(i);
+                rp.askPermissions(MainActivity.this, p);
+            }
+        } catch (IncompatibleAPIException e) {
+            log.e(e.toString());
+        }
+    }
 
-	private void askMissingPermissions()
-	{
-		try 
-		{
-			RuntimePermission rp = new RuntimePermission(getApplicationContext());
-			ArrayList<String> missing_permissions = getMissingPermissions();
-			if(missing_permissions.size() > 0)
-			{
-				String[] p = new String[missing_permissions.size()];
-				for(int i = 0; i < missing_permissions.size(); i++)
-					p[i] = missing_permissions.get(i);
-				rp.askPermissions(MainActivity.this, p);
-			}
-		} 
-		catch (IncompatibleAPIException e) 
-		{
-			log.e(e.toString());
-		}
-	}
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
 
-	@Override
-	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) 
-	{
+        ArrayList<String> missing_permissions = getMissingPermissions();
+        if (missing_permissions.size() > 0) {
+            try {
+                RuntimePermission rp = new RuntimePermission(getApplicationContext());
 
-		ArrayList<String> missing_permissions = getMissingPermissions();
-		if(missing_permissions.size() > 0)
-		{
-			try 
-			{
-				RuntimePermission rp = new RuntimePermission(getApplicationContext());
+                // check if never asked again is ticked
+                boolean never_asked_clicked = false;
+                for (String s : permissions) {
+                    System.out.println(s);
+                    System.out.println(rp.isRationalRequired(MainActivity.this, s));
+                    if (!rp.isRationalRequired(MainActivity.this, s)) {
+                        never_asked_clicked = true;
+                        break;
+                    }
+                }
 
-				// check if never asked again is ticked
-				boolean never_asked_clicked = false;
-				for(String s : permissions)
-				{
-					System.out.println(s);
-					System.out.println(rp.isRationalRequired(MainActivity.this, s));
-					if(!rp.isRationalRequired(MainActivity.this, s))
-					{
-						never_asked_clicked = true;
-						break;
-					}
-				}
-
-				// show popup and direct to the settings page
-				if(never_asked_clicked)
-				{
-					rp.showRational(MainActivity.this);
-				}
-				// ask again
-				else
-				{
-					askMissingPermissions();
-				}
-			} 
-			catch (IncompatibleAPIException e) 
-			{
-				log.e(e.toString());
-			}
-		}
-		else
-		{
-			new Log().e("check_Consent_GooglePlayService_Permissions_LinkedTask is called from onRequestPermissionsResult");
-			runtimePermissionLayout.setVisibility(View.GONE);
-			check_Consent_GooglePlayService_Permissions_LinkedTask();
-		}
-	}
+                // show popup and direct to the settings page
+                if (never_asked_clicked) {
+                    rp.showRational(MainActivity.this);
+                }
+                // ask again
+                else {
+                    askMissingPermissions();
+                }
+            } catch (IncompatibleAPIException e) {
+                log.e(e.toString());
+            }
+        } else {
+            new Log().e("check_Consent_GooglePlayService_Permissions_LinkedTask is called from onRequestPermissionsResult");
+            runtimePermissionLayout.setVisibility(View.GONE);
+            check_Consent_GooglePlayService_Permissions_LinkedTask();
+        }
+    }
 
 
+    private void check_Consent_GooglePlayService_Permissions_LinkedTask() {
+
+        new Log().e("check_Consent_GooglePlayService_Permissions_LinkedTask is called");
+
+        if (!new GooglePlayServices().isGooglePlayServiceAvailable(MainActivity.this)) {
+            Toast.makeText(getApplicationContext(), "Error with Google Play Service.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
-	private void check_Consent_GooglePlayService_Permissions_LinkedTask()
-	{
-
-		new Log().e("check_Consent_GooglePlayService_Permissions_LinkedTask is called");
-
-		if(!new GooglePlayServices().isGoogplePlayServiceAvailable(MainActivity.this))
-		{
-			Toast.makeText(getApplicationContext(), "Error with Google Play Service.", Toast.LENGTH_SHORT).show();
-			return;
-		}
-
-
-		Permission p = new Permission(getApplicationContext());
+        Permission p = new Permission(getApplicationContext());
 //		if(!p.isAccessibilityPermitted())
 //		{
 //			p.startAccessibilityServicePermissionActivityIfRequired();
@@ -273,36 +244,33 @@ public class MainActivity extends AppCompatActivity
 //			this.finish();
 //			return;
 //		}
-		if(!p.isNSLPermitted())
-		{
-			p.startNSLPermissionActivityIfRequired();
-			this.finish();
-			return;
-		}
+        if (!p.isNSLPermitted()) {
+            p.startNSLPermissionActivityIfRequired();
+            this.finish();
+            return;
+        }
 
-		if(!new PlanMgr(getApplicationContext()).isPlanGiven())
-		{
-			startActivity(new Intent(this, PlanActivity.class));
-			this.finish();
-			return;
-		}
+        if (!new PlanMgr(getApplicationContext()).isPlanGiven()) {
+            startActivity(new Intent(this, PlanActivity.class));
+            this.finish();
+            return;
+        }
 
-		if(!new GCSMgr(getApplicationContext()).isGCSDone())
-		{
-			startActivity(new Intent(this, GCSActivity.class));
-			this.finish();
-			return;
-		}
+        if (!new GCSMgr(getApplicationContext()).isGCSDone()) {
+            startActivity(new Intent(this, GCSActivity.class));
+            this.finish();
+            return;
+        }
 
-		try{ 
-			new LinkedTasks(getApplicationContext()).checkAllExceptPermission(); 
-		} 
-		catch(Exception e){}
+        try {
+            new LinkedTasks(getApplicationContext()).checkAllExceptPermission();
+        } catch (Exception e) {
+        }
 
-	}
+    }
 
 
-	//menu items
+    //menu items
 //	@Override
 //	public boolean onCreateOptionsMenu(Menu menu)
 //	{
@@ -374,69 +342,65 @@ public class MainActivity extends AppCompatActivity
 //		}
 //	}
 
-	private void planSetup()
-	{
-		TextView plan_label = (TextView) findViewById(R.id.plan_label);
-		String routine = new PlanMgr(getApplicationContext()).getPlanRoutineDesc();
-		String plan;
-		SpannableStringBuilder spannable;
+    private void planSetup() {
+        TextView plan_label = (TextView) findViewById(R.id.plan_label);
+        String routine = new PlanMgr(getApplicationContext()).getPlanRoutineDesc();
+        String plan;
+        SpannableStringBuilder spannable;
 
-		if (routine != null) {
-			plan = getResources().getString(R.string.detailed_plan, routine);
-			spannable = new SpannableStringBuilder(plan);
+        if (routine != null) {
+            plan = getResources().getString(R.string.detailed_plan, routine);
+            spannable = new SpannableStringBuilder(plan);
 
-			spannable.setSpan(
-					new BackgroundColorSpan(0x223CB371),
-					plan.indexOf(routine),
-					plan.indexOf(routine)+String.valueOf(routine).length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-			);
+            spannable.setSpan(
+                    new BackgroundColorSpan(0x223CB371),
+                    plan.indexOf(routine),
+                    plan.indexOf(routine) + String.valueOf(routine).length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
 
-			spannable.setSpan(
-					new StyleSpan(Typeface.BOLD),
-					plan.indexOf(routine),
-					plan.indexOf(routine)+String.valueOf(routine).length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-			);
+            spannable.setSpan(
+                    new StyleSpan(Typeface.BOLD),
+                    plan.indexOf(routine),
+                    plan.indexOf(routine) + String.valueOf(routine).length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
 
-			spannable.setSpan(
-					new BackgroundColorSpan(0x223CB371),
-					plan.indexOf("track my mood"),
-					plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-			);
+            spannable.setSpan(
+                    new BackgroundColorSpan(0x223CB371),
+                    plan.indexOf("track my mood"),
+                    plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
 
-			spannable.setSpan(
-					new StyleSpan(Typeface.BOLD),
-					plan.indexOf("track my mood"),
-					plan.indexOf("track my mood")+String.valueOf("track my mood").length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-			);
+            spannable.setSpan(
+                    new StyleSpan(Typeface.BOLD),
+                    plan.indexOf("track my mood"),
+                    plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
 
-			plan_label.setText(spannable);
+            plan_label.setText(spannable);
 
-		} else {
-			plan = "No plan created";
-			plan_label.setText(plan);
-		}
-	}
+        } else {
+            plan = "No plan created";
+            plan_label.setText(plan);
+        }
+    }
 
-	public void changePlan(View v)
-	{
-		Intent intent = new Intent(this, PlanActivity.class);
-		int step_num = 0;
-		intent.putExtra("step", step_num);
-		startActivity(intent);
-	}
+    public void changePlan(View v) {
+        Intent intent = new Intent(this, PlanActivity.class);
+        int step_num = 0;
+        intent.putExtra("step", step_num);
+        startActivity(intent);
+    }
 
-	// button click functions
-	public void moodTest(View v)
-	{
+    // button click functions
+    public void moodTest(View v) {
 
-		MoodQuestionnaireMgr mgr = new MoodQuestionnaireMgr(getApplicationContext());
+        MoodQuestionnaireMgr mgr = new MoodQuestionnaireMgr(getApplicationContext());
 
-		if(mgr.getMoodQuestionnaireCountForToday() > 0)
-		{
+        if (mgr.getMoodQuestionnaireCountForToday() > 0) {
             Calendar tomorrow = Calendar.getInstance();
             tomorrow.set(Calendar.HOUR_OF_DAY, 0);
             tomorrow.set(Calendar.MINUTE, 0);
@@ -445,30 +409,26 @@ public class MainActivity extends AppCompatActivity
             tomorrow.add(Calendar.DAY_OF_MONTH, 1);
             long tomorrow_time = tomorrow.getTimeInMillis();
             long current_time = Calendar.getInstance().getTimeInMillis();
-            int diff_mins = (int) ((tomorrow_time - current_time)/(60*1000));
-            if(diff_mins > 59)
-            {
-                int hours_left = diff_mins/60;
+            int diff_mins = (int) ((tomorrow_time - current_time) / (60 * 1000));
+            if (diff_mins > 59) {
+                int hours_left = diff_mins / 60;
                 diff_mins = diff_mins % 60;
                 Toast.makeText(getApplicationContext(), "Today's mood questionnaire has been completed. Next questionnaire will be available after " + hours_left + " hours " + diff_mins + " mins.", Toast.LENGTH_LONG).show();
-            }
-            else
+            } else
                 Toast.makeText(getApplicationContext(), "Today's mood questionnaire has been completed. Next questionnaire will be available after " + diff_mins + " mins.", Toast.LENGTH_LONG).show();
             return;
-		}
+        }
 
-		startActivity(new Intent(this, MoodQuestionnaireActivity.class));
-	}
+        startActivity(new Intent(this, MoodQuestionnaireActivity.class));
+    }
 
-	public void moodReport(View v)
-	{
-		startActivity(new Intent(this, MoodReportActivity.class));
-	}
+    public void moodReport(View v) {
+        startActivity(new Intent(this, MoodReportActivity.class));
+    }
 
-	public void askRuntimePermissions(View view)
-	{
-		askMissingPermissions();
-	}
+    public void askRuntimePermissions(View view) {
+        askMissingPermissions();
+    }
 
 
 //	public void dailyTest(View v)
@@ -493,7 +453,6 @@ public class MainActivity extends AppCompatActivity
 //	//	{
 //	//		this.finish();
 //	//	}
-
 
 
 }

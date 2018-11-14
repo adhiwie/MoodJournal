@@ -18,54 +18,44 @@ public class PlanDataTransmission {
     private final String data;
 
 
-    public PlanDataTransmission(Context context)
-    {
+    public PlanDataTransmission(Context context) {
         this.context = context;
         this.sp = new SharedPref(context);
         this.data = new PlanMgr(context).getPlanDataString();
 
-        if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) )
-        {
-            Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(context) );
+        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(context));
         }
     }
 
 
-    public boolean isDataAvailable()
-    {
+    public boolean isDataAvailable() {
         return sp.getBoolean(PLAN_DATA_AVAILABLE);
     }
 
-    public boolean isDataTransmitted()
-    {
+    public boolean isDataTransmitted() {
         return sp.getBoolean(PLAN_DATA_TRANSMITTER);
     }
 
 
-    public void transmitData()
-    {
+    public void transmitData() {
         sp.add(PLAN_DATA_AVAILABLE, true);
 
-        try
-        {
-            new DataTransmitter(this.context, new DataTypes().PLAN, data )
-            {
+        try {
+            new DataTransmitter(this.context, new DataTypes().PLAN, data) {
                 @Override
-                protected void onPostExecute(Boolean result)
-                {
+                protected void onPostExecute(Boolean result) {
                     new Log().e("Plan data transmission result: " + result);
-                    if( result )
+                    if (result)
                         sp.add(PLAN_DATA_TRANSMITTER, true);
-                };
+                }
+
+                ;
             }.execute();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             sp.add(PLAN_DATA_TRANSMITTER, false);
         }
     }
-
-
 
 
 }

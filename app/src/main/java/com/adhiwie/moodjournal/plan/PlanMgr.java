@@ -10,8 +10,7 @@ public class PlanMgr {
 
     private final SharedPref sp;
 
-    public PlanMgr(Context context)
-    {
+    public PlanMgr(Context context) {
         this.sp = new SharedPref(context);
     }
 
@@ -27,8 +26,7 @@ public class PlanMgr {
         //return true;
     }
 
-    public void setPlanGiven()
-    {
+    public void setPlanGiven() {
         sp.add(USER_PLAN_STATUS, true);
     }
 

@@ -49,7 +49,7 @@ public class SRBAIActivity extends AppCompatActivity {
         sp = new SharedPref(getApplicationContext());
         srbaiMgr = new SRBAIMgr(getApplicationContext());
 
-        if(!srbaiMgr.isSRBAIDone())
+        if (!srbaiMgr.isSRBAIDone())
             setContentView(R.layout.activity_srbai);
         else
             setContentView(R.layout.activity_srbai_results);
@@ -58,14 +58,13 @@ public class SRBAIActivity extends AppCompatActivity {
         setSupportActionBar(mTopToolbar);
 
         // add back arrow to toolbar
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        if( !(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler) )
-        {
-            Thread.setDefaultUncaughtExceptionHandler( new CustomExceptionHandler(getApplicationContext()) );
+        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
         }
     }
 
@@ -88,22 +87,19 @@ public class SRBAIActivity extends AppCompatActivity {
         super.onStart();
 
         sp = new SharedPref(getApplicationContext());
-        if(!srbaiMgr.isSRBAIDone())
-        {
+        if (!srbaiMgr.isSRBAIDone()) {
             tv_questionnaire_header = (TextView) findViewById(R.id.tv_questionnaire_header);
             control_btn = (Button) findViewById(R.id.control_btn_test);
             questions = getResources().getStringArray(R.array.srbai_questions);
             q_num = getCurrentQuestionNumber();
             setQuestion(q_num);
-        }
-        else
+        } else
             showResults();
     }
 
     private int getCurrentQuestionNumber() {
         int q_num = sp.getInt(SRBAI_QUESTION_NUMBER);
-        if(q_num == 0)
-        {
+        if (q_num == 0) {
             q_num = 1;
             setCurrentQuestionNumber(q_num);
         }
@@ -120,19 +116,17 @@ public class SRBAIActivity extends AppCompatActivity {
         start_time = Calendar.getInstance().getTimeInMillis();
         tv_questionnaire_header.setText("Question " + num + " of 4");
         question = (TextView) findViewById(R.id.tv_question);
-        question.setText(questions[num-1]);
+        question.setText(questions[num - 1]);
 
         response = null;
         final RadioGroup rg_options = (RadioGroup) findViewById(R.id.rg_options);
         rg_options.clearCheck();
-        rg_options.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        rg_options.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup arg0, int id)
-            {
+            public void onCheckedChanged(RadioGroup arg0, int id) {
                 int selectedId = rg_options.getCheckedRadioButtonId();
                 RadioButton rb = (RadioButton) findViewById(selectedId);
-                if(rb != null)
+                if (rb != null)
                     response = rb.getText().toString();
                 else
                     response = null;
@@ -142,14 +136,14 @@ public class SRBAIActivity extends AppCompatActivity {
     }
 
     public void onControlBtnClick(View v) {
-        if(response == null) {
+        if (response == null) {
             Toast.makeText(getApplicationContext(), "Answer the current question to proceed!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         int q_num = getCurrentQuestionNumber();
 
-        if(q_num == 1 && sp.getBoolean(SRBAI_ALERT_SHOWN) == false) {
+        if (q_num == 1 && sp.getBoolean(SRBAI_ALERT_SHOWN) == false) {
             String title = "Important";
             String message = getResources().getString(R.string.srbai_info_string);
             Popup popup = new Popup();
@@ -160,19 +154,17 @@ public class SRBAIActivity extends AppCompatActivity {
 
         saveResponse(q_num, response);
 
-        if(q_num < total_questions - 1) {
+        if (q_num < total_questions - 1) {
             q_num = q_num + 1;
             setCurrentQuestionNumber(q_num);
             setQuestion(q_num);
             control_btn.setText("Next");
-        }
-        else if(q_num == total_questions - 1) {
+        } else if (q_num == total_questions - 1) {
             q_num = q_num + 1;
             setCurrentQuestionNumber(q_num);
             setQuestion(q_num);
             control_btn.setText("See results");
-        }
-        else {
+        } else {
             computeAndSaveResult();
             setCurrentQuestionNumber(0);
             srbaiMgr.completeSRBAI();
@@ -186,14 +178,13 @@ public class SRBAIActivity extends AppCompatActivity {
         try {
             long current_time = Calendar.getInstance().getTimeInMillis();
             JSONObject jo = new JSONObject();
-            jo.put("question", questions[q_num-1]);
+            jo.put("question", questions[q_num - 1]);
             jo.put("score", getScore(q_num, response));
             jo.put("time_taken", current_time - start_time);
 
             srbaiMgr.storeSRBAIResponse(q_num, jo.toString());
             new Log().e("q num: " + q_num + ", response data: " + jo.toString());
-        }
-        catch(JSONException e) {
+        } catch (JSONException e) {
             new Log().e(e.toString());
         }
     }
@@ -202,39 +193,38 @@ public class SRBAIActivity extends AppCompatActivity {
         new Log().e("Q_num: " + q_num + ", Response: " + response);
         Resources res = getResources();
 
-        if(response.equals(res.getString(R.string.seven_scale_option_strongly_disagree)))
+        if (response.equals(res.getString(R.string.seven_scale_option_strongly_disagree)))
             return 1;
 
-        if(response.equals(res.getString(R.string.seven_scale_option_disagree)))
+        if (response.equals(res.getString(R.string.seven_scale_option_disagree)))
             return 2;
 
-        if(response.equals(res.getString(R.string.seven_scale_option_somewhat_disagree)))
+        if (response.equals(res.getString(R.string.seven_scale_option_somewhat_disagree)))
             return 3;
 
-        if(response.equals(res.getString(R.string.seven_scale_option_neither_agree_nor_disagree)))
+        if (response.equals(res.getString(R.string.seven_scale_option_neither_agree_nor_disagree)))
             return 4;
 
-        if(response.equals(res.getString(R.string.seven_scale_option_somewhat_agree)))
+        if (response.equals(res.getString(R.string.seven_scale_option_somewhat_agree)))
             return 5;
 
-        if(response.equals(res.getString(R.string.seven_scale_option_agree)))
+        if (response.equals(res.getString(R.string.seven_scale_option_agree)))
             return 6;
 
-        if(response.equals(res.getString(R.string.seven_scale_option_strongly_agree)))
+        if (response.equals(res.getString(R.string.seven_scale_option_strongly_agree)))
             return 7;
         throw new NullPointerException();
     }
 
     private void computeAndSaveResult() {
         int total_score = 0;
-        for(int i = 1; i <= 4; i++) {
+        for (int i = 1; i <= 4; i++) {
             try {
                 String s = srbaiMgr.getSRBAIResponse(i);
                 JSONObject jo = new JSONObject(s);
                 int score = jo.getInt("score");
                 total_score += score;
-            }
-            catch(JSONException e) {
+            } catch (JSONException e) {
                 new Log().e(e.toString());
             }
         }
@@ -242,12 +232,10 @@ public class SRBAIActivity extends AppCompatActivity {
         sp.add(SRBAI_RESULT, total_score);
     }
 
-    private void showResults()
-    {
+    private void showResults() {
         computeAndSaveResult();
         SRBAIDataTransmission st = new SRBAIDataTransmission(getApplicationContext());
-        if(! st.isDataTransmitted())
-        {
+        if (!st.isDataTransmitted()) {
             st.transmitData();
         }
 
@@ -257,11 +245,9 @@ public class SRBAIActivity extends AppCompatActivity {
         tv_total_scores.setText(String.format("%d", total_scores));
 
         Button done = (Button) findViewById(R.id.done_btn_results);
-        done.setOnClickListener(new View.OnClickListener()
-        {
+        done.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View arg0)
-            {
+            public void onClick(View arg0) {
                 finish();
             }
         });
