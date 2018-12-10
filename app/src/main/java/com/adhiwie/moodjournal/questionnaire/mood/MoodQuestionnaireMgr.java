@@ -25,6 +25,9 @@ public class MoodQuestionnaireMgr {
 
     private final Context context;
     private final SharedPref sp;
+    private int hour;
+    private long currentTimeInMillis;
+    private long lastTriggerTimeInMillis;
 
     public MoodQuestionnaireMgr(Context context) {
         this.context = context;
@@ -32,10 +35,10 @@ public class MoodQuestionnaireMgr {
     }
 
     public void notifyUserIfRequired() {
-        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
-        long currentTimeInMillis = Calendar.getInstance().getTimeInMillis();
-        long lastTriggerTimeInMillis = getLastMoodQuestionnaireTriggerTime();
+        currentTimeInMillis = Calendar.getInstance().getTimeInMillis();
+        lastTriggerTimeInMillis = getLastMoodQuestionnaireTriggerTime();
 
 //		new Log().e("=======================");
 //		new Log().e("Mood notification is triggered");
@@ -45,11 +48,7 @@ public class MoodQuestionnaireMgr {
 //		new Log().e("Hour of day: "+hour);
 //		new Log().e("=======================");
 
-        if (!(currentTimeInMillis - lastTriggerTimeInMillis < 1000) &&
-                (getMoodQuestionnaireCountForToday() == 0) &&
-                (getMoodNotificationTriggerCountForToday() == 0) &&
-                (hour >= 12 && hour <= 14) &&
-                (new UserData(context).getGroupId() == 1)) {
+        if (isRuleOk()) {
 
             new Log().e("Notification is sent");
 
@@ -57,13 +56,15 @@ public class MoodQuestionnaireMgr {
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
+            context.startActivity(i);
+
             String routine_desc = new PlanMgr(context).getPlanRoutineDesc();
-            String message;
-
-            PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
-            message = "Remember: if I " + routine_desc + ", then I will track my mood!";
-
-            new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Journal", message);
+            String message = "Remember: if I " + routine_desc + ", then I will track my mood!";
+//
+//            PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
+//            message = "Remember: if I " + routine_desc + ", then I will track my mood!";
+//
+//            new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Journal", message);
 
             updateLastMoodQuestionnaireTriggerTime();
 
@@ -182,6 +183,17 @@ public class MoodQuestionnaireMgr {
 
         jsonArray.put(data);
         sp.add(DAILY_MOOD_REPORT_DATA, jsonArray.toString());
+    }
+
+    private boolean isRuleOk() {
+        new Log().e("getMoodQuestionnaireCountForToday : "+getMoodQuestionnaireCountForToday());
+        new Log().e("getMoodNotificationTriggerCountForToday : "+getMoodNotificationTriggerCountForToday());
+        new Log().e("hour : "+hour);
+        new Log().e("group ID : "+new UserData(context).getGroupId());
+        return ((getMoodQuestionnaireCountForToday() == 0) &&
+                (getMoodNotificationTriggerCountForToday() == 0) &&
+                (hour >= 12 && hour <= 14) &&
+                (new UserData(context).getGroupId() == 1));
     }
 
 

@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -44,7 +45,7 @@ public class UserData {
         JSONObject json = new JSONObject();
         json.put("uuid", getUuid());
         json.put("email", getEmail());
-        json.put("referral_code", getReferralCode());
+        //json.put("referral_code", getReferralCode());
         json.put("reg_time_millis", getRegTimeMillis());
         json.put("reg_timezone", getRegTimezone());
         json.put("device_api_level", getDeviceApiLevel());
@@ -178,7 +179,7 @@ public class UserData {
         new DataGetter(this.context, uuid) {
             @Override
             protected void onPostExecute(String result) {
-                if (result != "")
+                if (!result.equals(""))
                     setGroupId(Integer.valueOf(result));
                 updateGroupChangedDate();
                 new Log().e("Group id : " + result);

@@ -107,12 +107,12 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 todaysMoodStatus.setText(getResources().getString(R.string.todays_mood_q_stats_empty_state));
                 trackMoodButton.setVisibility(View.VISIBLE);
-                imageStatus.setImageResource(R.drawable.ic_kitty);
+                imageStatus.setImageResource(R.drawable.ic_suffer);
                 break;
             case 1:
                 todaysMoodStatus.setText(getResources().getString(R.string.todays_mood_q_stats_tracked));
                 trackMoodButton.setVisibility(View.GONE);
-                imageStatus.setImageResource(R.drawable.ic_happy);
+                imageStatus.setImageResource(R.drawable.ic_smile);
                 break;
             default:
                 break;

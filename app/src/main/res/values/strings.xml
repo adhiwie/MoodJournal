@@ -36,7 +36,7 @@
     <string name="nsl_permission_revoked_message_part3">Click the button below to open your notification settings page. 
         Once you\'re there, enable/reset the app permission and click back button.</string>
     <string name="consent_statement">
-        Mood Journal app logs your daily mood data. The app will trigger one mood related questionnaire every day.
+        Mood Journal helps you track your daily mood data. The app will trigger one mood related questionnaire every day.
         All the personal information will be anonymised, securely transmitted and stored on the server.
         No additional information related to contacts \(telephone numbers, email addresses etc.\) on your device
         or history of communication made with the contact would be collected by the application.
@@ -227,9 +227,13 @@
         <item>On the train to go home</item>
     </string-array>
     <string name="create_plan_step_2_message">Your if-then plan</string>
-    <string name="create_plan_step_3_message">Imagine you are in this situation and slowly repeat this plan in your head</string>
-    <string name="reminder_message">Imagine you are in this situation and slowly repeat this plan in your head.
-        Remember when this situation happens, track your mood immediately.</string>
+    <string name="create_plan_step_3_message">
+        Imagine you are in this situation and slowly repeat this plan in your head
+    </string>
+    <string name="reminder_message">
+        Please take a few moment to rehearse your plan. Remember your plan below carefully.
+        After that, close your eyes, imagine that you are in that situation, and say your plan slowly and repeatedly.
+    </string>
     <string name="detailed_plan">If I %1$s, then I will track my mood</string>
     <string name="plan_reminder_title">My Plan</string>
     <string name="plan_reminder_content">Every %1$s, %2$s %3$s, then I will track my mood</string>
