@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.adhiwie.moodjournal.communication.helper.CommunicationMgr;
 import com.adhiwie.moodjournal.exception.ConsetMissingException;
+import com.adhiwie.moodjournal.questionnaire.goalcommitment.GCSMgr;
 import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireMgr;
 import com.adhiwie.moodjournal.questionnaire.posttest.SRBAIMgr;
 import com.adhiwie.moodjournal.sensor.manager.SensorSubscriptionManager;
@@ -47,7 +48,8 @@ public class LinkedTasks {
         //p.notifyUserIfAppUsagePermissionRevoked();
         p.notifyUserIfNSLPermissionRevoked();
 
-        // check for SRBAI questionnaire
+        // check for GCS & SRBAI questionnaire
+        new GCSMgr(context).notifyUserIfRequired();
         new SRBAIMgr(context).notifyUserIfRequired();
 
         checkUserGroup();
@@ -68,7 +70,8 @@ public class LinkedTasks {
         ss.startActivitySensingIfNotWorking();
         //ss.startLocationSensingIfWorking();
 
-        // check for SRBAI questionnaire
+        // check for GCS & SRBAI questionnaire
+        new GCSMgr(context).notifyUserIfRequired();
         new SRBAIMgr(context).notifyUserIfRequired();
 
         checkUserGroup();
@@ -82,7 +85,8 @@ public class LinkedTasks {
         // check for mood questionnaire
         // new WellBeingQuestionnaireMgr(context).notifyUserIfRequired();
 
-        // check for SRBAI questionnaire
+        // check for GCS & SRBAI questionnaire
+        new GCSMgr(context).notifyUserIfRequired();
         new SRBAIMgr(context).notifyUserIfRequired();
     }
 

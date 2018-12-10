@@ -22,9 +22,13 @@ public class GCSMgr {
             return;
 
         Intent i = new Intent(context, GCSActivity.class);
-        PendingIntent pi = PendingIntent.getActivity(context, 901, i, PendingIntent.FLAG_UPDATE_CURRENT);
-        new NotificationMgr().triggerPriorityNotification(context, pi, 9011, "Goal Commitment Test", "Your response needed!");
-        //setPersonalityTestNotification(count+1);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+        context.startActivity(i);
+//        PendingIntent pi = PendingIntent.getActivity(context, 901, i, PendingIntent.FLAG_UPDATE_CURRENT);
+//        new NotificationMgr().triggerPriorityNotification(context, pi, 9011, "Goal Commitment Test", "Your response needed!");
+//        //setPersonalityTestNotification(count+1);
     }
 
 
