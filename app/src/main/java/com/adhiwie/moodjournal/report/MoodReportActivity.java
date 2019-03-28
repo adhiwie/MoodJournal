@@ -1,37 +1,41 @@
 package com.adhiwie.moodjournal.report;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.adhiwie.moodjournal.ConsentMgr;
+import com.adhiwie.moodjournal.MainActivity;
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.SharedPref;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,19 +44,17 @@ import java.util.List;
 
 public class MoodReportActivity extends AppCompatActivity {
 
-    LineChart stressChart;
-    LineChart activenessChart;
-    LineChart happinessChart;
-    List<Entry> stressDataList;
-    LineDataSet stressLineDataSet;
-    List<Entry> activenessDataList;
-    LineDataSet activenessLineDataSet;
-    List<Entry> happinessDataList;
-    LineDataSet happinessLineDataSet;
+    BarChart stressChart;
+    BarChart activenessChart;
+    BarChart happinessChart;
+    List<BarEntry> stressDataList;
+    BarDataSet stressBarDataSet;
+    List<BarEntry> activenessDataList;
+    BarDataSet activenessLineDataSet;
+    List<BarEntry> happinessDataList;
+    BarDataSet happinessLineDataSet;
     List<JSONObject> dataInJsonObject;
     long currentTimeMillis;
-
-    private Toolbar mTopToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,22 +62,21 @@ public class MoodReportActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_mood_report);
 
-        mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mTopToolbar);
-
-        // add back arrow to toolbar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
-
         try {
             initialiseData();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        if (!new ConsentMgr(getApplicationContext()).isConsentGiven()) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
     }
 
     private void initialiseData() throws JSONException {
@@ -84,10 +85,10 @@ public class MoodReportActivity extends AppCompatActivity {
 
         JSONArray jsonArray;
 
-        stressDataList = new ArrayList<Entry>();
-        activenessDataList = new ArrayList<Entry>();
-        happinessDataList = new ArrayList<Entry>();
-        dataInJsonObject = new ArrayList<JSONObject>();
+        stressDataList = new ArrayList<>();
+        activenessDataList = new ArrayList<>();
+        happinessDataList = new ArrayList<>();
+        dataInJsonObject = new ArrayList<>();
 
         if (moodData == null) {
             stressDataList.clear();
@@ -215,21 +216,21 @@ public class MoodReportActivity extends AppCompatActivity {
     }
 
     private void updateData(long timeInMillis) throws JSONException {
-        stressLineDataSet.clear();
+        stressBarDataSet.clear();
         activenessLineDataSet.clear();
         happinessLineDataSet.clear();
 
         JSONArray jsonArray = getWeeklyData(timeInMillis);
 
         //Update chart data
-        Entry entryForStressData;
+        BarEntry entryForStressData;
         for (int i = 0; i < 7; i++) {
             try {
                 jsonArray.get(i);
-                entryForStressData = new Entry(i, jsonArray.getJSONObject(i).getInt("q1"));
+                entryForStressData = new BarEntry(i, jsonArray.getJSONObject(i).getInt("q1"));
             } catch (JSONException e) {
                 e.printStackTrace();
-                entryForStressData = new Entry(i, 0);
+                entryForStressData = new BarEntry(i, 0);
             }
 
             stressDataList.add(entryForStressData);
@@ -239,14 +240,14 @@ public class MoodReportActivity extends AppCompatActivity {
         stressChart.animateY(1000);
 
         //Update chart data
-        Entry entryForActivenessData;
+        BarEntry entryForActivenessData;
         for (int i = 0; i < 7; i++) {
             try {
                 jsonArray.get(i);
-                entryForActivenessData = new Entry(i, jsonArray.getJSONObject(i).getInt("q2"));
+                entryForActivenessData = new BarEntry(i, jsonArray.getJSONObject(i).getInt("q2"));
             } catch (JSONException e) {
                 e.printStackTrace();
-                entryForActivenessData = new Entry(i, 0);
+                entryForActivenessData = new BarEntry(i, 0);
             }
 
             activenessDataList.add(entryForActivenessData);
@@ -256,14 +257,14 @@ public class MoodReportActivity extends AppCompatActivity {
         activenessChart.animateY(1000);
 
         //Update chart data
-        Entry entryForHappinessData;
+        BarEntry entryForHappinessData;
         for (int i = 0; i < 7; i++) {
             try {
                 jsonArray.get(i);
-                entryForHappinessData = new Entry(i, jsonArray.getJSONObject(i).getInt("q3"));
+                entryForHappinessData = new BarEntry(i, jsonArray.getJSONObject(i).getInt("q3"));
             } catch (JSONException e) {
                 e.printStackTrace();
-                entryForHappinessData = new Entry(i, 0);
+                entryForHappinessData = new BarEntry(i, 0);
             }
 
             happinessDataList.add(entryForHappinessData);
@@ -273,40 +274,40 @@ public class MoodReportActivity extends AppCompatActivity {
         happinessChart.animateY(1000);
     }
 
-    private LineDataSet getWeeklyStressDataSet(long timeInMillis) throws JSONException {
+    private BarDataSet getWeeklyStressDataSet(long timeInMillis) throws JSONException {
         JSONArray jsonArray = getWeeklyData(timeInMillis);
 
-        Entry entry;
+        BarEntry entry;
 
         for (int i = 0; i < 7; i++) {
             try {
                 jsonArray.get(i);
-                entry = new Entry(i, jsonArray.getJSONObject(i).getInt("q1"));
+                entry = new BarEntry(i, jsonArray.getJSONObject(i).getInt("q1"));
             } catch (JSONException e) {
                 e.printStackTrace();
-                entry = new Entry(i, 0);
+                entry = new BarEntry(i, 0);
             }
 
             stressDataList.add(entry);
         }
 
-        stressLineDataSet = new LineDataSet(stressDataList, "Stress Level");
-        stressLineDataSet.setCircleRadius(5f);
-        stressLineDataSet.setCircleColor(getResources().getColor(R.color.MediumSeaGreen));
-        stressLineDataSet.setDrawCircleHole(false);
-        stressLineDataSet.setColor(getResources().getColor(R.color.MediumSeaGreen));
-        stressLineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        stressBarDataSet = new BarDataSet(stressDataList, "Stress Level");
+//        stressBarDataSet.setCircleRadius(5f);
+//        stressBarDataSet.setCircleColor(getResources().getColor(R.color.colorPrimary));
+//        stressBarDataSet.setDrawCircleHole(false);
+        stressBarDataSet.setColor(getResources().getColor(R.color.colorPrimary));
+        stressBarDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
 
-        return stressLineDataSet;
+        return stressBarDataSet;
     }
 
     private void drawWeeklyStressChart(long timeInMillis) throws JSONException {
-        stressChart = (LineChart) findViewById(R.id.stress_chart);
+        stressChart = (BarChart) findViewById(R.id.stress_chart);
 
-        List<ILineDataSet> dataSets = new ArrayList<>();
+        List<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(getWeeklyStressDataSet(timeInMillis));
 
-        final LineData data = new LineData(dataSets);
+        final BarData data = new BarData(dataSets);
         data.setValueFormatter(new ValueFormatter());
 
         stressChart.setData(data);
@@ -327,7 +328,7 @@ public class MoodReportActivity extends AppCompatActivity {
             }
         };
 
-        final String[] level = new String[]{"No Data", "Very Stressed", "Stressed", "Neutral", "Relaxed", "Very Relaxed"};
+        final String[] level = new String[]{"", "Very Stressed", "Stressed", "Neutral", "Relaxed", "Very Relaxed"};
 
         IAxisValueFormatter formatter1 = new IAxisValueFormatter() {
             @Override
@@ -353,40 +354,37 @@ public class MoodReportActivity extends AppCompatActivity {
         yAxis1.setEnabled(false);
     }
 
-    private LineDataSet getWeeklyActivenessDataSet(long timeInMillis) throws JSONException {
+    private BarDataSet getWeeklyActivenessDataSet(long timeInMillis) throws JSONException {
         JSONArray jsonArray = getWeeklyData(timeInMillis);
 
-        Entry entry;
+        BarEntry entry;
 
         for (int i = 0; i < 7; i++) {
             try {
                 jsonArray.get(i);
-                entry = new Entry(i, jsonArray.getJSONObject(i).getInt("q2"));
+                entry = new BarEntry(i, jsonArray.getJSONObject(i).getInt("q2"));
             } catch (JSONException e) {
                 e.printStackTrace();
-                entry = new Entry(i, 0);
+                entry = new BarEntry(i, 0);
             }
 
             activenessDataList.add(entry);
         }
 
-        activenessLineDataSet = new LineDataSet(activenessDataList, "Activeness Level");
-        activenessLineDataSet.setCircleRadius(5f);
-        activenessLineDataSet.setCircleColor(getResources().getColor(R.color.Red));
-        activenessLineDataSet.setDrawCircleHole(false);
-        activenessLineDataSet.setColor(getResources().getColor(R.color.Red));
+        activenessLineDataSet = new BarDataSet(activenessDataList, "Activeness Level");
+        activenessLineDataSet.setColor(getResources().getColor(R.color.red));
         activenessLineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         return activenessLineDataSet;
     }
 
     private void drawActivenessChart(long timeInMillis) throws JSONException {
-        activenessChart = (LineChart) findViewById(R.id.activeness_chart);
+        activenessChart = (BarChart) findViewById(R.id.activeness_chart);
 
-        List<ILineDataSet> dataSets = new ArrayList<>();
+        List<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(getWeeklyActivenessDataSet(timeInMillis));
 
-        final LineData data = new LineData(dataSets);
+        final BarData data = new BarData(dataSets);
         data.setValueFormatter(new ValueFormatter());
 
         activenessChart.setData(data);
@@ -407,7 +405,7 @@ public class MoodReportActivity extends AppCompatActivity {
             }
         };
 
-        final String[] level = new String[]{"No Data", "Very Sleepy", "Sleepy", "Neutral", "Active", "Very Active"};
+        final String[] level = new String[]{"", "Very Sleepy", "Sleepy", "Neutral", "Active", "Very Active"};
 
         IAxisValueFormatter formatter1 = new IAxisValueFormatter() {
             @Override
@@ -433,40 +431,37 @@ public class MoodReportActivity extends AppCompatActivity {
         yAxis1.setEnabled(false);
     }
 
-    private LineDataSet getWeeklyHappinessDataSet(long timeInMillis) throws JSONException {
+    private BarDataSet getWeeklyHappinessDataSet(long timeInMillis) throws JSONException {
         JSONArray jsonArray = getWeeklyData(timeInMillis);
 
-        Entry entry;
+        BarEntry entry;
 
         for (int i = 0; i < 7; i++) {
             try {
                 jsonArray.get(i);
-                entry = new Entry(i, jsonArray.getJSONObject(i).getInt("q3"));
+                entry = new BarEntry(i, jsonArray.getJSONObject(i).getInt("q3"));
             } catch (JSONException e) {
                 e.printStackTrace();
-                entry = new Entry(i, 0);
+                entry = new BarEntry(i, 0);
             }
 
             happinessDataList.add(entry);
         }
 
-        happinessLineDataSet = new LineDataSet(happinessDataList, "Happiness Level");
-        happinessLineDataSet.setCircleRadius(5f);
-        happinessLineDataSet.setCircleColor(getResources().getColor(R.color.Yellow));
-        happinessLineDataSet.setDrawCircleHole(false);
-        happinessLineDataSet.setColor(getResources().getColor(R.color.Yellow));
+        happinessLineDataSet = new BarDataSet(happinessDataList, "Happiness Level");
+        happinessLineDataSet.setColor(getResources().getColor(R.color.yellow));
         happinessLineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         return happinessLineDataSet;
     }
 
     private void drawHappinessChart(long timeInMillis) throws JSONException {
-        happinessChart = (LineChart) findViewById(R.id.happiness_chart);
+        happinessChart = (BarChart) findViewById(R.id.happiness_chart);
 
-        List<ILineDataSet> dataSets = new ArrayList<>();
+        List<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(getWeeklyHappinessDataSet(timeInMillis));
 
-        final LineData data = new LineData(dataSets);
+        final BarData data = new BarData(dataSets);
         data.setValueFormatter(new ValueFormatter());
 
         happinessChart.setData(data);
@@ -487,7 +482,7 @@ public class MoodReportActivity extends AppCompatActivity {
             }
         };
 
-        final String[] level = new String[]{"No Data", "Very Sad", "Sad", "Neutral", "Happy", "Very Happy"};
+        final String[] level = new String[]{"", "Very Sad", "Sad", "Neutral", "Happy", "Very Happy"};
 
         IAxisValueFormatter formatter1 = new IAxisValueFormatter() {
             @Override

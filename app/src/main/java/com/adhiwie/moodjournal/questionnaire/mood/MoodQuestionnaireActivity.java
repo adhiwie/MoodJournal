@@ -1,19 +1,17 @@
 package com.adhiwie.moodjournal.questionnaire.mood;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -21,18 +19,15 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.adhiwie.moodjournal.MainActivity;
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.file.FileMgr;
-import com.adhiwie.moodjournal.utils.DataTypes;
+import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.Popup;
-import com.adhiwie.moodjournal.utils.SharedPref;
+import com.adhiwie.moodjournal.utils.Time;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 @SuppressLint("NewApi")
 public class MoodQuestionnaireActivity extends AppCompatActivity {
@@ -53,7 +48,6 @@ public class MoodQuestionnaireActivity extends AppCompatActivity {
     private boolean sk2_thumb;
     private boolean sk3_thumb;
 
-    private Toolbar mTopToolbar;
 
     @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
@@ -62,9 +56,6 @@ public class MoodQuestionnaireActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_mood_questionnaire);
-
-//		mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
-//		setSupportActionBar(mTopToolbar);
 
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
@@ -276,7 +267,14 @@ public class MoodQuestionnaireActivity extends AppCompatActivity {
         Log log = new Log();
         log.e("Start time: " + start_time + ", End time: " + end_time + ", Values-- " + a1 + ", " + a2 + ", " + a3);
 
-        MoodQuestionnaireData data = new MoodQuestionnaireData(start_time, end_time, a1, a2, a3);
+        int participation_days = new UserData(getApplicationContext()).getParticipationDays();
+        Calendar calendar = Calendar.getInstance();
+        Date date=calendar.getTime();
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        String report_time=dateFormat.format(date);
+
+
+        MoodQuestionnaireData data = new MoodQuestionnaireData(start_time, end_time, a1, a2, a3, participation_days, report_time);
         FileMgr fm = new FileMgr(getApplicationContext());
         fm.addData(data);
 

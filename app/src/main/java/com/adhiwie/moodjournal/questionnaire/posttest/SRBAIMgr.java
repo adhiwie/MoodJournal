@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.adhiwie.moodjournal.user.data.UserData;
+import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.NotificationMgr;
 import com.adhiwie.moodjournal.utils.SharedPref;
 import com.adhiwie.moodjournal.utils.Time;
@@ -46,15 +47,13 @@ public class SRBAIMgr {
 
     public void notifyUserIfRequired() {
 
-        int start_date = new UserData(context).getStartDate();
-        int current_date = new Time(Calendar.getInstance()).getEpochDays();
-        int participation_days = 1 + current_date - start_date;
+        int participation_days = new UserData(context).getParticipationDays();
 
         //DEBUG
-//		new Log().e("SRBAI questionnaire is triggered");
-//		new Log().e("Count for today: "+sp.getInt(SRBAI_Notification_Trigger_Count_For_Today));
-//		new Log().e("Current date: "+current_date);
-//		new Log().e("Last date: "+sp.getInt(SRBAI_Notification_Trigger_Date_For_Today));
+		new Log().e("SRBAI questionnaire is triggered");
+		new Log().e("Count for today: "+sp.getInt(SRBAI_Notification_Trigger_Count_For_Today));
+		new Log().e("Participation days: "+participation_days);
+		new Log().e("Last date: "+sp.getInt(SRBAI_Notification_Trigger_Date_For_Today));
 
         if (getNotificationTriggerCountForToday() > 0 && isLastNotificationTriggeredToday())
             return;

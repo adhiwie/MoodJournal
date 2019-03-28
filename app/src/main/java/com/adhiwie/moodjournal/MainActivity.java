@@ -5,18 +5,21 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.StyleSpan;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.exception.IncompatibleAPIException;
@@ -26,44 +29,43 @@ import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireActivity;
 import com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireMgr;
 import com.adhiwie.moodjournal.questionnaire.goalcommitment.GCSActivity;
 import com.adhiwie.moodjournal.questionnaire.goalcommitment.GCSMgr;
+import com.adhiwie.moodjournal.questionnaire.personality.PersonalityTestActivity;
+import com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireActivity;
 import com.adhiwie.moodjournal.report.MoodReportActivity;
+import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.user.permission.Permission;
 import com.adhiwie.moodjournal.user.permission.RuntimePermission;
 import com.adhiwie.moodjournal.utils.Log;
+import com.adhiwie.moodjournal.utils.Popup;
+import com.adhiwie.moodjournal.utils.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-
-//consent given true 
-//user id static
-//registration time: static
-//mood_q count static
-//daily_q count static
 
 @SuppressWarnings("deprecation")
 @SuppressLint("NewApi")
 public class MainActivity extends AppCompatActivity {
 
+    private FrameLayout root_layout;
+
     private Log log = new Log();
-    private Toolbar mTopToolbar;
-    private RelativeLayout runtimePermissionLayout;
 
     private final String[] required_permissions = new String[]
             {
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
             };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        if (getMissingPermissions().size() > 0) {
+            setContentView(R.layout.activity_runtime_permission);
+        } else {
+            setContentView(R.layout.activity_main);
+        }
 
-//		mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
-//		setSupportActionBar(mTopToolbar);
-//		getSupportActionBar().setDisplayShowTitleEnabled(false);
+        root_layout = findViewById(R.id.root_layout);
 
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
@@ -74,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        setLayout();
 
         if (!new ConsentMgr(getApplicationContext()).isConsentGiven()) {
             startActivity(new Intent(this, ConsentActivity.class));
@@ -82,18 +83,51 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        new GooglePlayServices().isGooglePlayServiceAvailable(MainActivity.this);
-        runtimePermissionLayout = (RelativeLayout) findViewById(R.id.runtime_permission_layout);
-
         if (getMissingPermissions().size() > 0) {
-            runtimePermissionLayout.setVisibility(View.VISIBLE);
+            getSupportActionBar().hide();
         } else {
-            runtimePermissionLayout.setVisibility(View.GONE);
+            setLayout();
             check_Consent_GooglePlayService_Permissions_LinkedTask();
         }
 
+        new GooglePlayServices().isGooglePlayServiceAvailable(MainActivity.this);
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.app_bar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_personality:
+                startActivity(new Intent(getApplicationContext(), PersonalityTestActivity.class));
+                return true;
+            case R.id.action_info:
+                String message =
+					"Your unique id is: " + new UserData(getApplicationContext()).getUuid()
+					+ "\n\n"
+					+ "Mood Journal app has been developed by researchers at the University "
+					+ "of Birmingham (UoB) to collect data for "
+					+ "research and teaching purposes."
+					+ "\n\n"
+					+ "We would love to hear your feedback for us and issues with the app. "
+					+ "Please send us an email - axw412@cs.bham.ac.uk."
+					+ "\n\n"
+					+ "Thank You!";
+
+			    new Popup().showPopup(MainActivity.this, getResources().getString(R.string.info_title), message);
+			    return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     private void setLayout() {
         // set today's mood questionnaire status
@@ -107,52 +141,18 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 todaysMoodStatus.setText(getResources().getString(R.string.todays_mood_q_stats_empty_state));
                 trackMoodButton.setVisibility(View.VISIBLE);
-                imageStatus.setImageResource(R.drawable.ic_suffer);
+                imageStatus.setImageResource(R.drawable.ic_sleepy);
                 break;
             case 1:
                 todaysMoodStatus.setText(getResources().getString(R.string.todays_mood_q_stats_tracked));
                 trackMoodButton.setVisibility(View.GONE);
-                imageStatus.setImageResource(R.drawable.ic_smile);
+                imageStatus.setImageResource(R.drawable.ic_happy);
                 break;
             default:
                 break;
         }
 
         planSetup();
-
-/*
-        // set today's daily questionnaire status
-		ImageView daily = (ImageView) findViewById(R.id.daily_q1);
-		WellBeingQuestionnaireMgr daily_mgr = new WellBeingQuestionnaireMgr(getApplicationContext());
-		int todays_count_daily_q = daily_mgr.getDailyQuestionnaireCountForToday();
-		switch (todays_count_daily_q) {
-		case 0:
-			daily.setImageResource(R.drawable.answer_gray);
-			break;
-		case 1:
-			daily.setImageResource(R.drawable.answer_blue);
-		default:
-			break;
-		}
-*/
-
-        // set participation status
-//		ProgressBar pb_days = (ProgressBar) findViewById(R.id.participation_days_progressbar);
-//		ProgressBar pb_mood = (ProgressBar) findViewById(R.id.mood_questionnaires_progressbar);
-//		//ProgressBar pb_daily = (ProgressBar) findViewById(R.id.daily_questionnaires_progressbar);
-//		TextView tv_days = (TextView) findViewById(R.id.participation_days_tv);
-//		TextView tv_mood = (TextView) findViewById(R.id.mood_questionnaires_tv);
-//		//TextView tv_daily = (TextView) findViewById(R.id.daily_questionnaires_tv);
-//
-//		int start_date = new UserData(getApplicationContext()).getStartDate();
-//		int current_date = new Time(Calendar.getInstance()).getEpochDays();
-//		int participation_days = 1 + current_date - start_date;
-//		pb_days.setProgress(participation_days);
-//		pb_mood.setProgress(mood_mgr.getMoodQuestionnaireCount());
-//		//pb_daily.setProgress(daily_mgr.getDailyQuestionnaireCount());
-//		tv_days.setText(participation_days + "/30");
-//		tv_mood.setText(mood_mgr.getMoodQuestionnaireCount() + "/30");
-//		//tv_daily.setText(daily_mgr.getDailyQuestionnaireCount() + "/50");
     }
 
 
@@ -215,7 +215,6 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             new Log().e("check_Consent_GooglePlayService_Permissions_LinkedTask is called from onRequestPermissionsResult");
-            runtimePermissionLayout.setVisibility(View.GONE);
             check_Consent_GooglePlayService_Permissions_LinkedTask();
         }
     }
@@ -226,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         new Log().e("check_Consent_GooglePlayService_Permissions_LinkedTask is called");
 
         if (!new GooglePlayServices().isGooglePlayServiceAvailable(MainActivity.this)) {
-            Toast.makeText(getApplicationContext(), "Error with Google Play Service.", Toast.LENGTH_SHORT).show();
+            new Snackbar(root_layout).shortLength("Error with Google Play Service.");
             return;
         }
 
@@ -270,11 +269,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //menu items
+    //app_bar_menu items
 //	@Override
-//	public boolean onCreateOptionsMenu(Menu menu)
+//	public boolean onCreateOptionsMenu(Menu app_bar_menu)
 //	{
-//		getMenuInflater().inflate(R.menu.main_menu, menu);
+//		getMenuInflater().inflate(R.app_bar_menu.main_menu, app_bar_menu);
 //		return true;
 //	}
 
@@ -349,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
         SpannableStringBuilder spannable;
 
         if (routine != null) {
-            plan = getResources().getString(R.string.detailed_plan, routine);
+            plan = getResources().getString(R.string.detailed_plan);
             spannable = new SpannableStringBuilder(plan);
 
             spannable.setSpan(
@@ -367,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
             );
 
             spannable.setSpan(
-                    new BackgroundColorSpan(0x223CB371),
+                    new BackgroundColorSpan(0x22FF0000),
                     plan.indexOf("track my mood"),
                     plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -413,9 +412,9 @@ public class MainActivity extends AppCompatActivity {
             if (diff_mins > 59) {
                 int hours_left = diff_mins / 60;
                 diff_mins = diff_mins % 60;
-                Toast.makeText(getApplicationContext(), "Today's mood questionnaire has been completed. Next questionnaire will be available after " + hours_left + " hours " + diff_mins + " mins.", Toast.LENGTH_LONG).show();
+                new Snackbar(root_layout).shortLength("Today's mood questionnaire has been completed. Next questionnaire will be available after " + hours_left + " hours " + diff_mins + " mins.");
             } else
-                Toast.makeText(getApplicationContext(), "Today's mood questionnaire has been completed. Next questionnaire will be available after " + diff_mins + " mins.", Toast.LENGTH_LONG).show();
+                new Snackbar(root_layout).shortLength("Today's mood questionnaire has been completed. Next questionnaire will be available after " + diff_mins + " mins.");
             return;
         }
 
@@ -426,33 +425,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, MoodReportActivity.class));
     }
 
+    public void phqTest(View v) {
+        startActivity(new Intent(this, WellBeingQuestionnaireActivity.class));
+    }
+
     public void askRuntimePermissions(View view) {
         askMissingPermissions();
     }
-
-
-//	public void dailyTest(View v)
-//	{
-//		if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 16)
-//		{
-//			Toast.makeText(getApplicationContext(), "Today's daily questionnaire will be available after 4pm.", Toast.LENGTH_SHORT).show();
-//			return;
-//		}
-//
-//		WellBeingQuestionnaireMgr mgr = new WellBeingQuestionnaireMgr(getApplicationContext());
-//		if(mgr.getDailyQuestionnaireCountForToday() > 0)
-//		{
-//			Toast.makeText(getApplicationContext(), "Today's daily questionnaire is already completed.", Toast.LENGTH_SHORT).show();
-//			return;
-//		}
-//
-//		startActivity(new Intent(this, WellBeingQuestionnaireActivity.class));
-//	}
-//
-//	//	public void exit(View v) throws JSONException
-//	//	{
-//	//		this.finish();
-//	//	}
-
-
 }

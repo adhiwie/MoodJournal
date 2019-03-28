@@ -2,15 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/White"
     android:orientation="vertical">
-
-    <include layout="@layout/toolbar"/>
 
     <TextView
         android:id="@+id/tv_questionnaire_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:text="@string/personality_test_results_header"
@@ -18,267 +16,282 @@
         android:textSize="14sp"
         android:textStyle="italic" />
 
-    <LinearLayout
+    <com.github.mikephil.charting.charts.RadarChart
+        android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:visibility="visible" >
+        android:layout_weight="0.6"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="@string/personality_type"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:visibility="visible" >-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="Your\nscore"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="2"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="@string/personality_type"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="bold" />-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="Best\nscore"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="Your\nscore"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="bold" />-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:visibility="visible" >
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="Best\nscore"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="bold" />-->
+    <!--</LinearLayout>-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="@string/personality_type_extraversion"
-            android:textSize="15sp"
-            android:textStyle="italic" />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:visibility="visible" >-->
 
-        <TextView
-            android:id="@+id/tv_score_extraversion"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="0"
-            android:textSize="15sp"
-            android:textStyle="italic" />
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="2"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="@string/personality_type_extraversion"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="50"
-            android:textSize="15sp"
-            android:textStyle="italic" />
-    </LinearLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/tv_score_extraversion"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="0"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:visibility="visible" >
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="50"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
+    <!--</LinearLayout>-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="@string/personality_type_agreeableness"
-            android:textSize="15sp"
-            android:textStyle="italic" />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:visibility="visible" >-->
 
-        <TextView
-            android:id="@+id/tv_score_agreeableness"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="0"
-            android:textSize="15sp"
-            android:textStyle="italic" />
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="2"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="@string/personality_type_agreeableness"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="50"
-            android:textSize="15sp"
-            android:textStyle="italic" />
-    </LinearLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/tv_score_agreeableness"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="0"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:visibility="visible" >
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="50"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
+    <!--</LinearLayout>-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="@string/personality_type_conscientiousness"
-            android:textSize="15sp"
-            android:textStyle="italic" />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:visibility="visible" >-->
 
-        <TextView
-            android:id="@+id/tv_score_conscientiousness"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="0"
-            android:textSize="15sp"
-            android:textStyle="italic" />
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="2"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="@string/personality_type_conscientiousness"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="50"
-            android:textSize="15sp"
-            android:textStyle="italic" />
-    </LinearLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/tv_score_conscientiousness"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="0"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:visibility="visible" >
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="50"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
+    <!--</LinearLayout>-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="@string/personality_type_neuroticism"
-            android:textSize="15sp"
-            android:textStyle="italic" />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:visibility="visible" >-->
 
-        <TextView
-            android:id="@+id/tv_score_neuroticism"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="0"
-            android:textSize="15sp"
-            android:textStyle="italic" />
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="2"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="@string/personality_type_neuroticism"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="50"
-            android:textSize="15sp"
-            android:textStyle="italic" />
-    </LinearLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/tv_score_neuroticism"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="0"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:visibility="visible" >
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="50"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
+    <!--</LinearLayout>-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="@string/personality_type_openness"
-            android:textSize="15sp"
-            android:textStyle="italic" />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:visibility="visible" >-->
 
-        <TextView
-            android:id="@+id/tv_score_openness"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="0"
-            android:textSize="15sp"
-            android:textStyle="italic" />
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="2"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="@string/personality_type_openness"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="50"
-            android:textSize="15sp"
-            android:textStyle="italic" />
-    </LinearLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/tv_score_openness"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="0"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:padding="2dp"-->
+            <!--android:text="50"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="italic" />-->
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.2"
         android:gravity="center"
         android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/done_btn_personality_test_results"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/more_btn_personality_test_results"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="1dp"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:layout_marginTop="2dp"
-            android:background="@drawable/filledbutton"
             android:gravity="center"
-            android:text="Done"
-            android:textColor="@color/White"
+            android:text="More information"
             android:textSize="16sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/done_btn_personality_test_results"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:gravity="center"
+            android:text="Close"
+            android:textSize="16sp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
     </LinearLayout>
 
 

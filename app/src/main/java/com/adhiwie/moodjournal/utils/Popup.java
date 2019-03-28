@@ -1,32 +1,27 @@
 package com.adhiwie.moodjournal.utils;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
+import android.content.DialogInterface;
 
-import com.adhiwie.moodjournal.R;
+import androidx.appcompat.app.AlertDialog;
 
 public class Popup {
 
+    AlertDialog dialog;
+
     public void showPopup(Context context, String title, String message) {
-        final Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.popup_screen);
-        dialog.setTitle(title);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(message)
+                .setTitle(title)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialog.dismiss();
+                    }
+                });
 
-        TextView tv_message = (TextView) dialog.findViewById(R.id.message);
-        tv_message.setText(message);
 
-        Button ok = (Button) dialog.findViewById(R.id.ok);
-        ok.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
+        dialog = builder.create();
         dialog.show();
     }
 

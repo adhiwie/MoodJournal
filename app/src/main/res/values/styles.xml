@@ -1,31 +1,29 @@
 <resources>
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-    </style>
-
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <item name="android:logo">@android:color/transparent</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- API 21 theme customizations can go here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--   theme UI controls like checkboxes and text fields -->
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/TextViewStyle</item>
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:textAppearanceButton">@style/TextViewStyleButton</item>
+        <item name="android:radioButtonStyle">@style/RadioButtonStyle</item>
+
     </style>
 
     <style name="TextViewStyle" parent="android:Widget.TextView">
-        <item name="android:textColor">#333333</item>
-        <item name="android:fontFamily">@font/google_sans_regular</item>
+        <item name="android:fontFamily">@font/nunito_sans_regular</item>
     </style>
 
-    <style name="TextAppearance">
-        <item name="fontFamily">@font/google_sans_regular</item>
+    <style name="TextViewStyleButton" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/nunito_sans_bold</item>
+        <item name="android:text">bold</item>
+    </style>
+
+    <style name="RadioButtonStyle" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:fontFamily">@font/nunito_sans_regular</item>
     </style>
 
 </resources>

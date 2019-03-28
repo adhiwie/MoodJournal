@@ -1,69 +1,54 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/White">
+    android:orientation="vertical"
+    android:padding="32dp"
+    android:layout_centerVertical="true">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="30dp"
-        android:layout_centerVertical="true">
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/nsl_permission_revoked_message_part1"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/nsl_permission_revoked_message_part1"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_notification" />
 
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/ic_notification" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/nsl_permission_revoked_message_part2"
+        android:textColor="@color/red"
+        android:textSize="16sp"
+        android:textStyle="italic"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/nsl_permission_revoked_message_part2"
-            android:textColor="@color/Red"
-            android:textSize="16sp"
-            android:textStyle="italic"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/nsl_permission_revoked_message_part3"
+        android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/nsl_permission_revoked_message_part3"
-            android:textSize="16sp" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/filledbutton"
-            android:gravity="center"
-            android:onClick="openSettings"
-            android:text="@string/open_nls_settings"
-            android:textColor="@color/White"
-            android:textSize="16sp" />
-
-
-    </LinearLayout>
-
-</RelativeLayout>
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:onClick="openSettings"
+        android:text="@string/open_nls_settings"
+        android:textSize="16sp" />
+</LinearLayout>

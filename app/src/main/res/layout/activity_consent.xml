@@ -1,118 +1,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/WhiteSmoke">
+    android:orientation="vertical">
 
-    <include layout="@layout/toolbar"/>
-
-    <ScrollView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_margin="10dp"
-        android:padding="5dp"
-        android:background="@color/White"
-        android:fillViewport="true"
-        android:scrollbars="vertical">
-
-        <TextView
+        android:layout_marginLeft="@dimen/mtrl_card_spacing"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:layout_marginRight="@dimen/mtrl_card_spacing"
+        android:minHeight="200dp">
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:padding="5dp"
-            android:text="@string/consent_statement"
-            android:textSize="14sp" />
-    </ScrollView>
-
-    <!--
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="@string/consent_watch_draw_label"
-        android:textColor="@color/Blue6"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:src="@drawable/watch" />-->
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="@string/consent_id_hint"
-            android:textSize="12sp" />
-
-        <EditText
-            android:id="@+id/email_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="12"
-            android:hint="Email address"
-            android:inputType="textEmailAddress" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="2dp"
-            android:background="@drawable/filledbutton"
-            android:gravity="center"
-            android:onClick="iAgreeBtnClick"
-            android:text="@string/consent_button_label"
-            android:textColor="@color/White"
-            android:textSize="16sp" />
-
-
-        <!--<TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="@string/consent_referral_code_hint"
-            android:textColor="@color/Red"
-            android:textSize="12sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:fillViewport="true"
+            android:scrollbars="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/consent_referral_code_label"
-                android:textColor="@color/Blue6"
-                android:textSize="16sp" />
+                android:padding="5dp"
+                android:text="@string/consent_statement"
+                android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/referral_code"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="12" />
-        </LinearLayout>-->
+        </ScrollView>
+    </com.google.android.material.card.MaterialCardView>
 
-    </LinearLayout>
+    <Switch
+        android:id="@+id/consent_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:checked="false"
+        android:text="I give my consent to participate in this study"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/consent_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:onClick="iAgreeBtnClick"
+        android:text="@string/consent_button_label"
+        android:textSize="16sp"
+        android:enabled="false"/>
+
 
 </LinearLayout>

@@ -8,18 +8,18 @@ public class ConsentMgr {
 
     private final SharedPref sp;
 
-    protected ConsentMgr(Context context) {
+    public ConsentMgr(Context context) {
         this.sp = new SharedPref(context);
     }
 
     private final String User_Consent_Status = "User_Consent_Status";
 
-    protected boolean isConsentGiven() {
+    public boolean isConsentGiven() {
         return sp.getBoolean(User_Consent_Status);
         //return true;
     }
 
-    protected void setConsentGiven() {
+    public void setConsentGiven() {
         sp.add(User_Consent_Status, true);
     }
 

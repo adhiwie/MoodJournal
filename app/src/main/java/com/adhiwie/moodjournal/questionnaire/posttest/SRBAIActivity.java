@@ -1,28 +1,33 @@
 package com.adhiwie.moodjournal.questionnaire.posttest;
 
 import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.communication.helper.SRBAIDataTransmission;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
+import com.adhiwie.moodjournal.user.data.UserData;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.Popup;
 import com.adhiwie.moodjournal.utils.SharedPref;
+import com.adhiwie.moodjournal.utils.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class SRBAIActivity extends AppCompatActivity {
 
@@ -39,8 +44,7 @@ public class SRBAIActivity extends AppCompatActivity {
     private String response = null;
     private int total_questions = 4;
     private SRBAIMgr srbaiMgr;
-
-    private Toolbar mTopToolbar;
+    private LinearLayout root_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +58,7 @@ public class SRBAIActivity extends AppCompatActivity {
         else
             setContentView(R.layout.activity_srbai_results);
 
-        mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mTopToolbar);
-
-        // add back arrow to toolbar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
+        root_layout = findViewById(R.id.root_layout);
 
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
@@ -75,7 +72,8 @@ public class SRBAIActivity extends AppCompatActivity {
                 if (new SRBAIMgr(getApplicationContext()).isSRBAIDone())
                     this.finish();
                 else
-                    android.widget.Toast.makeText(getApplicationContext(), "You need to complete SRBAI questionnaire to continue using this app!", android.widget.Toast.LENGTH_SHORT).show();
+                    new Snackbar(root_layout).shortLength("You need to complete SRBAI questionnaire to continue using this app!");
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -137,7 +135,7 @@ public class SRBAIActivity extends AppCompatActivity {
 
     public void onControlBtnClick(View v) {
         if (response == null) {
-            Toast.makeText(getApplicationContext(), "Answer the current question to proceed!", Toast.LENGTH_SHORT).show();
+            new Popup().showPopup(SRBAIActivity.this, "Error","Answer the current question to proceed!");
             return;
         }
 
@@ -176,11 +174,19 @@ public class SRBAIActivity extends AppCompatActivity {
 
     private void saveResponse(int q_num, String response) {
         try {
+            int participation_days = new UserData(getApplicationContext()).getParticipationDays();
+            Calendar calendar = Calendar.getInstance();
+            Date date=calendar.getTime();
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            String report_time=dateFormat.format(date);
+
             long current_time = Calendar.getInstance().getTimeInMillis();
             JSONObject jo = new JSONObject();
             jo.put("question", questions[q_num - 1]);
             jo.put("score", getScore(q_num, response));
             jo.put("time_taken", current_time - start_time);
+            jo.put("participation_days", participation_days);
+            jo.put("report_time", report_time);
 
             srbaiMgr.storeSRBAIResponse(q_num, jo.toString());
             new Log().e("q num: " + q_num + ", response data: " + jo.toString());

@@ -1,15 +1,10 @@
 package com.adhiwie.moodjournal.user.permission;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
 
 import com.adhiwie.moodjournal.MainActivity;
 import com.adhiwie.moodjournal.R;

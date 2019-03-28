@@ -53,28 +53,22 @@ public class MoodQuestionnaireMgr {
             new Log().e("Notification is sent");
 
             Intent i = new Intent(context, ReminderActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-            context.startActivity(i);
-
             String routine_desc = new PlanMgr(context).getPlanRoutineDesc();
             String message = "Remember: if I " + routine_desc + ", then I will track my mood!";
-//
-//            PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
-//            message = "Remember: if I " + routine_desc + ", then I will track my mood!";
-//
-//            new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Journal", message);
+
+            if (new UserData(context).getGroupId() == 3) {
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                context.startActivity(i);
+            }
+
+            if (new UserData(context).getGroupId() == 2) {
+                PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
+                new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Journal", message);
+            }
 
             updateLastMoodQuestionnaireTriggerTime();
-
-		    /* Log reminder and send the data to server */
-            Date currentTime = Calendar.getInstance().getTime();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-            String currentTimeInString = simpleDateFormat.format(currentTime);
-            ReminderData data = new ReminderData(currentTimeInMillis, currentTimeInString, message);
-            FileMgr fm = new FileMgr(context);
-            fm.addData(data);
         } else {
             new Log().e("Mood notification trigger is resetted for today");
 
@@ -193,7 +187,7 @@ public class MoodQuestionnaireMgr {
         return ((getMoodQuestionnaireCountForToday() == 0) &&
                 (getMoodNotificationTriggerCountForToday() == 0) &&
                 (hour >= 12 && hour <= 14) &&
-                (new UserData(context).getGroupId() == 1));
+                (new UserData(context).getGroupId() != 1));
     }
 
 

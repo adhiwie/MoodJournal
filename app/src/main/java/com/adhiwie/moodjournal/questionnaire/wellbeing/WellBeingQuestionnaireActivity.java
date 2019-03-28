@@ -3,14 +3,11 @@ package com.adhiwie.moodjournal.questionnaire.wellbeing;
 import java.util.Calendar;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,14 +16,22 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
+import com.adhiwie.moodjournal.ConsentMgr;
 import com.adhiwie.moodjournal.MainActivity;
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.file.FileMgr;
+import com.adhiwie.moodjournal.questionnaire.personality.PersonalityTestMgr;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.Popup;
+import com.adhiwie.moodjournal.utils.SharedPref;
+import com.google.android.material.button.MaterialButton;
 
-public class WellBeingQuestionnaireActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class WellBeingQuestionnaireActivity extends AppCompatActivity {
+
+    private final String PHQ8_TEST_RESULT = "PHQ8_TEST_RESULT";
 
     private long start_time;
     private String[] questions;
@@ -36,6 +41,7 @@ public class WellBeingQuestionnaireActivity extends Activity {
     private Button control_btn;
     private int response = 0;
     private int total_questions = 8;
+    private SharedPref sp;
 
 
     private int a1;
@@ -53,49 +59,50 @@ public class WellBeingQuestionnaireActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Drawable background;
-
-        if (Build.VERSION.SDK_INT >= 21)
-            background = getResources().getDrawable(R.drawable.blue_background, null);
-        else
-            background = getResources().getDrawable(R.drawable.blue_background);
-
-
-        ActionBar actionBar = getActionBar();
-        actionBar.setBackgroundDrawable(background);
-        actionBar.setCustomView(R.layout.actionbar_layout);
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayUseLogoEnabled(true);
-
-        TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-        actionbar_title.setText(getResources().getString(R.string.title_activity_wellbeing_questionnaire));
-
-        setContentView(R.layout.activity_phq9_questionnaire);
+        if (new WellBeingQuestionnaireMgr(getApplicationContext()).getDailyQuestionnaireCountForToday() == 0) {
+            setContentView(R.layout.activity_phq8_questionnaire);
+        } else {
+            setContentView(R.layout.activity_phq8_questionnaire_results);
+        }
 
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
         }
 
-        a1 = 0;
-        a2 = 0;
-        a3 = 0;
-        a4 = 0;
-        a5 = 0;
-        a6 = 0;
-        a7 = 0;
-        a8 = 0;
-
-        start_time = Calendar.getInstance().getTimeInMillis();
-        tv_questionnaire_counter = (TextView) findViewById(R.id.tv_questionnaire_counter);
-        control_btn = (Button) findViewById(R.id.control_btn_phq_test);
-        questions = getResources().getStringArray(R.array.phq_test_questions);
-        setQuestion();
-
 
         //remove notification if present
-        NotificationManager mgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mgr.cancel(5011);
+        //NotificationManager mgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        //mgr.cancel(5011);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (!new ConsentMgr(getApplicationContext()).isConsentGiven()) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+
+        sp = new SharedPref(getApplicationContext());
+        if (new WellBeingQuestionnaireMgr(getApplicationContext()).getDailyQuestionnaireCountForToday() == 0) {
+            a1 = 0;
+            a2 = 0;
+            a3 = 0;
+            a4 = 0;
+            a5 = 0;
+            a6 = 0;
+            a7 = 0;
+            a8 = 0;
+
+            start_time = Calendar.getInstance().getTimeInMillis();
+            control_btn = (Button) findViewById(R.id.control_btn_phq_test);
+            tv_questionnaire_counter = (TextView) findViewById(R.id.tv_questionnaire_counter);
+            questions = getResources().getStringArray(R.array.phq_test_questions);
+            setQuestion();
+        } else
+            showResults();
     }
 
 
@@ -151,34 +158,85 @@ public class WellBeingQuestionnaireActivity extends Activity {
     }
 
     public void onControlBtnClick(View v) {
-        if (response == 0) {
-            Popup p = new Popup();
-            p.showPopup(WellBeingQuestionnaireActivity.this, "Entry missing!", "Answer the current question to proceed.");
-            return;
-        }
+        if (new WellBeingQuestionnaireMgr(getApplicationContext()).getDailyQuestionnaireCountForToday() == 0) {
+            if (response == 0) {
+                Popup p = new Popup();
+                p.showPopup(WellBeingQuestionnaireActivity.this, "Entry missing!", "Answer the current question to proceed.");
+                return;
+            }
 
-        int q_num = getCurrentQuestionNumber();
-        new Log().v("Question: " + q_num);
+            int q_num = getCurrentQuestionNumber();
+            new Log().v("Question: " + q_num);
 
-        setResponse(q_num, response);
+            setResponse(q_num, response);
 
-        if (q_num < total_questions - 1) {
-            setQuestion();
-            control_btn.setText("Next");
-        } else if (q_num == total_questions - 1) {
-            setQuestion();
-            control_btn.setText("Submit");
+            if (q_num < total_questions - 1) {
+                setQuestion();
+                control_btn.setText("Next");
+            } else if (q_num == total_questions - 1) {
+                setQuestion();
+                control_btn.setText("Submit");
+            } else {
+                long end_time = Calendar.getInstance().getTimeInMillis();
+                WellBeingQuestionnaireData qd = new WellBeingQuestionnaireData(start_time, end_time,
+                        a1, a2, a3, a4, a5, a6, a7, a8);
+
+                FileMgr fm = new FileMgr(getApplicationContext());
+                fm.addData(qd);
+
+                int phqScore = a1+a2+a3+a4+a5+a6+a7+a8;
+                sp.add(PHQ8_TEST_RESULT, phqScore);
+
+                new WellBeingQuestionnaireMgr(getApplicationContext()).updateLastDailyQuestionnaireDate();
+//            startActivity(new Intent(this, MainActivity.class));
+//            finish();
+                control_btn.setText("Close");
+                setContentView(R.layout.activity_phq8_questionnaire_results);
+                showResults();
+            }
         } else {
-            long end_time = Calendar.getInstance().getTimeInMillis();
-            WellBeingQuestionnaireData qd = new WellBeingQuestionnaireData(start_time, end_time,
-                    a1, a2, a3, a4, a5, a6, a7, a8);
-
-            FileMgr fm = new FileMgr(getApplicationContext());
-            fm.addData(qd);
-            new WellBeingQuestionnaireMgr(getApplicationContext()).updateLastDailyQuestionnaireDate();
-            startActivity(new Intent(this, MainActivity.class));
             finish();
         }
+    }
+
+    private void showResults() {
+        int phqScore = sp.getInt(PHQ8_TEST_RESULT);
+        int level = 0;
+
+        TextView tv_total_score = (TextView) findViewById(R.id.tv_total_score);
+        TextView tv_phq_results_explained = (TextView) findViewById(R.id.tv_phq_results_explained);
+        TextView tv_phq_results_proposed_treatment = (TextView) findViewById(R.id.tv_phq_results_proposed_treatment);
+        Button retake_btn = (Button) findViewById(R.id.retake_btn);
+
+        String[] phq_results_severity = getResources().getStringArray(R.array.phq8_results_severity);
+        String[] phq8_results_treatment_actions = getResources().getStringArray(R.array.phq8_results_treatment_actions);
+
+        if (phqScore >= 5 && phqScore<=9) {
+            level = 1;
+        } else if (phqScore >=10 && phqScore <=14) {
+            level = 2;
+        } else if (phqScore >= 15 && phqScore <= 19) {
+            level = 3;
+        } else if (phqScore >= 20 && phqScore <= 24) {
+            level = 4;
+        }
+
+        tv_total_score.setText(Integer.toString(phqScore));
+        tv_phq_results_explained.setText(getResources().getString(R.string.phq8_results_explained, phq_results_severity[level]));
+        tv_phq_results_proposed_treatment.setText(getResources().getString(R.string.phq8_results_proposed_treatment, phq8_results_treatment_actions[level]));
+
+        retake_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new WellBeingQuestionnaireMgr(getApplicationContext()).resetDailyQuestionnaireCountForToday();
+                setContentView(R.layout.activity_phq8_questionnaire);
+                start_time = Calendar.getInstance().getTimeInMillis();
+                control_btn = (Button) findViewById(R.id.control_btn_phq_test);
+                tv_questionnaire_counter = (TextView) findViewById(R.id.tv_questionnaire_counter);
+                questions = getResources().getStringArray(R.array.phq_test_questions);
+                setQuestion();
+            }
+        });
     }
 
 

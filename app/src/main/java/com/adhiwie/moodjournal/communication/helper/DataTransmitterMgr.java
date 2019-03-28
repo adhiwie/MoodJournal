@@ -10,7 +10,6 @@ import org.json.JSONException;
 import android.content.Context;
 
 import com.adhiwie.moodjournal.communication.FileTransmitter;
-import com.adhiwie.moodjournal.communication.LargeFileTransmitter;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.exception.FileNotCreatedException;
 import com.adhiwie.moodjournal.file.DataInterface;
@@ -82,7 +81,7 @@ public class DataTransmitterMgr {
     }
 
     private void transmitQuestionnaireData() {
-        //transmitData(new DataTypes().DAILY_QUESTIONNAIRE);
+        transmitData(new DataTypes().PHQ8_QUESTIONNAIRE);
         transmitData(new DataTypes().MOOD_QUESTIONNAIRE);
         transmitData(new DataTypes().REMINDER);
     }

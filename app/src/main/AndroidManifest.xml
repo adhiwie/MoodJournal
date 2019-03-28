@@ -8,10 +8,11 @@
     <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- <uses-permission android:name="android.permission.READ_CALL_LOG" /> -->
     <!-- <uses-permission android:name="android.permission.READ_SMS" /> -->
@@ -39,10 +40,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".ConsentActivity"
-            android:label="@string/title_activity_consent" />
+            android:label="@string/title_activity_consent"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".questionnaire.personality.PersonalityTestActivity"
             android:label="@string/title_activity_personality_test"
@@ -50,6 +56,7 @@
         <activity
             android:name=".questionnaire.wellbeing.WellBeingQuestionnaireActivity"
             android:label="@string/title_activity_wellbeing_questionnaire"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".questionnaire.mood.MoodQuestionnaireActivity"
@@ -66,10 +73,13 @@
             android:label="@string/title_activity_nsl_permission" />
         <activity
             android:name=".plan.PlanActivity"
-            android:label="@string/title_activity_create_plan" />
+            android:label="@string/title_activity_create_plan"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".report.MoodReportActivity"
-            android:label="@string/title_activity_mood_data" />
+            android:label="@string/title_activity_mood_data"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".questionnaire.goalcommitment.GCSActivity"
             android:label="@string/title_activity_gcs_test" />
@@ -77,6 +87,10 @@
             android:name=".questionnaire.posttest.SRBAIActivity"
             android:label="@string/title_activity_srbai_test" />
         <activity android:name=".questionnaire.mood.ReminderActivity" />
+        <activity
+            android:name=".user.data.UserRegistrationActivity"
+            android:label="Registration"
+            android:windowSoftInputMode="adjustResize" />
 
         <service
             android:name=".sensor.push.AccessibilitySensor"
@@ -122,7 +136,6 @@
                 <action android:name="android.media.RINGER_MODE_CHANGED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

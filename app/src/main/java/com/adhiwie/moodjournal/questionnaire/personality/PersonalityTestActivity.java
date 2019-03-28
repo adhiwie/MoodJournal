@@ -1,21 +1,7 @@
 package com.adhiwie.moodjournal.questionnaire.personality;
 
-import java.util.Arrays;
-import java.util.Calendar;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +10,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.communication.helper.PersonalityTestDataTransmission;
@@ -32,9 +17,26 @@ import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.Popup;
 import com.adhiwie.moodjournal.utils.SharedPref;
+import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PersonalityTestActivity extends AppCompatActivity {
-    private Toolbar mTopToolbar;
+
     private final String PERSONALITY_TEST_RESULT = "PERSONALITY_TEST_RESULT";
     private final String PERSONALITY_TEST_ALERT_SHOWN = "PERSONALITY_TEST_ALERT_SHOWN";
     private final String PERSONALITY_TEST_QUESTION_NUMBER = "PERSONALITY_TEST_QUESTION_NUMBER";
@@ -49,46 +51,15 @@ public class PersonalityTestActivity extends AppCompatActivity {
     private int total_questions = 50;
     private final int[] codes = new int[]{1, -2, 3, -4, 5, -1, 2, -3, 4, -5, 1, -2, 3, -4, 5, -1, 2, -3, 4, -5, 1, -2, 3, -4, 5, -1, 2, -3, -4, -5, 1, -2, 3, -4, 5, -1, 2, -3, -4, 5, 1, 2, 3, -4, 5, -1, 2, 3, -4, 5};
 
-    @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//		Drawable background;
-//
-//		if(Build.VERSION.SDK_INT >= 21)
-//			background = getResources().getDrawable(R.drawable.blue_background, null);
-//		else
-//			background = getResources().getDrawable(R.drawable.blue_background);
-//
-//
-//		ActionBar actionBar = getActionBar();
-//		actionBar.setBackgroundDrawable(background);
-//		actionBar.setCustomView(R.layout.actionbar_layout);
-//		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-//		actionBar.setDisplayHomeAsUpEnabled(true);
-//		actionBar.setDisplayUseLogoEnabled(true);
-//		if(Build.VERSION.SDK_INT >= 18)
-//			actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
-//
-//		TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-//		actionbar_title.setText(getResources().getString(R.string.title_activity_personality_test));
 
         sp = new SharedPref(getApplicationContext());
         if (new PersonalityTestMgr(getApplicationContext()).getPersonalityTestStatus() == false)
             setContentView(R.layout.activity_personality_test);
         else
             setContentView(R.layout.activity_personality_test_results);
-
-        mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mTopToolbar);
-
-        // add back arrow to toolbar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
 
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
@@ -164,7 +135,7 @@ public class PersonalityTestActivity extends AppCompatActivity {
 
     public void onControlBtnClick(View v) {
         if (response == null) {
-            Toast.makeText(getApplicationContext(), "Answer the current question to proceed!", Toast.LENGTH_SHORT).show();
+            new Popup().showPopup(PersonalityTestActivity.this, "Error", "Answer the current question to proceed!");
             return;
         }
 
@@ -363,23 +334,63 @@ public class PersonalityTestActivity extends AppCompatActivity {
         int Neuroticism = 4;
         int Openness = 5;
 
-        TextView tv_score_extraversion = (TextView) findViewById(R.id.tv_score_extraversion);
-        TextView tv_score_agreeableness = (TextView) findViewById(R.id.tv_score_agreeableness);
-        TextView tv_score_conscientiousness = (TextView) findViewById(R.id.tv_score_conscientiousness);
-        TextView tv_score_neuroticism = (TextView) findViewById(R.id.tv_score_neuroticism);
-        TextView tv_score_openness = (TextView) findViewById(R.id.tv_score_openness);
+        RadarChart radarChart = (RadarChart) findViewById(R.id.chart);
 
-        tv_score_extraversion.setText("" + scores[Extraversion - 1]);
-        tv_score_agreeableness.setText("" + scores[Agreeableness - 1]);
-        tv_score_conscientiousness.setText("" + scores[Conscientiousness - 1]);
-        tv_score_neuroticism.setText("" + scores[Neuroticism - 1]);
-        tv_score_openness.setText("" + scores[Openness - 1]);
+        ArrayList<RadarEntry> entries = new ArrayList<>();
+
+        entries.add(new RadarEntry(scores[Extraversion-1]));
+        entries.add(new RadarEntry(scores[Agreeableness-1]));
+        entries.add(new RadarEntry(scores[Conscientiousness-1]));
+        entries.add(new RadarEntry(scores[Neuroticism-1]));
+        entries.add(new RadarEntry(scores[Openness-1]));
+
+        RadarDataSet set = new RadarDataSet(entries, "Personality");
+        set.setDrawFilled(true);
+        set.setColor(R.color.colorPrimary);
+        RadarData data = new RadarData(set);
+
+        String[] labels = {"Extraversion","Agreeableness","Conscientiousness","Neuroticism","Openness"};
+
+        XAxis xAxis = radarChart.getXAxis();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+
+        YAxis yAxis = radarChart.getYAxis();
+        yAxis.setAxisMinimum(0);
+        yAxis.setDrawLabels(false);
+
+        radarChart.getLegend().setEnabled(false);
+        radarChart.getDescription().setEnabled(false);
+        radarChart.setData(data);
+
+
+
+//        TextView tv_score_extraversion = (TextView) findViewById(R.id.tv_score_extraversion);
+//        TextView tv_score_agreeableness = (TextView) findViewById(R.id.tv_score_agreeableness);
+//        TextView tv_score_conscientiousness = (TextView) findViewById(R.id.tv_score_conscientiousness);
+//        TextView tv_score_neuroticism = (TextView) findViewById(R.id.tv_score_neuroticism);
+//        TextView tv_score_openness = (TextView) findViewById(R.id.tv_score_openness);
+//
+//        tv_score_extraversion.setText("" + scores[Extraversion - 1]);
+//        tv_score_agreeableness.setText("" + scores[Agreeableness - 1]);
+//        tv_score_conscientiousness.setText("" + scores[Conscientiousness - 1]);
+//        tv_score_neuroticism.setText("" + scores[Neuroticism - 1]);
+//        tv_score_openness.setText("" + scores[Openness - 1]);
 
         Button done = (Button) findViewById(R.id.done_btn_personality_test_results);
         done.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 finish();
+            }
+        });
+
+        Button more = (Button) findViewById(R.id.more_btn_personality_test_results);
+        more.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                new Popup().showPopup(PersonalityTestActivity.this,
+                        getResources().getString(R.string.personality_test_results_explained_title),
+                        getResources().getString(R.string.personality_test_results_explained));
             }
         });
     }

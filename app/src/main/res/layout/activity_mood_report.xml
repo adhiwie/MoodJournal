@@ -3,10 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/WhiteSmoke"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -26,7 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Current date"
-            android:textColor="@color/MediumSeaGreen"
             android:textStyle="bold"/>
 
         <ImageButton
@@ -51,7 +48,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:background="@drawable/box"
                 android:orientation="vertical"
                 android:padding="20dp">
 
@@ -62,7 +58,7 @@
                     android:text="Weekly stress data"
                     android:textSize="20sp"/>
 
-                <com.github.mikephil.charting.charts.LineChart
+                <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/stress_chart"
                     android:layout_width="match_parent"
                     android:layout_height="200dp" />
@@ -73,7 +69,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:background="@drawable/box"
                 android:orientation="vertical"
                 android:padding="20dp">
 
@@ -84,7 +79,7 @@
                     android:text="Weekly activeness data"
                     android:textSize="20sp"/>
 
-                <com.github.mikephil.charting.charts.LineChart
+                <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/activeness_chart"
                     android:layout_width="match_parent"
                     android:layout_height="200dp" />
@@ -95,7 +90,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:background="@drawable/box"
                 android:orientation="vertical"
                 android:padding="20dp">
 
@@ -106,7 +100,7 @@
                     android:text="Weekly happiness data"
                     android:textSize="20sp"/>
 
-                <com.github.mikephil.charting.charts.LineChart
+                <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/happiness_chart"
                     android:layout_width="match_parent"
                     android:layout_height="200dp" />

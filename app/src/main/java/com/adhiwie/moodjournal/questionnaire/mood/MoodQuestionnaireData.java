@@ -12,13 +12,17 @@ public class MoodQuestionnaireData implements DataInterface {
     private final int q1;
     private final int q2;
     private final int q3;
+    private final int participation_days;
+    private final String report_time;
 
-    public MoodQuestionnaireData(long start_time, long end_time, int q1, int q2, int q3) {
+    public MoodQuestionnaireData(long start_time, long end_time, int q1, int q2, int q3, int participation_days, String report_time) {
         this.start_time = start_time;
         this.end_time = end_time;
         this.q1 = q1;
         this.q2 = q2;
         this.q3 = q3;
+        this.participation_days = participation_days;
+        this.report_time = report_time;
     }
 
 
@@ -29,6 +33,8 @@ public class MoodQuestionnaireData implements DataInterface {
         json.put("q1", q1);
         json.put("q2", q2);
         json.put("q3", q3);
+        json.put("participation_days", participation_days);
+        json.put("report_time", report_time);
         return json.toString();
     }
 

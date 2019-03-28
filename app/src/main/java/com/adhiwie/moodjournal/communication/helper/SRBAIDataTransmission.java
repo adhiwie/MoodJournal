@@ -42,6 +42,7 @@ public class SRBAIDataTransmission {
     public void transmitData() {
         sp.add(SRBAI_RESULT_AVAILABLE, true);
         JSONObject json = new JSONObject();
+        int participation_days = new UserData(context).getParticipationDays();
         try {
             int total_scores = sp.getInt(SRBAI_RESULT);
 
@@ -61,6 +62,7 @@ public class SRBAIDataTransmission {
             json.put("uuid", new UserData(context).getUuid());
             json.put("srbai_score", total_scores);
             json.put("answers", data);
+            json.put("participation_days",participation_days);
 
             new DataTransmitter(this.context, new DataTypes().SRBAI_SCORE, json.toString()) {
                 @Override

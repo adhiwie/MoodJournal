@@ -5,35 +5,31 @@
         AppBaseTheme from BOTH res/values/styles.xml and
         res/values-v23/styles.xml on API 23+ devices.
     -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- API 21 theme customizations can go here. -->
-        <item name="android:colorPrimary">@color/White</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <!--   darker variant for the status bar and contextual app bars -->
-        <item name="android:colorPrimaryDark">@color/WhiteSmoke</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!--   theme UI controls like checkboxes and text fields -->
-        <item name="android:colorAccent">@color/MediumSeaGreen</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/TextViewStyle</item>
         <item name="android:textAppearanceButton">@style/TextViewStyleButton</item>
         <item name="android:radioButtonStyle">@style/RadioButtonStyle</item>
-        <!--<item name="windowActionBar">false</item>-->
-        <!--<item name="windowNoTitle">true</item>-->
         <item name="android:windowLightStatusBar">true</item>
 
     </style>
 
     <style name="TextViewStyle" parent="android:Widget.TextView">
-        <item name="android:textColor">#333333</item>
-        <item name="android:fontFamily">@font/google_sans_regular</item>
+        <item name="android:fontFamily">@font/nunito_sans_regular</item>
     </style>
 
     <style name="TextViewStyleButton" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/google_sans_bold</item>
+        <item name="android:fontFamily">@font/nunito_sans_bold</item>
         <item name="android:text">bold</item>
     </style>
 
     <style name="RadioButtonStyle" parent="android:Widget.CompoundButton.RadioButton">
-        <item name="android:textColor">#333333</item>
-        <item name="android:fontFamily">@font/google_sans_regular</item>
+        <item name="android:fontFamily">@font/nunito_sans_regular</item>
     </style>
 
 </resources>

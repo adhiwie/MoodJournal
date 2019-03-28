@@ -2,11 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/WhiteSmoke"
     android:padding="10dp"
-    android:orientation="vertical">
-
-    <include layout="@layout/toolbar"/>
+    android:orientation="vertical"
+    android:id="@+id/root_layout">
 
     <TextView
         android:id="@+id/tv_questionnaire_header"
@@ -16,8 +14,7 @@
         android:gravity="center_horizontal"
         android:text="@string/srbai_header"
         android:textAllCaps="true"
-        android:textSize="14sp"
-        android:textStyle="italic" />
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/tv_questionnaire_instruction"
@@ -46,7 +43,7 @@
             android:padding="2dp"
             android:textSize="20sp"
             android:text="Question here"
-            android:textStyle="italic|bold" />
+            android:textStyle="bold" />
 
         <RadioGroup
             android:id="@+id/rg_options"
@@ -123,20 +120,18 @@
         android:gravity="center"
         android:orientation="vertical" >
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/control_btn_test"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="1dp"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:layout_marginTop="2dp"
-            android:background="@drawable/filledbutton"
             android:gravity="center"
             android:onClick="onControlBtnClick"
             android:text="Next"
-            android:textColor="@color/White"
             android:textSize="16sp" />
     </LinearLayout>
 

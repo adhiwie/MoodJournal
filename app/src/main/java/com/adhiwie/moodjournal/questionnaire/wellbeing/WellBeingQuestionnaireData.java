@@ -50,7 +50,7 @@ public class WellBeingQuestionnaireData implements DataInterface {
 
     @Override
     public String getDataType() {
-        return new DataTypes().DAILY_QUESTIONNAIRE;
+        return new DataTypes().PHQ8_QUESTIONNAIRE;
     }
 
 

@@ -50,6 +50,8 @@ public class UserData {
         json.put("reg_timezone", getRegTimezone());
         json.put("device_api_level", getDeviceApiLevel());
         json.put("group_id", getGroupId());
+        json.put("age", getAge());
+        json.put("occupation", getOccupation());
         //json.put("contact_list", getContactList());
         //json.put("app_list", getAppList());
         return json.toString();
@@ -202,5 +204,32 @@ public class UserData {
 
     public int getGroupChangedDate() {
         return sp.getInt(USER_GROUP_CHANGED_DATE);
+    }
+
+
+    private final String USER_AGE = "USER_AGE";
+    public void setAge(int age) {
+        sp.add(USER_AGE, age);
+    }
+
+    public int getAge() {
+        return sp.getInt(USER_AGE);
+    }
+
+    private final String USER_OCCUPATION = "USER_OCCUPATION";
+    public void setOccupation(String occupation) {
+        sp.add(USER_OCCUPATION, occupation);
+    }
+
+    public String getOccupation() {
+        return sp.getString(USER_OCCUPATION);
+    }
+
+    public int getParticipationDays() {
+        int start_date = new UserData(context).getStartDate();
+		int current_date = new Time(Calendar.getInstance()).getEpochDays();
+		int participation_days = 1 + current_date - start_date;
+
+		return participation_days;
     }
 }

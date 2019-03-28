@@ -3,19 +3,15 @@ package com.adhiwie.moodjournal.plan;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -25,41 +21,28 @@ import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.communication.helper.PlanDataTransmission;
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.user.data.UserData;
-import com.adhiwie.moodjournal.utils.SharedPref;
-import com.adhiwie.moodjournal.utils.Toast;
+import com.adhiwie.moodjournal.utils.Snackbar;
 
 import org.json.JSONException;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PlanActivity extends AppCompatActivity {
 
     private int step;
-    private String[] routines;
     private String routine;
-    private SharedPref sp;
-    private Button control_btn;
+    private LinearLayout create_plan_layout;
     private ScrollView intro_layout;
-    private LinearLayout step_1_layout;
+    private RelativeLayout step_1_layout;
     private RelativeLayout step_2_layout;
     private RelativeLayout step_3_layout;
-    private ArrayAdapter<String> list_adapter;
     private TextView detailed_plan_tv;
 
-    private Toolbar mTopToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_create_plan);
-
-        mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mTopToolbar);
-
-        // add back arrow to toolbar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
 
         if (getIntent().getIntExtra("step", 0) == 0) {
             initLayout();
@@ -69,7 +52,7 @@ public class PlanActivity extends AppCompatActivity {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
         }
 
-        sp = new SharedPref(getApplicationContext());
+        routine = "arrive at home";
 
         if (!new PlanMgr(getApplicationContext()).isPlanGiven()) {
             initLayout();
@@ -79,11 +62,11 @@ public class PlanActivity extends AppCompatActivity {
     private void initLayout() {
         step = 0;
 
+        create_plan_layout = (LinearLayout) findViewById(R.id.create_plan_layout);
         intro_layout = (ScrollView) findViewById(R.id.intro_layout);
-        step_1_layout = (LinearLayout) findViewById(R.id.step_1_layout);
+        step_1_layout = (RelativeLayout) findViewById(R.id.step_1_layout);
         step_2_layout = (RelativeLayout) findViewById(R.id.step_2_layout);
         step_3_layout = (RelativeLayout) findViewById(R.id.step_3_layout);
-        control_btn = (Button) findViewById(R.id.create_plan);
 
         intro_layout.setVisibility(View.VISIBLE);
         step_1_layout.setVisibility(View.GONE);
@@ -101,16 +84,16 @@ public class PlanActivity extends AppCompatActivity {
                         if (planMgr.isPlanGiven())
                             this.finish();
                         else
-                            android.widget.Toast.makeText(getApplicationContext(), "You need to set a plan to use this app!", android.widget.Toast.LENGTH_SHORT).show();
+                            new Snackbar(create_plan_layout).shortLength("You need to setup a plan to continue using this app!");
                         break;
                     case 1:
                         initLayout();
                         break;
                     case 2:
-                        goToStepOne(2);
+                        goToStepOne();
                         break;
                     case 3:
-                        goToStepTwo(routine);
+                        goToStepTwo();
                         break;
 
                 }
@@ -121,10 +104,11 @@ public class PlanActivity extends AppCompatActivity {
     }
 
     public void onCreateButtonClick(View v) {
-        goToStepOne(2);
+        goToStepOne();
     }
 
-    private void goToStepOne(int time_mode) {
+
+    private void goToStepOne() {
         step = 1;
 
         intro_layout.setVisibility(View.GONE);
@@ -132,32 +116,52 @@ public class PlanActivity extends AppCompatActivity {
         step_2_layout.setVisibility(View.GONE);
         step_3_layout.setVisibility(View.GONE);
 
-        switch (time_mode) {
-            case 0:
-                routines = getResources().getStringArray(R.array.morning_routines);
-                break;
-            case 1:
-                routines = getResources().getStringArray(R.array.lunch_routines);
-                break;
-            case 2:
-                routines = getResources().getStringArray(R.array.evening_routines);
-                break;
+        detailed_plan_tv = (TextView) findViewById(R.id.step_1_plan_tv);
+        final String plan = getResources().getString(R.string.detailed_plan);
 
-        }
+        SpannableStringBuilder spannable = new SpannableStringBuilder(plan);
 
-        list_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, routines);
-        final ListView routine_list = (ListView) findViewById(R.id.routine_list);
-        routine_list.setAdapter(list_adapter);
-        routine_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spannable.setSpan(
+                new BackgroundColorSpan(0x223CB371),
+                plan.indexOf(routine),
+                plan.indexOf(routine) + String.valueOf(routine).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        spannable.setSpan(
+                new StyleSpan(Typeface.BOLD),
+                plan.indexOf(routine),
+                plan.indexOf(routine) + String.valueOf(routine).length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        spannable.setSpan(
+                new BackgroundColorSpan(0x22FF2D00),
+                plan.indexOf("track my mood"),
+                plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        spannable.setSpan(
+                new StyleSpan(Typeface.BOLD),
+                plan.indexOf("track my mood"),
+                plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        detailed_plan_tv.setText(spannable);
+
+        Button buttonContinue = (Button) findViewById(R.id.step_1_btn);
+        buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                goToStepTwo(routine_list.getItemAtPosition(position).toString().toLowerCase());
+            public void onClick(View view) {
+                goToStepTwo();
             }
         });
+
     }
 
-    private void goToStepTwo(final String routine) {
-        this.routine = routine;
+    private void goToStepTwo() {
         step = 2;
 
         intro_layout.setVisibility(View.GONE);
@@ -165,27 +169,12 @@ public class PlanActivity extends AppCompatActivity {
         step_2_layout.setVisibility(View.VISIBLE);
         step_3_layout.setVisibility(View.GONE);
 
-        detailed_plan_tv = (TextView) findViewById(R.id.step_2_plan_tv);
-        final String plan = getResources().getString(R.string.detailed_plan, routine);
+        final String plan = "then I will track my mood";
 
         SpannableStringBuilder spannable = new SpannableStringBuilder(plan);
 
         spannable.setSpan(
-                new BackgroundColorSpan(0x223CB371),
-                plan.indexOf(routine),
-                plan.indexOf(routine) + String.valueOf(routine).length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        );
-
-        spannable.setSpan(
-                new StyleSpan(Typeface.BOLD),
-                plan.indexOf(routine),
-                plan.indexOf(routine) + String.valueOf(routine).length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        );
-
-        spannable.setSpan(
-                new BackgroundColorSpan(0x223CB371),
+                new BackgroundColorSpan(0x22FF2D00),
                 plan.indexOf("track my mood"),
                 plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -198,19 +187,22 @@ public class PlanActivity extends AppCompatActivity {
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
-        detailed_plan_tv.setText(spannable);
+        TextView then_tv = (TextView) findViewById(R.id.then_tv);
+        then_tv.setText(spannable);
+
+        final EditText condition_et = (EditText) findViewById(R.id.condition_et);
 
         Button buttonContinue = (Button) findViewById(R.id.step_2_btn);
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToStepThree(routine);
+                String condition = condition_et.getText().toString();
+                goToStepThree(condition);
             }
         });
-
     }
 
-    private void goToStepThree(final String routine) {
+    private void goToStepThree(String condition) {
         step = 3;
 
         intro_layout.setVisibility(View.GONE);
@@ -218,8 +210,15 @@ public class PlanActivity extends AppCompatActivity {
         step_2_layout.setVisibility(View.GONE);
         step_3_layout.setVisibility(View.VISIBLE);
 
+        TextView step_3_result_tv = (TextView) findViewById(R.id.step_3_result_tv);
+        if(condition.equalsIgnoreCase("arrive at home")) {
+            step_3_result_tv.setText(getResources().getString(R.string.create_plan_step_3_message_correct));
+        } else {
+            step_3_result_tv.setText(getResources().getString(R.string.create_plan_step_3_message_wrong));
+        }
+
         detailed_plan_tv = (TextView) findViewById(R.id.step_3_plan_tv);
-        final String plan = getResources().getString(R.string.detailed_plan, routine);
+        final String plan = getResources().getString(R.string.detailed_plan);
 
         SpannableStringBuilder spannable = new SpannableStringBuilder(plan);
 
@@ -238,7 +237,7 @@ public class PlanActivity extends AppCompatActivity {
         );
 
         spannable.setSpan(
-                new BackgroundColorSpan(0x223CB371),
+                new BackgroundColorSpan(0x22FF2D00),
                 plan.indexOf("track my mood"),
                 plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -253,8 +252,8 @@ public class PlanActivity extends AppCompatActivity {
 
         detailed_plan_tv.setText(spannable);
 
-        Button buttonContinue = (Button) findViewById(R.id.step_3_btn);
-        buttonContinue.setOnClickListener(new View.OnClickListener() {
+        Button buttonFinish = (Button) findViewById(R.id.step_3_btn);
+        buttonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PlanData data = new PlanData(new UserData(getApplicationContext()).getUuid(), routine);
@@ -276,6 +275,7 @@ public class PlanActivity extends AppCompatActivity {
                 finish();
             }
         });
+
     }
 
 }

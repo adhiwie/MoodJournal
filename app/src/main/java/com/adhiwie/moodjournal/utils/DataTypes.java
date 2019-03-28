@@ -5,7 +5,7 @@ public class DataTypes {
     public final String REGISTRATION = "registration";
     public final String PERSONALITY_TEST = "personality_test";
     public final String MOOD_QUESTIONNAIRE = "mood_questionnaire";
-    public final String DAILY_QUESTIONNAIRE = "daily_questionnaire";
+    public final String PHQ8_QUESTIONNAIRE = "phq8_questionnaire";
     public final String ERROR_LOG = "error_log";
     
     public final String ACCESSIBILITY_EVENT = "accessibility_event";

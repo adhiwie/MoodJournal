@@ -3,28 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/WhiteSmoke"
-    android:orientation="vertical" >
-
-    <include layout="@layout/toolbar" />
+    android:orientation="vertical"
+    android:id="@+id/create_plan_layout">
 
     <ScrollView
         android:id="@+id/intro_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!--<ImageView-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="100dp"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:layout_marginTop="20dp"-->
-            <!--android:src="@drawable/ic_high_five" />-->
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:layout_margin="24dp"
+                android:background="@drawable/ic_honest" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -34,52 +31,75 @@
                 android:text="@string/create_plan_introduction"
                 android:textSize="16sp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/create_plan"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/filledbutton"
                 android:gravity="center"
                 android:onClick="onCreateButtonClick"
                 android:text="@string/label_continue"
-                android:textColor="@color/White"
                 android:textSize="16sp" />
 
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
+
+
+    <RelativeLayout
         android:id="@+id/step_1_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:visibility="gone">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:text="@string/create_plan_step_1_message"
-            android:textSize="16sp"
-            android:fontFamily="@font/google_sans_bold"/>
+            android:orientation="vertical"
+            android:layout_centerVertical="true">
 
-        <ListView
-            android:id="@+id/routine_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="32dp"
+                android:text="@string/create_plan_step_1_message"
+                android:textSize="16sp" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/step_1_plan_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:gravity="center"
+                android:text="@string/detailed_plan"
+                android:textSize="30sp"/>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/step_1_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:text="@string/label_continue"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/step_2_layout"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,32 +112,50 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:padding="10dp"
+                android:padding="32dp"
                 android:text="@string/create_plan_step_2_message"
                 android:textSize="16sp" />
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="When I "
+                    android:textSize="30sp"/>
+
+                <EditText
+                    android:id="@+id/condition_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="30sp"/>
+            </LinearLayout>
+
             <TextView
-                android:id="@+id/step_2_plan_tv"
+                android:id="@+id/then_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:gravity="center"
-                android:text="@string/detailed_plan"
+                android:layout_gravity="center"
+                android:text="then I will track my mood"
                 android:textSize="30sp"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/step_2_btn"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/filledbutton"
                 android:gravity="center"
                 android:text="@string/label_continue"
-                android:textColor="@color/White"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -126,7 +164,8 @@
     <RelativeLayout
         android:id="@+id/step_3_layout"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -135,12 +174,13 @@
             android:layout_centerVertical="true">
 
             <TextView
+                android:id="@+id/step_3_result_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/create_plan_step_3_message"
+                android:text="@string/create_plan_step_3_message_correct"
+                android:padding="32dp"
                 android:textSize="16sp" />
 
             <TextView
@@ -152,19 +192,18 @@
                 android:text="@string/detailed_plan"
                 android:textSize="30sp"/>
 
-            <Button
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/step_3_btn"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/filledbutton"
                 android:gravity="center"
-                android:text="@string/label_done"
-                android:textColor="@color/White"
+                android:text="@string/label_finish"
                 android:textSize="16sp" />
 
         </LinearLayout>

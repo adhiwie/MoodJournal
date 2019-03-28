@@ -7,7 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.system.APILevel;
@@ -43,7 +43,7 @@ public class NotificationMgr
 			.setContentIntent(pi)
 			.setVibrate(new long[]{0l})
 			.setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-			.setColor(context.getResources().getColor(R.color.MediumSeaGreen))
+			.setColor(context.getResources().getColor(R.color.colorPrimary))
 			.setDefaults(Notification.DEFAULT_ALL)
 			.setPriority(NotificationCompat.PRIORITY_HIGH);
 

@@ -3,8 +3,8 @@ package com.adhiwie.moodjournal.questionnaire.goalcommitment;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.communication.helper.GCSDataTransmission;
@@ -47,47 +46,15 @@ public class GCSActivity extends AppCompatActivity {
     private int total_questions = 5;
     private final String[] codes = new String[]{"N", "N", "R", "R", "R"};
 
-    private Toolbar mTopToolbar;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        Drawable background;
-//
-//        if(Build.VERSION.SDK_INT >= 21)
-//            background = getResources().getDrawable(R.drawable.blue_background, null);
-//        else
-//            background = getResources().getDrawable(R.drawable.blue_background);
-//
-//
-//        ActionBar actionBar = getActionBar();
-//        actionBar.setBackgroundDrawable(background);
-//        actionBar.setCustomView(R.layout.actionbar_layout);
-//        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM);
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.setDisplayUseLogoEnabled(true);
-//        if(Build.VERSION.SDK_INT >= 18)
-//            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
-//
-//        TextView actionbar_title = (TextView) findViewById(R.id.tvActionBarTitle);
-//        actionbar_title.setText(getResources().getString(R.string.title_activity_gcs_test));
 
         sp = new SharedPref(getApplicationContext());
         if (new GCSMgr(getApplicationContext()).isGCSDone() == false)
             setContentView(R.layout.activity_gcs);
         else
             setContentView(R.layout.activity_gcs_results);
-
-        mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mTopToolbar);
-
-        // add back arrow to toolbar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
 
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
@@ -101,7 +68,7 @@ public class GCSActivity extends AppCompatActivity {
                 if (new GCSMgr(getApplicationContext()).isGCSDone())
                     finish();
                 else
-                    android.widget.Toast.makeText(getApplicationContext(), "You need to complete goal commitment questionnaire to continue using this app!", android.widget.Toast.LENGTH_SHORT).show();
+                    new Popup().showPopup(GCSActivity.this, "Warning","You need to complete goal commitment questionnaire to continue using this app!");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -163,7 +130,7 @@ public class GCSActivity extends AppCompatActivity {
 
     public void onControlBtnClick(View v) {
         if (response == null) {
-            Toast.makeText(getApplicationContext(), "Answer the current question to proceed!", Toast.LENGTH_SHORT).show();
+            new Popup().showPopup(GCSActivity.this, "Error", "Answer the current question to proceed!");
             return;
         }
 

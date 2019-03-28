@@ -105,5 +105,9 @@ public class WellBeingQuestionnaireMgr {
             return 0;
     }
 
+    public void resetDailyQuestionnaireCountForToday() {
+        sp.add(Daily_Notification_Count_For_Today, 0);
+    }
+
 
 }
