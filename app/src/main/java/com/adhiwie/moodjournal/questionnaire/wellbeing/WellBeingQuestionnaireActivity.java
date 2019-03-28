@@ -87,14 +87,14 @@ public class WellBeingQuestionnaireActivity extends AppCompatActivity {
 
         sp = new SharedPref(getApplicationContext());
         if (new WellBeingQuestionnaireMgr(getApplicationContext()).getDailyQuestionnaireCountForToday() == 0) {
-            a1 = 0;
-            a2 = 0;
-            a3 = 0;
-            a4 = 0;
-            a5 = 0;
-            a6 = 0;
-            a7 = 0;
-            a8 = 0;
+            a1 = -1;
+            a2 = -1;
+            a3 = -1;
+            a4 = -1;
+            a5 = -1;
+            a6 = -1;
+            a7 = -1;
+            a8 = -1;
 
             start_time = Calendar.getInstance().getTimeInMillis();
             control_btn = (Button) findViewById(R.id.control_btn_phq_test);
@@ -107,19 +107,19 @@ public class WellBeingQuestionnaireActivity extends AppCompatActivity {
 
 
     private int getCurrentQuestionNumber() {
-        if (a1 == 0)
+        if (a1 == -1)
             return 1;
-        else if (a2 == 0)
+        else if (a2 == -1)
             return 2;
-        else if (a3 == 0)
+        else if (a3 == -1)
             return 3;
-        else if (a4 == 0)
+        else if (a4 == -1)
             return 4;
-        else if (a5 == 0)
+        else if (a5 == -1)
             return 5;
-        else if (a6 == 0)
+        else if (a6 == -1)
             return 6;
-        else if (a7 == 0)
+        else if (a7 == -1)
             return 7;
         else
             return 8;
@@ -132,7 +132,7 @@ public class WellBeingQuestionnaireActivity extends AppCompatActivity {
         question = (TextView) findViewById(R.id.tv_question);
         question.setText(questions[q_num - 1]);
 
-        response = 0;
+        response = -1;
         final RadioGroup rg_options = (RadioGroup) findViewById(R.id.rg_options);
         rg_options.clearCheck();
         rg_options.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -144,22 +144,21 @@ public class WellBeingQuestionnaireActivity extends AppCompatActivity {
                     String s = rb.getText().toString();
                     Resources res = getResources();
                     if (s.equals(res.getString(R.string.phq_test_option_not_at_all)))
-                        response = 1;
+                        response = 0;
                     else if (s.equals(res.getString(R.string.phq_test_option_several_days)))
-                        response = 2;
+                        response = 1;
                     else if (s.equals(res.getString(R.string.phq_test_option_more_than_half_days)))
-                        response = 3;
+                        response = 2;
                     else if (s.equals(res.getString(R.string.phq_test_option_nearly_every_day)))
-                        response = 4;
-                } else
-                    response = 0;
+                        response = 3;
+                }
             }
         });
     }
 
     public void onControlBtnClick(View v) {
         if (new WellBeingQuestionnaireMgr(getApplicationContext()).getDailyQuestionnaireCountForToday() == 0) {
-            if (response == 0) {
+            if (response == -1) {
                 Popup p = new Popup();
                 p.showPopup(WellBeingQuestionnaireActivity.this, "Entry missing!", "Answer the current question to proceed.");
                 return;
@@ -188,8 +187,7 @@ public class WellBeingQuestionnaireActivity extends AppCompatActivity {
                 sp.add(PHQ8_TEST_RESULT, phqScore);
 
                 new WellBeingQuestionnaireMgr(getApplicationContext()).updateLastDailyQuestionnaireDate();
-//            startActivity(new Intent(this, MainActivity.class));
-//            finish();
+
                 control_btn.setText("Close");
                 setContentView(R.layout.activity_phq8_questionnaire_results);
                 showResults();
@@ -228,8 +226,18 @@ public class WellBeingQuestionnaireActivity extends AppCompatActivity {
         retake_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sp.add(PHQ8_TEST_RESULT, 0);
                 new WellBeingQuestionnaireMgr(getApplicationContext()).resetDailyQuestionnaireCountForToday();
                 setContentView(R.layout.activity_phq8_questionnaire);
+                a1 = -1;
+                a2 = -1;
+                a3 = -1;
+                a4 = -1;
+                a5 = -1;
+                a6 = -1;
+                a7 = -1;
+                a8 = -1;
+
                 start_time = Calendar.getInstance().getTimeInMillis();
                 control_btn = (Button) findViewById(R.id.control_btn_phq_test);
                 tv_questionnaire_counter = (TextView) findViewById(R.id.tv_questionnaire_counter);
