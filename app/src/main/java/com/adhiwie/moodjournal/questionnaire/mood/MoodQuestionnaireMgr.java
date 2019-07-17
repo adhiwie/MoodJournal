@@ -180,15 +180,15 @@ public class MoodQuestionnaireMgr {
     }
 
     private boolean isRuleOk() {
-        new Log().e("getMoodQuestionnaireCountForToday : "+getMoodQuestionnaireCountForToday());
-        new Log().e("getMoodNotificationTriggerCountForToday : "+getMoodNotificationTriggerCountForToday());
-        new Log().e("hour : "+hour);
-        new Log().e("group ID : "+new UserData(context).getGroupId());
+//        new Log().e("getMoodQuestionnaireCountForToday : "+getMoodQuestionnaireCountForToday());
+//        new Log().e("getMoodNotificationTriggerCountForToday : "+getMoodNotificationTriggerCountForToday());
+//        new Log().e("hour : "+hour);
+//        new Log().e("group ID : "+new UserData(context).getGroupId());
         return ((getMoodQuestionnaireCountForToday() == 0) &&
                 (getMoodNotificationTriggerCountForToday() == 0) &&
                 (hour >= 12 && hour <= 14) &&
-                (new UserData(context).getGroupId() != 1));
+                (new UserData(context).getGroupId() != 1) &&
+                new PlanMgr(context).isPlanGiven());
     }
-
 
 }

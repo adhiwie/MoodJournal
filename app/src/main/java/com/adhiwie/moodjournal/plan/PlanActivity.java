@@ -52,7 +52,7 @@ public class PlanActivity extends AppCompatActivity {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
         }
 
-        routine = "arrive at home";
+        routine = "arrive at home in the evening";
 
         if (!new PlanMgr(getApplicationContext()).isPlanGiven()) {
             initLayout();
@@ -211,7 +211,7 @@ public class PlanActivity extends AppCompatActivity {
         step_3_layout.setVisibility(View.VISIBLE);
 
         TextView step_3_result_tv = (TextView) findViewById(R.id.step_3_result_tv);
-        if(condition.equalsIgnoreCase("arrive at home")) {
+        if(condition.equalsIgnoreCase("arrive at home in the evening")) {
             step_3_result_tv.setText(getResources().getString(R.string.create_plan_step_3_message_correct));
         } else {
             step_3_result_tv.setText(getResources().getString(R.string.create_plan_step_3_message_wrong));

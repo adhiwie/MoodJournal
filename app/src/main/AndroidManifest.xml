@@ -4,30 +4,22 @@
     package="com.adhiwie.moodjournal">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" /> <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!-- <uses-permission android:name="android.permission.READ_CALL_LOG" /> -->
-    <!-- <uses-permission android:name="android.permission.READ_SMS" /> -->
-    <!-- <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> -->
-    <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
-    <!-- <uses-permission -->
-    <!-- android:name="android.permission.PACKAGE_USAGE_STATS" -->
-    <!-- tools:ignore="ProtectedPermissions" /> -->
-    <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".questionnaire.mood.ReinforcementActivity"></activity>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -78,7 +70,7 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".report.MoodReportActivity"
-            android:label="@string/title_activity_mood_data"
+            android:label="@string/title_activity_mood_report"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".questionnaire.goalcommitment.GCSActivity"

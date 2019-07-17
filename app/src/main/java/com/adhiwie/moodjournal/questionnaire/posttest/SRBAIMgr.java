@@ -50,10 +50,10 @@ public class SRBAIMgr {
         int participation_days = new UserData(context).getParticipationDays();
 
         //DEBUG
-		new Log().e("SRBAI questionnaire is triggered");
-		new Log().e("Count for today: "+sp.getInt(SRBAI_Notification_Trigger_Count_For_Today));
-		new Log().e("Participation days: "+participation_days);
-		new Log().e("Last date: "+sp.getInt(SRBAI_Notification_Trigger_Date_For_Today));
+//		new Log().e("SRBAI questionnaire is triggered");
+//		new Log().e("Count for today: "+sp.getInt(SRBAI_Notification_Trigger_Count_For_Today));
+//		new Log().e("Participation days: "+participation_days);
+//		new Log().e("Last date: "+sp.getInt(SRBAI_Notification_Trigger_Date_For_Today));
 
         if (getNotificationTriggerCountForToday() > 0 && isLastNotificationTriggeredToday())
             return;

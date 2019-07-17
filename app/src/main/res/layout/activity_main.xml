@@ -42,7 +42,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:textSize="26sp"
+                        android:textSize="22sp"
                         android:text="@string/detailed_plan"/>
 
                     <!--<TextView-->

@@ -46,7 +46,7 @@ public class LinkedTasks {
         Permission p = new Permission(context);
         //p.notifyUserIfAccessibilityPermissionRevoked();
         //p.notifyUserIfAppUsagePermissionRevoked();
-        p.notifyUserIfNSLPermissionRevoked();
+        //p.notifyUserIfNSLPermissionRevoked();
 
         // check for GCS & SRBAI questionnaire
         new GCSMgr(context).notifyUserIfRequired();

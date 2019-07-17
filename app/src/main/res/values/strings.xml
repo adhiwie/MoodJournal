@@ -13,7 +13,7 @@
     <string name="title_activity_create_plan">Setting a Plan</string>
     <string name="title_activity_gcs_test">Goal Commitment Scale Test</string>
     <string name="title_activity_srbai_test">SRBAI Test</string>
-    <string name="title_activity_mood_data">Mood Data</string>
+    <string name="title_activity_mood_report">Mood Report</string>
 
     <string name="open_accessibility_settings">Allow Accessibility Access</string>
     <string name="open_app_settings">Allow App Usage Access</string>
@@ -211,7 +211,7 @@
         Fabulous! You are good to go. Once again, remember your plan below:
     </string>
     <string name="create_plan_step_3_message_wrong">
-        Nah, you are wrong! Your plan should be:
+        Nah, you are wrong! Your plan should be below. Remember this plan and now you are all set.
     </string>
     <string name="reminder_message">
         Follow these steps:\n\n
@@ -220,7 +220,7 @@
         2. Repeat it twice in your head\n
         3. Close your eyes and imagine\n
     </string>
-    <string name="detailed_plan">When I arrive at home, then I will track my mood</string>
+    <string name="detailed_plan">When I arrive at home in the evening, then I will track my mood</string>
     <string name="plan_reminder_title">My Plan</string>
     <string name="date_range">"%1$s - %2$s %3$s</string>
 
@@ -229,7 +229,7 @@
     <string name="gcs_results_header">Your Goal Commitment Test Results</string>
     <string name="gcs_results_info">Goal Commitment Scale</string>
     <string name="gcs_results_explained">You have scored %1$d out of 25.</string>
-    <string name="gcs_results_plan">Brilliant! Now, you are all set up. Don\'t forget your plan: When you %1$s, then you will track my mood.</string>
+    <string name="gcs_results_plan">Brilliant! Now, you are all set up. Don\'t forget your plan: When I %1$s, then I will track my mood.</string>
     <string name="gcs_info_string">You cannot go back to change your answer. It is mandatory to complete the test in one go.
         So, take your time and try to answer the questions as accurate as possible.
 
@@ -284,7 +284,7 @@
 
     <string name="label_continue">Continue</string>
     <string name="label_finish">Finish</string>
-    <string name="label_ok_understand">OK, I understand</string>
+    <string name="label_ok_done">OK, I have done it</string>
     <string name="nsl_permission_rationale">Please enable permission requests for read/write access to local storage. We need read/write access permission to store the data in your phone, before transmitting securely into our server.</string>
     <string name="menu_home">Home</string>
     <string name="menu_history">History</string>

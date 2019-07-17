@@ -49,10 +49,11 @@ public class ConsentActivity extends AppCompatActivity {
     }
 
     public void iAgreeBtnClick(View v) {
-        addShortcutIcon(MainActivity.class, getResources().getString(R.string.app_name));
-        addShortcutIconNewerAndroid(MainActivity.class);
+//        addShortcutIcon(MainActivity.class, getResources().getString(R.string.app_name));
+//        addShortcutIconNewerAndroid(MainActivity.class);
 
         startActivity(new Intent(this, UserRegistrationActivity.class));
+        finish();
     }
 
 

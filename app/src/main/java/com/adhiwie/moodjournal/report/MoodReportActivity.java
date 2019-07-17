@@ -29,6 +29,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -55,12 +56,23 @@ public class MoodReportActivity extends AppCompatActivity {
     BarDataSet happinessLineDataSet;
     List<JSONObject> dataInJsonObject;
     long currentTimeMillis;
+    String[] days;
+
+    ValueFormatter  XAxisFormatter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_mood_report);
+
+        days = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+        XAxisFormatter = new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                return days[(int) value];
+            }
+        };
 
         try {
             initialiseData();
@@ -308,7 +320,8 @@ public class MoodReportActivity extends AppCompatActivity {
         dataSets.add(getWeeklyStressDataSet(timeInMillis));
 
         final BarData data = new BarData(dataSets);
-        data.setValueFormatter(new ValueFormatter());
+        data.setValueFormatter(new MyValueFormatter());
+        data.setDrawValues(false);
 
         stressChart.setData(data);
         stressChart.animateY(1000);
@@ -319,34 +332,25 @@ public class MoodReportActivity extends AppCompatActivity {
         Legend legend = stressChart.getLegend();
         legend.setEnabled(false);
 
-        final String[] days = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-
-        IAxisValueFormatter formatter = new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return days[(int) value];
-            }
-        };
-
         final String[] level = new String[]{"", "Very Stressed", "Stressed", "Neutral", "Relaxed", "Very Relaxed"};
 
-        IAxisValueFormatter formatter1 = new IAxisValueFormatter() {
+        ValueFormatter YAxisFormatter = new ValueFormatter() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getAxisLabel(float value, AxisBase axis) {
                 return level[(int) value];
             }
         };
 
         XAxis xAxis = stressChart.getXAxis();
         xAxis.setGranularity(1);
-        xAxis.setValueFormatter(formatter);
+        xAxis.setValueFormatter(XAxisFormatter);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setAxisMinimum(0);
 
         YAxis yAxis = stressChart.getAxisLeft();
         yAxis.setLabelCount(6, true);
-        yAxis.setValueFormatter(formatter1);
+        yAxis.setValueFormatter(YAxisFormatter);
         yAxis.setAxisMaximum(5);
         yAxis.setAxisMinimum(0);
 
@@ -385,7 +389,8 @@ public class MoodReportActivity extends AppCompatActivity {
         dataSets.add(getWeeklyActivenessDataSet(timeInMillis));
 
         final BarData data = new BarData(dataSets);
-        data.setValueFormatter(new ValueFormatter());
+        data.setValueFormatter(new MyValueFormatter());
+        data.setDrawValues(false);
 
         activenessChart.setData(data);
         activenessChart.animateY(1000);
@@ -396,34 +401,25 @@ public class MoodReportActivity extends AppCompatActivity {
         Legend legend = activenessChart.getLegend();
         legend.setEnabled(false);
 
-        final String[] days = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-
-        IAxisValueFormatter formatter = new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return days[(int) value];
-            }
-        };
-
         final String[] level = new String[]{"", "Very Sleepy", "Sleepy", "Neutral", "Active", "Very Active"};
 
-        IAxisValueFormatter formatter1 = new IAxisValueFormatter() {
+        ValueFormatter YAxisFormatter = new ValueFormatter() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getAxisLabel(float value, AxisBase axis) {
                 return level[(int) value];
             }
         };
 
         XAxis xAxis = activenessChart.getXAxis();
         xAxis.setGranularity(1);
-        xAxis.setValueFormatter(formatter);
+        xAxis.setValueFormatter(XAxisFormatter);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setAxisMinimum(0);
 
         YAxis yAxis = activenessChart.getAxisLeft();
         yAxis.setLabelCount(6, true);
-        yAxis.setValueFormatter(formatter1);
+        yAxis.setValueFormatter(YAxisFormatter);
         yAxis.setAxisMaximum(5);
         yAxis.setAxisMinimum(0);
 
@@ -462,7 +458,8 @@ public class MoodReportActivity extends AppCompatActivity {
         dataSets.add(getWeeklyHappinessDataSet(timeInMillis));
 
         final BarData data = new BarData(dataSets);
-        data.setValueFormatter(new ValueFormatter());
+        data.setValueFormatter(new MyValueFormatter());
+        data.setDrawValues(false);
 
         happinessChart.setData(data);
         happinessChart.animateY(1000);
@@ -473,34 +470,25 @@ public class MoodReportActivity extends AppCompatActivity {
         Legend legend = happinessChart.getLegend();
         legend.setEnabled(false);
 
-        final String[] days = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-
-        IAxisValueFormatter formatter = new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return days[(int) value];
-            }
-        };
-
         final String[] level = new String[]{"", "Very Sad", "Sad", "Neutral", "Happy", "Very Happy"};
 
-        IAxisValueFormatter formatter1 = new IAxisValueFormatter() {
+        ValueFormatter YAxisFormatter = new ValueFormatter() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getAxisLabel(float value, AxisBase axis) {
                 return level[(int) value];
             }
         };
 
         XAxis xAxis = happinessChart.getXAxis();
         xAxis.setGranularity(1);
-        xAxis.setValueFormatter(formatter);
+        xAxis.setValueFormatter(XAxisFormatter);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setAxisMinimum(0);
 
         YAxis yAxis = happinessChart.getAxisLeft();
         yAxis.setLabelCount(6, true);
-        yAxis.setValueFormatter(formatter1);
+        yAxis.setValueFormatter(YAxisFormatter);
         yAxis.setAxisMaximum(5);
         yAxis.setAxisMinimum(0);
 
@@ -519,11 +507,7 @@ public class MoodReportActivity extends AppCompatActivity {
         }
     }
 
-    public class ValueFormatter implements IValueFormatter {
+    public class MyValueFormatter extends ValueFormatter {
 
-        @Override
-        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return "";
-        }
     }
 }

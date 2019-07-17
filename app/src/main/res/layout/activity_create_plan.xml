@@ -76,7 +76,7 @@
                 android:layout_margin="20dp"
                 android:gravity="center"
                 android:text="@string/detailed_plan"
-                android:textSize="30sp"/>
+                android:textSize="22sp"/>
 
 
             <com.google.android.material.button.MaterialButton

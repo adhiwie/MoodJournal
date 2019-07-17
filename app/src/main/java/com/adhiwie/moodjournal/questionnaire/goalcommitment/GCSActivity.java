@@ -282,7 +282,7 @@ public class GCSActivity extends AppCompatActivity {
         );
 
         spannable.setSpan(
-                new BackgroundColorSpan(0x223CB371),
+                new BackgroundColorSpan(0x22FF2D00),
                 plan.indexOf("track my mood"),
                 plan.indexOf("track my mood") + String.valueOf("track my mood").length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
