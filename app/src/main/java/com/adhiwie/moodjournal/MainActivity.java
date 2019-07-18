@@ -243,11 +243,11 @@ public class MainActivity extends AppCompatActivity {
 //			this.finish();
 //			return;
 //		}
-        if (!p.isNSLPermitted()) {
-            p.startNSLPermissionActivityIfRequired();
-            this.finish();
-            return;
-        }
+//        if (!p.isNSLPermitted()) {
+//            p.startNSLPermissionActivityIfRequired();
+//            this.finish();
+//            return;
+//        }
 
         if (!new PlanMgr(getApplicationContext()).isPlanGiven()) {
             startActivity(new Intent(this, PlanActivity.class));

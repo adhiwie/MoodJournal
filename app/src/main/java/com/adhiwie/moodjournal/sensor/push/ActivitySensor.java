@@ -29,7 +29,6 @@ public class ActivitySensor extends IntentService {
         Log log = new Log();
         try {
             log.v("New Activity");
-            new LinkedTasks(getApplicationContext()).checkQuestionnaires();
 
             if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler))
                 Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getApplicationContext()));
@@ -50,6 +49,10 @@ public class ActivitySensor extends IntentService {
 
                 AdaptiveSensingManager as = new AdaptiveSensingManager(getApplicationContext());
                 as.onNewActivity(ad);
+
+                if (activity.equals("STILL")) {
+                    new LinkedTasks(getApplicationContext()).checkQuestionnaires();
+                }
 
                 log.d("Activity Result: " + ad.toJSONString());
             }

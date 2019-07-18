@@ -6,11 +6,16 @@
     android:orientation="vertical"
     android:gravity="center">
 
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/ic_help"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:textSize="26sp"
+        android:textSize="34sp"
         android:text="Are you available now?"/>
 
     <LinearLayout
@@ -19,16 +24,17 @@
         android:padding="16dp"
         android:orientation="horizontal">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_weight="0.5"
             android:id="@+id/no_btn"
             android:onClick="noBtnOnClick"
-            android:text="No" />
+            android:text="No"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"

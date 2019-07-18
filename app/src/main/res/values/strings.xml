@@ -163,31 +163,16 @@
     </string-array>
 
     <string name="mood_test_info">Over the last few hours, what is your mood level?</string>
-    <string name="mood_test_question1">My Stress Level</string>
-    <string name="mood_test_question2">My Activeness Level</string>
-    <string name="mood_test_question3">My Happiness Level</string>
+    <string name="mood_test_question1">My mood Level</string>
     <string name="mood_test_question_start_label">Select a value</string>
-    <string name="mood_test_question1_option1">Very Stressed</string>
-    <string name="mood_test_question1_option1_tv">Very\nStressed</string>
-    <string name="mood_test_question1_option2">Somewhat Stressed</string>
+    <string name="mood_test_question1_option1">Very Sad</string>
+    <string name="mood_test_question1_option1_tv">Very\nSad</string>
+    <string name="mood_test_question1_option2">Sad</string>
     <string name="mood_test_question1_option3">Neutral</string>
-    <string name="mood_test_question1_option4">Somewhat Relaxed</string>
-    <string name="mood_test_question1_option5">Very Relaxed</string>
-    <string name="mood_test_question1_option5_tv">Very\nRelaxed</string>
-    <string name="mood_test_question2_option1">Very Sleepy</string>
-    <string name="mood_test_question2_option1_tv">Very\nSleepy</string>
-    <string name="mood_test_question2_option2">Somewhat Sleepy</string>
-    <string name="mood_test_question2_option3">Neutral</string>
-    <string name="mood_test_question2_option4">Somewhat Active</string>
-    <string name="mood_test_question2_option5">Very Active</string>
-    <string name="mood_test_question2_option5_tv">Very\nActive</string>
-    <string name="mood_test_question3_option1">Very Sad</string>
-    <string name="mood_test_question3_option1_tv">Very\nSad</string>
-    <string name="mood_test_question3_option2">Somewhat Sad</string>
-    <string name="mood_test_question3_option3">Neutral</string>
-    <string name="mood_test_question3_option4">Somewhat Happy</string>
-    <string name="mood_test_question3_option5">Very Happy</string>
-    <string name="mood_test_question3_option5_tv">Very\nHappy</string>
+    <string name="mood_test_question1_option4">Happy</string>
+    <string name="mood_test_question1_option5">Very Happy</string>
+    <string name="mood_test_question1_option5_tv">Very\nHappy</string>
+
     <string name="create_plan_introduction">
         Do you know that tracking your mood regularly could help maintaining your well-being?
         We will help you form a good habit of tracking mood every day by creating a plan called as implementation intention.
@@ -220,7 +205,7 @@
         2. Repeat it twice in your head\n
         3. Close your eyes and imagine\n
     </string>
-    <string name="detailed_plan">When I arrive at home in the evening, then I will track my mood</string>
+    <string name="detailed_plan">If I am about going to bed at night, then I will track my mood</string>
     <string name="plan_reminder_title">My Plan</string>
     <string name="date_range">"%1$s - %2$s %3$s</string>
 
@@ -229,7 +214,7 @@
     <string name="gcs_results_header">Your Goal Commitment Test Results</string>
     <string name="gcs_results_info">Goal Commitment Scale</string>
     <string name="gcs_results_explained">You have scored %1$d out of 25.</string>
-    <string name="gcs_results_plan">Brilliant! Now, you are all set up. Don\'t forget your plan: When I %1$s, then I will track my mood.</string>
+    <string name="gcs_results_plan">Brilliant! Now, you are all set up. Don\'t forget your plan: If I %1$s, then I will track my mood.</string>
     <string name="gcs_info_string">You cannot go back to change your answer. It is mandatory to complete the test in one go.
         So, take your time and try to answer the questions as accurate as possible.
 
