@@ -7,8 +7,8 @@
         android:shortcutLongLabel="@string/track_shortcut_label">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.adhiwie.moodjournal"
-            android:targetClass="com.adhiwie.moodjournal.questionnaire.mood.MoodQuestionnaireActivity" />
+            android:targetPackage="com.adhiwie.mymoodjournal"
+            android:targetClass="com.adhiwie.mymoodjournal.questionnaire.mood.MoodQuestionnaireActivity" />
     </shortcut>
     <shortcut
         android:shortcutId="history"
@@ -18,8 +18,8 @@
         android:shortcutLongLabel="@string/history_shortcut_label">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.adhiwie.moodjournal"
-            android:targetClass="com.adhiwie.moodjournal.report.MoodReportActivity" />
+            android:targetPackage="com.adhiwie.mymoodjournal"
+            android:targetClass="com.adhiwie.mymoodjournal.report.MoodReportActivity" />
     </shortcut>
     <shortcut
         android:shortcutId="depression"
@@ -29,7 +29,7 @@
         android:shortcutLongLabel="@string/depression_shortcut_label">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.adhiwie.moodjournal"
-            android:targetClass="com.adhiwie.moodjournal.questionnaire.wellbeing.WellBeingQuestionnaireActivity" />
+            android:targetPackage="com.adhiwie.mymoodjournal"
+            android:targetClass="com.adhiwie.mymoodjournal.questionnaire.wellbeing.WellBeingQuestionnaireActivity" />
     </shortcut>
 </shortcuts>
