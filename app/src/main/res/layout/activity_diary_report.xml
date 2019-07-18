@@ -6,34 +6,6 @@
     android:orientation="vertical">
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:background="@drawable/ic_chevron_left"
-            android:onClick="prevWeek"/>
-
-        <TextView
-            android:id="@+id/date_range_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Current date"
-            android:textStyle="bold"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:background="@drawable/ic_chevron_right"
-            android:onClick="nextWeek"/>
-    </FrameLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -43,27 +15,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_diaries"
+                android:scrollbars="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="Recent diaries"
-                    android:textSize="20sp"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_diaries"
-                    android:scrollbars="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
     </ScrollView>

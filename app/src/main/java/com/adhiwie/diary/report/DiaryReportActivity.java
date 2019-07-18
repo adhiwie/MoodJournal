@@ -17,7 +17,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,9 +51,6 @@ public class DiaryReportActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        mAdapter = new DiaryAdapter(dataInJsonObject);
-        recyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -66,21 +65,24 @@ public class DiaryReportActivity extends AppCompatActivity {
 
     private void initialiseData() throws JSONException {
         SharedPref sharedPref = new SharedPref(getApplicationContext());
-        String moodData = sharedPref.getString("DIARY_STUDY_DATA");
+        String diaryData = sharedPref.getString("DIARY_STUDY_DATA");
 
         JSONArray jsonArray;
 
         dataInJsonObject = new ArrayList<>();
 
-        if (moodData == null) {
+        if (diaryData == null) {
             new Log().e("No data available");
         } else {
-            jsonArray = new JSONArray(moodData);
+            jsonArray = new JSONArray(diaryData);
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObj = new JSONObject(jsonArray.getString(i));
                 dataInJsonObject.add(jsonObj);
             }
+
+            mAdapter = new DiaryAdapter(dataInJsonObject);
+            recyclerView.setAdapter(mAdapter);
         }
     }
 
@@ -110,6 +112,10 @@ public class DiaryReportActivity extends AppCompatActivity {
             TextView tv_tasks_not_done = holder.tv_tasks_not_done;
 
             try {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
+                String dateString = formatter.format(new Date(dataInJsonObject.get(position).getLong("end_time")));
+
+                tv_date.setText(dateString);
                 tv_tasks_done.setText(dataInJsonObject.get(position).getString("tasks_done"));
                 tv_quality.setText(quality[dataInJsonObject.get(position).getInt("q1")-1]);
                 tv_productivity.setText(productivity[dataInJsonObject.get(position).getInt("q2")-1]);
@@ -136,12 +142,12 @@ public class DiaryReportActivity extends AppCompatActivity {
             public DiaryAdapterViewHolder(View itemView) {
                 super(itemView);
 
-                tv_date = (TextView) findViewById(R.id.tv_date);
-                tv_tasks_done = (TextView) findViewById(R.id.tv_tasks_done);
-                tv_quality = (TextView) findViewById(R.id.tv_quality);
-                tv_productivity = (TextView) findViewById(R.id.tv_productivity);
-                tv_time_spent = (TextView) findViewById(R.id.tv_time_spent);
-                tv_tasks_not_done = (TextView) findViewById(R.id.tv_tasks_not_done);
+                tv_date = (TextView) itemView.findViewById(R.id.tv_date);
+                tv_tasks_done = (TextView) itemView.findViewById(R.id.tv_tasks_done);
+                tv_quality = (TextView) itemView.findViewById(R.id.tv_quality);
+                tv_productivity = (TextView) itemView.findViewById(R.id.tv_productivity);
+                tv_time_spent = (TextView) itemView.findViewById(R.id.tv_time_spent);
+                tv_tasks_not_done = (TextView) itemView.findViewById(R.id.tv_tasks_not_done);
             }
         }
     }
