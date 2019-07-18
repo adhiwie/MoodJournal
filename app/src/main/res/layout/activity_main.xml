@@ -75,18 +75,8 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_sleepy"/>
 
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:gravity="center"-->
-                    <!--android:padding="5dp"-->
-                    <!--android:text="@string/todays_mood_q_stats_label"-->
-                    <!--android:textSize="16sp"-->
-                    <!--android:textStyle="bold" />-->
-
                 <TextView
-                    android:id="@+id/todays_mood_status_tv"
+                    android:id="@+id/todays_diary_status_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -95,36 +85,19 @@
                     android:layout_marginLeft="40dp"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="@string/todays_mood_q_stats_empty_state"
+                    android:text="@string/todays_diary_q_stats_empty_state"
                     android:textSize="16sp" />
 
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="50dp"-->
-                    <!--android:layout_marginLeft="20dp"-->
-                    <!--android:layout_marginRight="20dp"-->
-                    <!--android:gravity="center"-->
-                    <!--android:orientation="horizontal" >-->
-
-                    <!--<ImageView-->
-                        <!--android:id="@+id/mood_q1"-->
-                        <!--android:layout_width="30dp"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:gravity="center"-->
-                        <!--android:src="@drawable/ic_check_circle_green" />-->
-
-                <!--</LinearLayout>-->
-
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/track_mood_btn"
+                    android:id="@+id/track_diary_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginLeft="50dp"
                     android:layout_marginRight="50dp"
                     android:gravity="center"
-                    android:onClick="moodTest"
-                    android:text="@string/answer_mood_q_btn_label"
+                    android:onClick="completeDiary"
+                    android:text="@string/answer_diary_q_btn_label"
                     android:textSize="16sp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -135,215 +108,13 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginRight="50dp"
                     android:gravity="center"
-                    android:onClick="moodReport"
-                    android:text="Mood history"
-                    android:textSize="16sp"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/phq_test_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
-                    android:gravity="center"
-                    android:onClick="phqTest"
-                    android:text="Depression test"
+                    android:onClick="history"
+                    android:text="History"
                     android:textSize="16sp"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
             </LinearLayout>
 
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="0dp"-->
-                <!--android:layout_marginTop="10dp"-->
-                <!--android:layout_weight="4"-->
-                <!--android:gravity="center"-->
-                <!--android:orientation="vertical">-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="@string/participation_status_label"-->
-                    <!--android:textSize="16sp"-->
-                    <!--android:textStyle="bold" />-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="20dp"-->
-                    <!--android:layout_marginRight="20dp"-->
-                    <!--android:layout_marginTop="5dp"-->
-                    <!--android:orientation="vertical" >-->
-
-                    <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:orientation="horizontal" >-->
-
-                        <!--<TextView-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_gravity="center"-->
-                            <!--android:layout_marginLeft="15dp"-->
-                            <!--android:layout_weight="3"-->
-                            <!--android:gravity="start"-->
-                            <!--android:text="@string/days_count"-->
-                            <!--android:textSize="14sp"-->
-                            <!--android:textStyle="bold" />-->
-
-                        <!--<TextView-->
-                            <!--android:id="@+id/participation_days_tv"-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_gravity="center"-->
-                            <!--android:layout_marginRight="15dp"-->
-                            <!--android:layout_weight="1"-->
-                            <!--android:gravity="end"-->
-                            <!--android:text="@string/count_zero_out_of_thirty"-->
-                            <!--android:textSize="16sp" />-->
-                    <!--</LinearLayout>-->
-
-                    <!--<ProgressBar-->
-                        <!--android:id="@+id/participation_days_progressbar"-->
-                        <!--style="?android:attr/progressBarStyleHorizontal"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginBottom="5dp"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:layout_marginRight="10dp"-->
-                        <!--android:max="30"-->
-                        <!--android:progressDrawable="@drawable/progress_bar_blue" />-->
-                <!--</LinearLayout>-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="20dp"-->
-                    <!--android:layout_marginRight="20dp"-->
-                    <!--android:layout_marginTop="5dp"-->
-                    <!--android:orientation="vertical" >-->
-
-                    <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:orientation="horizontal" >-->
-
-                        <!--<TextView-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_gravity="center"-->
-                            <!--android:layout_marginLeft="15dp"-->
-                            <!--android:layout_weight="3"-->
-                            <!--android:gravity="start"-->
-                            <!--android:text="@string/mood_q_count"-->
-                            <!--android:textSize="14sp"-->
-                            <!--android:textStyle="bold" />-->
-
-                        <!--<TextView-->
-                            <!--android:id="@+id/mood_questionnaires_tv"-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_gravity="center"-->
-                            <!--android:layout_marginRight="15dp"-->
-                            <!--android:layout_weight="1"-->
-                            <!--android:gravity="end"-->
-                            <!--android:text="@string/count_zero_out_of_thirty"-->
-                            <!--android:textSize="16sp" />-->
-                    <!--</LinearLayout>-->
-
-                    <!--<ProgressBar-->
-                        <!--android:id="@+id/mood_questionnaires_progressbar"-->
-                        <!--style="?android:attr/progressBarStyleHorizontal"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginBottom="5dp"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:layout_marginRight="10dp"-->
-                        <!--android:max="30"-->
-                        <!--android:progressDrawable="@drawable/progress_bar_blue" />-->
-                <!--</LinearLayout>-->
-
-                <!--&lt;!&ndash;<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="20dp"-->
-                    <!--android:layout_marginRight="20dp"-->
-                    <!--android:layout_marginTop="5dp"-->
-                    <!--android:orientation="vertical" >-->
-
-                    <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:orientation="horizontal" >-->
-
-                        <!--<TextView-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_gravity="center"-->
-                            <!--android:layout_marginLeft="15dp"-->
-                            <!--android:layout_weight="3"-->
-                            <!--android:gravity="start"-->
-                            <!--android:text="@string/wellbeing_q_count"-->
-                            <!--android:textColor="@color/Blue7"-->
-                            <!--android:textSize="14sp"-->
-                            <!--android:textStyle="italic|bold" />-->
-
-                        <!--<TextView-->
-                            <!--android:id="@+id/daily_questionnaires_tv"-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_gravity="center"-->
-                            <!--android:layout_marginRight="15dp"-->
-                            <!--android:layout_weight="1"-->
-                            <!--android:gravity="end"-->
-                            <!--android:text="@string/count_zero_out_of_fifty"-->
-                            <!--android:textColor="@color/Blue7"-->
-                            <!--android:textSize="16sp"-->
-                            <!--android:textStyle="italic" />-->
-                    <!--</LinearLayout>-->
-
-                    <!--<ProgressBar-->
-                        <!--android:id="@+id/daily_questionnaires_progressbar"-->
-                        <!--style="?android:attr/progressBarStyleHorizontal"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginBottom="5dp"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:layout_marginRight="10dp"-->
-                        <!--android:max="50"-->
-                        <!--android:progressDrawable="@drawable/progress_bar_blue" />-->
-                <!--</LinearLayout>&ndash;&gt;-->
-            <!--</LinearLayout>-->
-
-            <!--     <com.facebook.shimmer.ShimmerFrameLayout -->
-            <!--         android:id="@+id/shimmer_view_container" -->
-            <!--         android:layout_width="match_parent" -->
-            <!--         android:layout_height="0dp" -->
-            <!--         android:layout_weight="1" -->
-            <!--         android:gravity="center" -->
-            <!--         android:orientation="vertical" > -->
-
-            <!--         <Button -->
-            <!--             android:layout_width="match_parent" -->
-            <!--             android:layout_height="40dp" -->
-            <!--             android:layout_gravity="bottom|center_horizontal" -->
-            <!--             android:layout_marginBottom="1dp" -->
-            <!--             android:layout_marginLeft="50dp" -->
-            <!--             android:layout_marginRight="50dp" -->
-            <!--             android:layout_marginTop="2dp" -->
-            <!--             android:background="@drawable/filledbutton" -->
-            <!--             android:gravity="center" -->
-            <!--             android:onClick="exit" -->
-            <!--             android:text="Exit" -->
-            <!--             android:textColor="@color/White" -->
-            <!--             android:textSize="16sp" /> -->
-            <!--     </com.facebook.shimmer.ShimmerFrameLayout> -->
         </LinearLayout>
     </ScrollView>
 

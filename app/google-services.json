@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:616357628393:android:aeff7ccb14f2909c",
         "android_client_info": {
-          "package_name": "com.adhiwie.moodjournal"
+          "package_name": "com.adhiwie.diary"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "616357628393-1doo9qrsrgq1eg2c35h2ctjl104e8t4q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.adhiwie.moodjournal",
+            "package_name": "com.adhiwie.diary",
             "certificate_hash": "e42b8f389c1e89d7aad78ae5ee9fcd7fcbdce5e8"
           }
         },
