@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
-ext.versionMajor = 1
-ext.versionMinor = 0
-ext.versionPatch = 0
+ext.versionMajor = 3
+ext.versionMinor = 3
+ext.versionPatch = 2
 ext.versionClassifier = null
 ext.isSnapshot = false
 ext.minimumSdkVersion = 21
@@ -12,7 +12,7 @@ android {
     buildToolsVersion '28.0.3'
 
     defaultConfig {
-        applicationId "com.adhiwie.mymoodjournal"
+        applicationId "com.adhiwie.moodjournal"
         targetSdkVersion 28
         minSdkVersion project.ext.minimumSdkVersion
         versionCode generateVersionCode()
