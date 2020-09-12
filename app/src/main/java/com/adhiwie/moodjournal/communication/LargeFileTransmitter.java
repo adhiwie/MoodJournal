@@ -37,7 +37,7 @@ public class LargeFileTransmitter extends AsyncTask<Void, Void, Boolean> {
             throw new FileNotFoundException("File not found!! Please check if the given file location is correct: " + file_location);
 
         this.data_type = data_type;
-        this.url = new URL("https://adhi-study-4.herokuapp.com/registrar.php");
+        this.url = new URL("https://adhi-study-5.herokuapp.com/registrar.php");
     }
 
 

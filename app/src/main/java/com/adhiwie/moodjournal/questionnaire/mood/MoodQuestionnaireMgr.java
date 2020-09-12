@@ -46,15 +46,14 @@ public class MoodQuestionnaireMgr {
 		new Log().e("Hour of day: "+hour);
 		new Log().e("=======================");
 
-//        if (hour < 12 || hour > 17) {
-//            int current_date = new Time(Calendar.getInstance()).getEpochDays();
-//            int last_date = sp.getInt(Mood_Notification_Trigger_Date_For_Today);
-//
-//            if (current_date != last_date)
-//                resetMoodNotificationTriggerCountForToday();
-//            return;
-//        }
+        if (hour < 12 || hour > 17) {
+            int current_date = new Time(Calendar.getInstance()).getEpochDays();
+            int last_date = sp.getInt(Mood_Notification_Trigger_Date_For_Today);
 
+            if (current_date != last_date)
+                resetMoodNotificationTriggerCountForToday();
+            return;
+        }
 
         if (getMoodQuestionnaireCountForToday() > 0)
             return;
@@ -71,7 +70,7 @@ public class MoodQuestionnaireMgr {
         if (!new GCSMgr(context).isGCSDone())
             return;
 
-        Intent i = new Intent(context, ReminderActivity.class);
+        Intent i = new Intent(context, ReinforcementActivity.class);
         String routine_desc = new PlanMgr(context).getPlanRoutineDesc();
         String message = "Remember: if I " + routine_desc + ", then I will track my mood!";
 

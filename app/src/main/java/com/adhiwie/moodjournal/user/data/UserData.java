@@ -48,6 +48,7 @@ public class UserData {
         json.put("device_api_level", getDeviceApiLevel());
         json.put("group_id", getGroupId());
         json.put("age", getAge());
+        json.put("gender", getGender());
         json.put("occupation", getOccupation());
         //json.put("contact_list", getContactList());
         //json.put("app_list", getAppList());
@@ -211,6 +212,15 @@ public class UserData {
 
     public int getAge() {
         return sp.getInt(USER_AGE);
+    }
+
+    private final String USER_GENDER = "USER_GENDER";
+    public void setGender(String gender) {
+        sp.add(USER_GENDER, gender);
+    }
+
+    public String getGender() {
+        return  sp.getString(USER_GENDER);
     }
 
     private final String USER_OCCUPATION = "USER_OCCUPATION";

@@ -24,7 +24,7 @@ public class DataTransmitter extends AsyncTask<Void, Void, Boolean> {
         values.put("data_instance", new DataFormatter().formatData(data_type, data));
 
         this.data = values.toString();
-        this.url = new URL("https://adhi-study-4.herokuapp.com/registrar.php");
+        this.url = new URL("https://adhi-study-5.herokuapp.com/registrar.php");
 
     }
 

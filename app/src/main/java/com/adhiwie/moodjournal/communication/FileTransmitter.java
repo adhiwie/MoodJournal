@@ -62,7 +62,7 @@ public class FileTransmitter extends AsyncTask<Void, Void, Boolean> {
         values.put("data_array", ja.toString());
 
         this.data = values.toString();
-        this.url = new URL("https://adhi-study-4.herokuapp.com/registrar.php");
+        this.url = new URL("https://adhi-study-5.herokuapp.com/registrar.php");
     }
 
 

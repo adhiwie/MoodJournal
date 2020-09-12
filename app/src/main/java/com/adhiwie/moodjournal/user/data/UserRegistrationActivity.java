@@ -19,6 +19,7 @@ import com.adhiwie.moodjournal.R;
 import com.adhiwie.moodjournal.communication.helper.RegistrationDataTransmission;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.Snackbar;
+import com.adhiwie.moodjournal.utils.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class UserRegistrationActivity extends AppCompatActivity {
@@ -51,7 +52,6 @@ public class UserRegistrationActivity extends AppCompatActivity {
         EditText occupation_edittext = (EditText) findViewById(R.id.occupation);
 
         RadioGroup gender_group = (RadioGroup) findViewById(R.id.gender);
-        int genderId = gender_group.getCheckedRadioButtonId();
 
         if (TextUtils.isEmpty(email_edittext.getText().toString()) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email_edittext.getText().toString()).matches()) {
             emailTextInputLayout.setError("Email address is not valid");
@@ -59,10 +59,10 @@ public class UserRegistrationActivity extends AppCompatActivity {
             ageTextInputLayout.setError("Age may not be empty");
         } else if (TextUtils.isEmpty(occupation_edittext.getText().toString())) {
             occupationTextInputLayout.setError("Occupation may not be empty");
-        } else if (findViewById(genderId) == null) {
+        } else if (gender_group.getCheckedRadioButtonId() == -1) {
             gender_error.setVisibility(View.VISIBLE);
         } else {
-            RadioButton gender_radiobutton = (RadioButton) findViewById(genderId);
+            RadioButton gender_radiobutton = (RadioButton) findViewById(gender_group.getCheckedRadioButtonId());
             email = email_edittext.getText().toString();
             age = Integer.parseInt(age_edittext.getText().toString());
             occupation = occupation_edittext.getText().toString();
@@ -82,6 +82,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
             UserData ud = new UserData(getApplicationContext());
             ud.setEmail(this.email);
             ud.setAge(this.age);
+            ud.setGender(this.gender);
             ud.setOccupation(this.occupation);
             ud.setGroupId(3);
 

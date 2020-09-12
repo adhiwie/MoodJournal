@@ -68,7 +68,7 @@ public class DataTransmitterMgr {
         //transmitData(new DataTypes().ACCESSIBILITY_EVENT);
         transmitData(new DataTypes().ACTIVITY);
         //transmitData(new DataTypes().LOCATION);
-        transmitData(new DataTypes().NOTIFICATION);
+        //transmitData(new DataTypes().NOTIFICATION);
         transmitData(new DataTypes().NETWORK);
         transmitData(new DataTypes().POWER_CONNECTIVITY);
         transmitData(new DataTypes().RINGER_MODE);

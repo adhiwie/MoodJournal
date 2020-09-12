@@ -16,7 +16,7 @@ public class DataGetter extends AsyncTask<Void, Void, String> {
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler))
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(context));
 
-        this.url = new URL("https://adhi-study-4.herokuapp.com/query.php?uuid=" + uuid);
+        this.url = new URL("https://adhi-study-5.herokuapp.com/query.php?uuid=" + uuid);
 
     }
 
