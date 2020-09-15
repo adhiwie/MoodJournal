@@ -128,6 +128,11 @@
                 <action android:name="android.media.RINGER_MODE_CHANGED" />
             </intent-filter>
         </receiver>
+        <receiver android:name="com.adhiwie.moodjournal.sensor.push.ScreenStateSensor">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

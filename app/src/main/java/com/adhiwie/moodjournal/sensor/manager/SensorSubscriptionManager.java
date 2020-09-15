@@ -2,10 +2,15 @@ package com.adhiwie.moodjournal.sensor.manager;
 
 import java.util.Calendar;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 
 import com.adhiwie.moodjournal.debug.CustomExceptionHandler;
 import com.adhiwie.moodjournal.sensor.data.LocationData;
+import com.adhiwie.moodjournal.sensor.push.ScreenStateSensor;
 import com.adhiwie.moodjournal.utils.Log;
 import com.adhiwie.moodjournal.utils.SharedPref;
 
@@ -63,6 +68,13 @@ public class SensorSubscriptionManager {
         } catch (Exception e) {
             new Log().e(e.toString());
         }
+    }
+
+    public void startScreenSensingIfNotWorking() {
+        BroadcastReceiver screenBroadcastReceiver = new ScreenStateSensor();
+        IntentFilter filter = new IntentFilter(Intent.ACTION_USER_PRESENT);
+        context.registerReceiver(screenBroadcastReceiver, filter);
+
     }
 
 

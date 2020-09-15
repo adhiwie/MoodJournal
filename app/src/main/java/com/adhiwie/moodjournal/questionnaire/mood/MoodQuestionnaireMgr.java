@@ -35,8 +35,8 @@ public class MoodQuestionnaireMgr {
     public void notifyUserIfRequired() {
         hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
-//        currentTimeInMillis = Calendar.getInstance().getTimeInMillis();
-//        lastTriggerTimeInMillis = getLastMoodQuestionnaireTriggerTime();
+        currentTimeInMillis = Calendar.getInstance().getTimeInMillis();
+        lastTriggerTimeInMillis = getLastMoodQuestionnaireTriggerTime();
 
 		new Log().e("=======================");
 		new Log().e("Mood notification is triggered");
@@ -46,47 +46,36 @@ public class MoodQuestionnaireMgr {
 		new Log().e("Hour of day: "+hour);
 		new Log().e("=======================");
 
-        if (hour < 12 || hour > 17) {
+        if (isRuleOk()) {
+
+            new Log().e("Notification is sent");
+
+            Intent i = new Intent(context, ReinforcementActivity.class);
+            String routine_desc = new PlanMgr(context).getPlanRoutineDesc();
+            String message = "Remember: if I " + routine_desc + ", then I will track my mood!";
+
+            if (new UserData(context).getGroupId() == 3) {
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                context.startActivity(i);
+            }
+
+            if (new UserData(context).getGroupId() == 2) {
+                PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
+                new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Journal", message);
+            }
+
+            updateLastMoodQuestionnaireTriggerTime();
+        } else {
+            new Log().e("Mood notification trigger is resetted for today");
+
             int current_date = new Time(Calendar.getInstance()).getEpochDays();
             int last_date = sp.getInt(Mood_Notification_Trigger_Date_For_Today);
 
             if (current_date != last_date)
                 resetMoodNotificationTriggerCountForToday();
-            return;
         }
-
-        if (getMoodQuestionnaireCountForToday() > 0)
-            return;
-
-        if (getMoodNotificationTriggerCountForToday() > 0)
-            return;
-
-        if (new UserData(context).getGroupId() == 1)
-            return;
-
-        if (!new PlanMgr(context).isPlanGiven())
-            return;
-
-        if (!new GCSMgr(context).isGCSDone())
-            return;
-
-        Intent i = new Intent(context, ReinforcementActivity.class);
-        String routine_desc = new PlanMgr(context).getPlanRoutineDesc();
-        String message = "Remember: if I " + routine_desc + ", then I will track my mood!";
-
-        if (new UserData(context).getGroupId() == 3) {
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-            context.startActivity(i);
-        }
-
-        if (new UserData(context).getGroupId() == 2) {
-            PendingIntent pi = PendingIntent.getActivity(context, 601, i, PendingIntent.FLAG_CANCEL_CURRENT);
-            new NotificationMgr().triggerPriorityNotification(context, pi, 6011, "Mood Journal", message);
-        }
-
-        updateLastMoodQuestionnaireTriggerTime();
     }
 
 
@@ -188,15 +177,12 @@ public class MoodQuestionnaireMgr {
     }
 
     private boolean isRuleOk() {
-//        new Log().e("getMoodQuestionnaireCountForToday : "+getMoodQuestionnaireCountForToday());
-//        new Log().e("getMoodNotificationTriggerCountForToday : "+getMoodNotificationTriggerCountForToday());
-//        new Log().e("hour : "+hour);
-//        new Log().e("group ID : "+new UserData(context).getGroupId());
         return ((getMoodQuestionnaireCountForToday() == 0) &&
                 (getMoodNotificationTriggerCountForToday() == 0) &&
                 (hour >= 12 && hour <= 14) &&
                 (new UserData(context).getGroupId() != 1) &&
-                new PlanMgr(context).isPlanGiven());
+                new PlanMgr(context).isPlanGiven() &&
+                new GCSMgr(context).isGCSDone());
     }
 
 }

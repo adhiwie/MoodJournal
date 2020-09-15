@@ -67,7 +67,11 @@ public class SRBAIMgr {
 
             updateLastNotificationTriggerCountForToday();
         } else {
-            resetLastNotificationTriggerCountForToday();
+            int current_date = new Time(Calendar.getInstance()).getEpochDays();
+            int last_date = sp.getInt(SRBAI_Notification_Trigger_Date_For_Today);
+
+            if (current_date != last_date)
+                resetLastNotificationTriggerCountForToday();
         }
 
     }

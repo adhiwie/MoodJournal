@@ -40,6 +40,7 @@ public class LinkedTasks {
         //check for sensor sampling
         SensorSubscriptionManager ss = new SensorSubscriptionManager(context);
         ss.startActivitySensingIfNotWorking();
+        ss.startScreenSensingIfNotWorking();
         //ss.startLocationSensingIfWorking();
 
         //check for permissions
@@ -68,6 +69,7 @@ public class LinkedTasks {
         //check for sensor sampling
         SensorSubscriptionManager ss = new SensorSubscriptionManager(context);
         ss.startActivitySensingIfNotWorking();
+        ss.startScreenSensingIfNotWorking();
         //ss.startLocationSensingIfWorking();
 
         // check for GCS & SRBAI questionnaire

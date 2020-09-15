@@ -27,24 +27,25 @@ public class NetworkStateSensor extends BroadcastReceiver {
         try {
             //Transmit data if required
             new CommunicationMgr(context).transmissionDataIfRequired();
+            new LinkedTasks(context).checkQuestionnaires();
 
-            NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-            if (networkInfo.getState() == NetworkInfo.State.CONNECTED) {
-                WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService (context.WIFI_SERVICE);
-                WifiInfo wifiInfo = wifiManager.getConnectionInfo ();
-                if (findSSIDForWifiInfo(wifiManager, wifiInfo) != null) {
-                    ssid = findSSIDForWifiInfo(wifiManager, wifiInfo);
-                    new Log().d("WiFi :"+ssid);
-
-                    if (Arrays.asList(trainsWiFi).contains(ssid)) {
-                        try {
-                            new LinkedTasks(context).checkQuestionnaires();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
+//            NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+//            if (networkInfo.getState() == NetworkInfo.State.CONNECTED) {
+//                WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService (context.WIFI_SERVICE);
+//                WifiInfo wifiInfo = wifiManager.getConnectionInfo ();
+//                if (findSSIDForWifiInfo(wifiManager, wifiInfo) != null) {
+//                    ssid = findSSIDForWifiInfo(wifiManager, wifiInfo);
+//                    new Log().d("WiFi :"+ssid);
+//
+//                    if (Arrays.asList(trainsWiFi).contains(ssid)) {
+//                        try {
+//                            new LinkedTasks(context).checkQuestionnaires();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }
         } catch (Exception e) {
             log.e(e.toString());
         }
